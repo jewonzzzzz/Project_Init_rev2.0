@@ -750,18 +750,18 @@ footer {
 														<option value="교대">교대</option>
 														<option value="시급">시급</option>
 													</select>
+												</div>	
+												<div class="form-group">
+												    <label for="edit_emp_account_name">예금주</label>
+												    <input type="text" class="form-control" id="edit_emp_account_name" name="emp_account_name">
 												</div>
 												<div class="form-group">
-												    <label for="edit_emp_account_holder">예금주</label>
-												    <input type="text" class="form-control" id="emp_account_name" name="emp_account_name">
+												    <label for="edit_emp_account_num">계좌번호</label>
+												    <input type="text" class="form-control" id="edit_emp_account_num" name="emp_account_num">
 												</div>
 												<div class="form-group">
-												    <label for="edit_emp_account">계좌번호</label>
-												    <input type="text" class="form-control" id="emp_account_num" name="emp_account_num">
-												</div>
-												<div class="form-group">
-												    <label for="edit_emp_bank">은행명</label>
-												    <select class="form-control" id="emp_bank_name" name="emp_bank_name">
+												    <label for="edit_emp_bank_name">은행명</label>
+												    <select class="form-control" id="edit_emp_bank_name" name="emp_bank_name">
 												        <option value="">선택하세요</option>
 												        <option value="KB국민은행">KB국민은행</option>
 												        <option value="신한은행">신한은행</option>
@@ -932,7 +932,7 @@ footer {
     	            $('#edit_emp_salary').val(member.emp_salary || '');
     	            $('#edit_emp_work_type').val(member.emp_work_type || '');
     	            $('#edit_emp_account_name').val(member.emp_account_name || '');
-    	            $('#edit_emp_account_num').val(member.emp_num || '');
+    	            $('#edit_emp_account_num').val(member.emp_account_num || '');
     	            $('#edit_emp_bank_name').val(member.emp_bank_name || '');
     	            $('#edit_emp_status').val(member.emp_status || '');
     	            
