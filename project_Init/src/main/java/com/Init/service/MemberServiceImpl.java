@@ -126,22 +126,23 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
-    @Override
-    public MemberVO memberInfo(String emp_id) {
-        logger.debug("회원 정보 조회 서비스 실행: {}", emp_id);
-        
-        try {
-            MemberVO member = mdao.getMember(emp_id);
-            if (member != null) {
-                return member;
+        @Override
+        public MemberVO memberInfo(String emp_id) {
+            logger.debug("회원 정보 조회 서비스 실행: {}", emp_id);
+            
+            try {
+                // approval이 0인 현재 유효한 데이터만 조회
+                MemberVO member = mdao.getMember(emp_id);
+                if (member != null) {
+                    return member;
+                }
+                logger.error("존재하지 않는 사원입니다.");
+                return null;
+            } catch (Exception e) {
+                logger.error("회원 정보 조회 중 오류 발생", e);
+                throw e;
             }
-            logger.error("존재하지 않는 사원입니다.");
-            return null;
-        } catch (Exception e) {
-            logger.error("회원 정보 조회 중 오류 발생", e);
-            throw e;
         }
-    }
     
     // 정보수정 비밀번호 인증
     @Override
@@ -418,18 +419,43 @@ public class MemberServiceImpl implements MemberService {
     }
     
     // 관리자 수정
+    @Override
     @Transactional
     public boolean updateEmployeeInfo(MemberVO vo) {
-      try {
-        int result = mdao.updateEmployee(vo);
-        if(result > 0) {
-          mdao.insertEmployeeHistory(vo);
-          return true;
+        logger.debug("updateEmployeeInfo(MemberVO vo) 실행");
+        
+        try {
+            // 1. 기존 데이터 존재 여부 확인
+            MemberVO existingMember = mdao.getMember(vo.getEmp_id());
+            if (existingMember == null) {
+                logger.error("존재하지 않는 사원입니다.");
+                return false;
+            }
+
+            // 2. 필수 필드 검증
+            if (vo.getEmp_position() == null || vo.getEmp_status() == null || 
+                vo.getEmp_job() == null) {
+                logger.error("필수 필드가 누락되었습니다.");
+                return false;
+            }
+
+            // 3. 모든 approval 값 증가 (먼저 실행)
+            mdao.insertEmployeeHistory(vo);
+
+            // 4. 새로운 데이터 삽입 (approval = 0)
+            int result = mdao.updateEmployee(vo);
+            
+            if(result > 0) {
+                logger.debug("관리자 수정 성공");
+                return true;
+            } else {
+                logger.error("관리자 수정 실패");
+                return false;
+            }
+            
+        } catch (Exception e) {
+            logger.error("관리자 수정 중 오류 발생", e);
+            throw new RuntimeException("관리자 수정 실패", e);
         }
-        return false;
-      } catch (Exception e) {
-        logger.error("회원 정보 업데이트 중 오류 발생", e);
-        throw new RuntimeException("사원 정보 업데이트 실패", e);
-      }
     }
 }

@@ -350,6 +350,13 @@
 			</div>
 
 			<script>
+			document.getElementById("passwordCheckForm").addEventListener("keydown", function(event) {
+				if (event.key === "Enter") {
+					event.preventDefault(); // 기본 엔터키 동작 방지
+					document.getElementById("confirmPassword").click(); // 확인 버튼 클릭
+				}
+			});
+			
 	$(document).ready(function() {
 		$('#checkPasswordBtn').click(function() {
 	        $('#passwordCheckModal').modal('show');

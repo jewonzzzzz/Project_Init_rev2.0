@@ -394,7 +394,7 @@ input[readonly] {
             success: function(response) {
                 if(response.success) {
                     alert(response.message);
-                    window.location.href = '${pageContext.request.contextPath}/member/info';
+                    window.location.href = '${pageContext.request.contextPath}/member/update';
                     
                 } else {
                     alert(response.message);

@@ -70,52 +70,52 @@ public class MemberController implements ServletContextAware {
 	    return "redirect:/member/main";
 	}
 	// 퇴직신청 - GET
-	@GetMapping("/quit")
-	public String quitPage(HttpSession session, Model model) {
-	    String emp_id = (String) session.getAttribute("emp_id");
-	    // 로그인 체크
-	    if(emp_id == null) {
-	        return "redirect:/member/login";
-	    }
-	    
-	    MemberVO memberVO = mService.memberInfo(emp_id);
-	    model.addAttribute("memberVO", memberVO);
-	    
-	    return "member/quit";  
-	}
-	
-	// 퇴직신청 - POST
-	@PostMapping("/submitQuit")
-	@ResponseBody
-	public ResponseEntity<Map<String, Object>> submitQuit(
-	        @RequestParam("emp_id") String emp_id,
-	        @RequestParam("reason") String reason,
-	        @RequestParam("emp_quit_date") Date emp_quit_date,  
-	        @RequestParam("reason_detail") String reason_detail) {
-	    Map<String, Object> response = new HashMap<>();
-	    try {
-	        MemberVO memberVO = new MemberVO();
-	        memberVO.setEmp_id(emp_id);
-	        memberVO.setReason(reason);
-	        memberVO.setEmp_quit_date(emp_quit_date);  
-	        memberVO.setReason_detail(reason_detail);
-	        
-	        boolean result = mService.insertQuitEmployee(memberVO);
-	        if(result) {
-	            response.put("success", true);
-	            response.put("message", "퇴직 신청이 완료되었습니다.");
-	        } else {
-	            response.put("success", false);
-	            response.put("message", "퇴직 신청 처리 중 오류가 발생했습니다.");
-	        }
-	        return ResponseEntity.ok(response);
-	    } catch (Exception e) {
-	        response.put("success", false);
-	        response.put("message", "서버 오류: " + e.getMessage());
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-	    }
-	}
-	
+		@GetMapping("/quit")
+		public String quitPage(HttpSession session, Model model) {
+		    String emp_id = (String) session.getAttribute("emp_id");
+		    // 로그인 체크
+		    if(emp_id == null) {
+		        return "redirect:/member/login";
+		    }
+		    
+		    MemberVO memberVO = mService.memberInfo(emp_id);
+		    model.addAttribute("memberVO", memberVO);
+		    
+		    return "member/quit";  
+		}
+		
+		// 퇴직신청 - POST
+		@PostMapping("/submitQuit")
+		@ResponseBody
+		public ResponseEntity<Map<String, Object>> submitQuit(
+		        @RequestParam("emp_id") String emp_id,
+		        @RequestParam("reason") String reason,
+		        @RequestParam("emp_quit_date") Date emp_quit_date,  
+		        @RequestParam("reason_detail") String reason_detail) {
+		    Map<String, Object> response = new HashMap<>();
+		    try {
+		        MemberVO memberVO = new MemberVO();
+		        memberVO.setEmp_id(emp_id);
+		        memberVO.setReason(reason);
+		        memberVO.setEmp_quit_date(emp_quit_date);  
+		        memberVO.setReason_detail(reason_detail);
+		        
+		        boolean result = mService.insertQuitEmployee(memberVO);
+		        if(result) {
+		            response.put("success", true);
+		            response.put("message", "퇴직 신청이 완료되었습니다.");
+		        } else {
+		            response.put("success", false);
+		            response.put("message", "퇴직 신청 처리 중 오류가 발생했습니다.");
+		        }
+		        return ResponseEntity.ok(response);
+		    } catch (Exception e) {
+		        response.put("success", false);
+		        response.put("message", "서버 오류: " + e.getMessage());
+		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+		    }
+		}
+		
 	// 비밀번호 찾기
 	@GetMapping("/forgotPassword")
     public String showForgotPasswordForm() {
