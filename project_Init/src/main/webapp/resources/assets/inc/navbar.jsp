@@ -7,7 +7,6 @@
           <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom" style="position: relative; background-color: rgba(0,0,0,0.8)">
            	<!-- 알람 확장 -->
            	
-           	
            	<%
 			    String currentURI = request.getRequestURI(); // 현재 URL 가져오기
 			%>
@@ -42,17 +41,17 @@
 						oninput="search(this.value)"
 						/>
 					<div id="search_form_extended">
-						<ul id="search_notify" style="font-size: 16px;">
+						<ul id="search_notify" style="font-size: 12px;">
 							<li>두글자 이상의 검색어를 입력 해주세요.</li>
 						</ul>
-						<ul id="search_incorrect" style="display:none; font-size: 16px;">
+						<ul id="search_incorrect" style="display:none; font-size: 12px;">
 							<li>올바른 검색어를 입력 해주세요.</li>
 						</ul>
-						<ul id="search_history" style="font-size: 16px;">
+						<ul id="search_history" style="font-size: 12px;">
 						</ul>
 						<ul id="search_employees">
 						</ul>
-						<ul id="search_null" style="font-size: 16px; display:none;">
+						<ul id="search_null" style="font-size: 12px; display:none;">
 							<li></li>
 						</ul>
 					</div>
@@ -68,7 +67,7 @@
                 <li style="margin-right:30px;" id="to_home" class="nav-item topbar-icon dropdown hidden-caret">
                  	<button type="button" style="border: none !important;">
                  		<a href='/main/home'>
-                 			<i style="color:white; font-size:25px;" class="fa-solid fa-house"></i>
+                 			<i style="color:white; font-size:20px;" class="fa-solid fa-house"></i>
                  		</a>
 					</button>
                 </li>
@@ -76,7 +75,7 @@
               	<!-- 아이콘1 -->
                 <li style="margin-right:30px;" id="extend_calendar" class="nav-item topbar-icon dropdown hidden-caret">
                  	<button type="button" style="border: none !important;">
-                 		<i style="color:white; font-size:25px;" class="fa-solid fa-calendar"></i>
+                 		<i style="color:white; font-size:20px;" class="fa-solid fa-calendar"></i>
 					</button>
                 </li>
                 <!-- 아이콘1 -->
@@ -84,7 +83,7 @@
                 <!-- 아이콘2 -->
                  <li style="margin-right:30px;" id="extend_messenger" class="nav-item topbar-icon dropdown hidden-caret">
                  	<button type="button" style="border: none !important;">
-                 		<i id="alarm_message" style="color:white; font-size:25px;" class="fa-solid fa-comments"></i>
+                 		<i id="alarm_message" style="color:white; font-size:20px;" class="fa-solid fa-comments"></i>
 					</button>
                     <span id = "alarm_message_badge" class="badge"></span>
                 </li>
@@ -93,7 +92,7 @@
                 <!-- 아이콘3 -->
                 <li style="margin-right:30px;" id="extend_workflowAlarm" class="nav-item topbar-icon dropdown hidden-caret">
                     <button type="button" style="border: none !important;">
-                    	<i id="alarm_workflow" style="color:white; font-size:25px;" class="fa-solid fa-bell"></i>
+                    	<i id="alarm_workflow" style="color:white; font-size:20px;" class="fa-solid fa-bell"></i>
 					</button>
                     <span id = "alarm_workflow_badge" class="badge"></span>
                 </li>

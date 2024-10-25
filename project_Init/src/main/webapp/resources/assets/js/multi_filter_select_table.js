@@ -1,6 +1,6 @@
 $(document).ready(function () {
 	$(".multi-filter-select").DataTable({
-		pageLength: 5,
+		pageLength: 10,
 		initComplete: function () {
 			this.api()
 			.columns()
@@ -11,6 +11,9 @@ $(document).ready(function () {
 				.on("change", function () {
 					var val = $.fn.dataTable.util.escapeRegex($(this).val().trim());
 					column.search(val ? "^\\s*" + val + "\\s*$" : "", true, false).draw();
+					this.api().rows().every(function() {
+			            $(this.node()).find("td").css("height", "20px");
+			        });
 				});
 	
 				column

@@ -9,7 +9,7 @@ $(document).ready(function () {
 		
 		getMembers();
 		chatRoomList();
-		
+	
 		room_check_interval = setInterval(function() {
 			chatRoomList();
 	    }, 5000);
@@ -17,6 +17,7 @@ $(document).ready(function () {
 		member_check_interval = setInterval(function() {
 			checkMember();
 	    }, 10000);
+	}
 		
 		$(document).on('click', '#to_chat_list', function (e) {
 			if ($(e.target).closest('.follow, .unfollow').length) {
@@ -55,7 +56,6 @@ $(document).ready(function () {
 		    }
 			
 			const room_id = $(this).data('room_id');
-		    console.log('to_chat_room : room_id = ', room_id);
 		    
 		    getMessages(room_id, null);
 		    $('.messenger_invite').css('display', 'block').removeClass('fadeOut').addClass('fadeIn');
@@ -64,7 +64,6 @@ $(document).ready(function () {
 		
 		    message_check_interval = setInterval(function() {
 		        getMessages(room_id, null);
-		        console.log('check room ',room_id);
 		    }, 1000);
 		});
 		
@@ -83,7 +82,6 @@ $(document).ready(function () {
 		    }
 			
 			const receiver_emp_id = $(this).data('receiver_emp_id');
-			console.log('to_personal_room : receiver_emp_id = ',receiver_emp_id);
 			getMessages(null,receiver_emp_id);
 			$('.messenger_invite').css('display', 'block').removeClass('fadeOut').addClass('fadeIn');
 		    $('.messenger_body_chat.list').css('display', 'none').removeClass('fadeUp').addClass('fadeDown');
@@ -91,21 +89,8 @@ $(document).ready(function () {
 		    
 		    message_check_interval = setInterval(function() {
 		        getMessages(null,receiver_emp_id);
-		        console.log('check room with ',receiver_emp_id);
 		    }, 1000);
 		});
-		
-		if ($('.messenger_body_chat.room').css('display') === 'none') {
-		    (function() {
-		    	if (message_check_interval) {
-			        clearInterval(message_check_interval);
-			    }
-		    	console.log('user get out from room. clear interval.')
-		    	member_check_interval = setInterval(function() {
-					checkMember();
-			    }, 10000);
-		    })();
-		}
 		
 		$(document).on('click', '.messenger_invite', function (e) {
 			let room_id = $('#hidden_room_id').val();
@@ -208,7 +193,6 @@ $(document).ready(function () {
 		            }
 		        });	
 		});
-	 }
 });
 
 	

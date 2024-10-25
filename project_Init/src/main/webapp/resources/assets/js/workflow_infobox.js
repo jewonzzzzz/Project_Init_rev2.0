@@ -109,13 +109,13 @@ $(document).ready(function () {
 		                   		</div>
 		                   		<div style="flex:0.4; display: flex; flex-direction:column;">
 		                   			<div style="flex:0.4; font-weight: bold; color: black;">
-		                   				${workflowVO.receiver_name_2nd}
+		                   				${workflowVO.receiver_name_3rd}
 		                   			</div>
 		                   			<div style="flex:0.3;">
-		                   				${workflowVO.receiver_dnum_2nd}
+		                   				${workflowVO.receiver_dnum_3rd}
 		                    		</div>
 		                    		<div style="flex:0.3;">
-		                    			${workflowVO.receiver_position_2nd}
+		                    			${workflowVO.receiver_position_3rd}
 		                    		</div>
 		                   		</div>
 		                   		<div style="flex:0.4; display: flex; flex-direction:column; align-items: center; justify-content: center;">

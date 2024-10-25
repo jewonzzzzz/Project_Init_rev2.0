@@ -82,10 +82,6 @@ $(document).ready(function () {
     	$('#tool_4').attr('data-tool_id', null);
     });
     
-    $(document).on('click', '.tools', function (e) {
-    	
-    });
-    
 });
 
 function extendUserSetting() {

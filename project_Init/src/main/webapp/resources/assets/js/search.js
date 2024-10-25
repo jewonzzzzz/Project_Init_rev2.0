@@ -19,7 +19,8 @@ $(document).ready(function () {
 
     $(document).on('keydown', function (e) {
         if (e.key === "Escape") {
-        		closeSearchForm()
+        		closeSearchForm();
+        		$('#search_employees').empty();
         }
     });
 });
@@ -41,6 +42,7 @@ function checkModal() {
 
 function extendSearchForm() {
 	console.log('search form extended!');
+	$('#search_employees').empty();
 	document.getElementById("search_form_extended").style.animation = 'dropDown 0.5s forwards'; // 페이드인 효과
 	document.getElementById("search_form_extended").style.display = 'block';
     $('#search_form').addClass('focus_border');
@@ -145,11 +147,6 @@ function showEmployees(data) {
 	                    		</div>
 	                		</div>
 	                		<div style="flex:0.3; display: flex; flex-direction:column; margin-left:10px;">
-	                			${memberVO.emp_power != null ? `
-		                            <div style="flex:1; color: rgba(0, 0, 0, 0.7); display: flex; flex-direction:column; align-items: center; justify-content: center">
-		                                ${memberVO.emp_power}
-		                            </div>
-		                        ` : ''}
 	                			<div style="flex:1; color: rgba(0, 0, 0, 0.7); display: flex; flex-direction:column; align-items: center; justify-content: flex-end;">
 	                				${memberVO.emp_tel}
 	                			</div>
