@@ -215,7 +215,6 @@ textarea.form-control {
 							<h4 class="card-title">퇴사 신청</h4>
 						</div>
 						<div class="card-body">
-							<form id="quitForm">
 								<!-- 기본 정보 테이블 -->
 								<div class="table-container">
 									<table class="table table-bordered">
@@ -307,12 +306,11 @@ textarea.form-control {
 								<div class="d-flex justify-content-end mt-4">
 									<button type="button" class="btn btn-secondary me-2"
 										onclick="history.back()">취소</button>
-									<button type="submit" class="btn btn-primary">결재선 지정</button>
+									<button type="button" class="btn btn-primary" id="signBtn">결재선 지정</button>
 								</div>
-							</form>
 						</div>
 					</div>
-
+					<%@ include file="../inc/signModal.jsp" %>
 
 					<!------------------------------------------------------------------------------------------------------------------>
 				</div>
@@ -408,64 +406,198 @@ textarea.form-control {
     </script>
 
 	<script>
-    $('#quitForm').submit(function(e) {
-        e.preventDefault();
-        
-    	// 현재 날짜 가져오기
-        const today = new Date();
-        today.setHours(0, 0, 0, 0); // 시간을 제거하여 날짜만 비교
-        
-        // 선택된 퇴사 희망일
-        const quitDate = new Date($('#emp_quit_date').val());
-        
-        // 퇴사 희망일 유효성 검사
-        if (quitDate < today) {
-            alert('퇴사 희망일은 오늘 이후 날짜만 선택 가능합니다.');
-            return;
-        }
-        
-        // 폼 유효성 검사
-        if (!$('#agreeRules').is(':checked')) {
-            alert('퇴사 규칙에 동의해주세요.');
-            return;
-        }
-        if (!$('#emp_quit_date').val()) {
-            alert('퇴사희망일을 선택해주세요.');
-            return;
-        }
-        if (!$('#quit_reason').val()) {
-            alert('퇴사사유를 선택해주세요.');
-            return;
-        }
-        if (!$('#quit_reason_detail').val().trim()) {
-            alert('사유상세를 입력해주세요.');
-            return;
-        }
+	$(document).ready(function() {
+	    // 결재선지정 버튼 클릭 이벤트
+	    $('#signBtn').click(function(e) {
+	        e.preventDefault();
+    	    
+    	    // 현재 날짜 가져오기
+    	    const today = new Date();
+    	    today.setHours(0, 0, 0, 0); 
+    	    
+    	    // 선택된 퇴사 희망일
+    	    const quitDate = new Date($('#emp_quit_date').val());
+    	    
+    	    // 유효성 검사
+    	    if (!$('#agreeRules').is(':checked')) {
+    	        swal("Error!", "퇴사 규칙에 동의해주세요.", "error");
+    	        return false;
+    	    }
+    	    if (!$('#emp_quit_date').val()) {
+    	        swal("Error!", "퇴사희망일을 선택해주세요.", "error");
+    	        return false;
+    	    }
+    	    if (quitDate < today) {
+    	        swal("Error!", "퇴사 희망일은 오늘 이후 날짜만 선택 가능합니다.", "error");
+    	        return false;
+    	    }
+    	    if (!$('#quit_reason').val()) {
+    	        swal("Error!", "퇴사사유를 선택해주세요.", "error");
+    	        return false;
+    	    }
+    	    if (!$('#quit_reason_detail').val().trim()) {
+    	        swal("Error!", "사유상세를 입력해주세요.", "error");
+    	        return false;
+    	    }
 
-        // AJAX 요청
-        $.ajax({
-            url: '/member/submitQuit',
-            type: 'POST',
-            data: {
-                emp_id: $('#emp_id').val(),
-                reason: $('#quit_reason').val(),
-                emp_quit_date: $('#emp_quit_date').val(),
-                reason_detail: $('#quit_reason_detail').val()
-            },
-            success: function(response) {
-                if (response.success) {
-                    alert(response.message);
-                    window.location.href = '/member/main';
-                } else {
-                    alert(response.message);
-                }
-            },
-            error: function(xhr, status, error) {
-                alert('이미 퇴직신청 하셨습니다.');
-                console.error('Error:', error);
-            }
+    	    // 모든 유효성 검사를 통과하면 모달창 표시
+    	    $('#addRowModal').modal('show');
+    	});
+    
+ // 결재요청 시 기본세팅(본부장, 관련부서 정보 업로드, 해당직원 정보 업로드)
+ 	$('#addRowModal').on('show.bs.modal', function() {
+    $('#modalTable tbody').empty();
+    $('#signTable tbody').empty();
+    $('#signTitle').val('');
+    $('#signContent').val('');
+    
+    $.ajax({
+        url: '/salary/getMemberInfoForSign',
+        method: 'POST',
+        success: function(response) {
+ 	        	console.log(response);
+ 	        	$('#topText').text("소속 : "+response["emp_bnum"]+" "+response["dname"]);
+ 	        	var row = "<tr>" +
+                 "<td style='text-align: center;'>" + response["directorInfo"].emp_id + "</td>" +
+                 "<td style='text-align: center;'>" + response["directorInfo"].emp_position + "</td>" +
+                 "<td style='text-align: center;'>" + response["directorInfo"].emp_name + "</td>" +
+                 "<td style='text-align: center;'><a href='#' class='move-row'>추가하기</a></td>" +
+                 "</tr>";
+                 $('#modalTable tbody').append(row);
+                 
+                 response["deptInfo"].forEach(function(data){
+                 	var row = "<tr>" +
+                 	"<td style='text-align: center;'>" + data.emp_id + "</td>" +
+                     "<td style='text-align: center;'>" + data.emp_position + "</td>" +
+                     "<td style='text-align: center;'>" + data.emp_name + "</td>" +
+                     "<td style='text-align: center;'><a href='#' class='move-row'>추가하기</a></td>" +
+                     "</tr>";
+                     $('#modalTable tbody').append(row);
+                 });
+                 
+                 var row_base = "<tr>" +
+                 "<td style='text-align: center;'>" + response["memberInfo"].emp_position + "</td>" +
+                 "<td style='text-align: center;'>" + response["memberInfo"].emp_name + "</td>" +
+                 "<td style='text-align: center;'> <select class='form-select input-fixed' name='sign_type'>" +
+                 "<option name='wf_receiver' value='결재요청자' disabled selected>결재요청자</option></select> </td>" +
+                 "<td style='text-align: center;'></td>" +
+                 "<input type='hidden' value='"+ response["memberInfo"].emp_id + "'>" +
+                 "</tr>";
+                 $('#signTable tbody').append(row_base);
+ 	        },
+ 	        error: function() {
+ 	            alert('데이터를 불러오는 데 실패했습니다.');
+ 	        }
+ 	    });
+ 	});
+ 	
+ 	// 직원조회 테이블에서 추가하기 클릭 시 결재요청 테이블로 이동
+     $('#modalTable').on('click', '.move-row', function(event) {
+     	event.preventDefault();
+     	let signTableNames = [];
+     	$('select option:selected').each(function () {
+     		signTableNames.push($(this).closest('tr').find('td').eq(1).text());
         });
-    });
+     	console.log(signTableNames);
+     	if(signTableNames.includes($(this).closest('tr').find('td').eq(2).text())){
+     		swal("Error!", "중복된 결재자가 존재합니다.", "error");
+     	} else{
+     		var row_move = "<tr>" +
+            "<td style='text-align: center;'>" + $(this).closest('tr').find('td').eq(1).text() + "</td>" +
+            "<td style='text-align: center;'>" + $(this).closest('tr').find('td').eq(2).text() + "</td>" +
+            "<td style='text-align: center;'> <select class='form-select input-fixed'" +
+            "name='sign_type'><option name='wf_receiver_1st' value='1차 결재자'>1차 결재자</option>" + 
+            "<option name='wf_receiver_2nd' value='2차 결재자'>2차 결재자</option>" +
+            "<option name='wf_receiver_3rd' value='3차 결재자'>3차 결재자</option></select> </td>" +
+            "<td style='text-align: center;'><button class='delete-btn' style='border:none;" +
+            "background:none; color:red; font-weight: bold;'>X</button></td>" +
+            "<input type='hidden' value='"+$(this).closest('tr').find('td').eq(0).text() +"'></tr>";
+            $('#signTable tbody').prepend(row_move);
+     	}
+     });
+ 	
+ 	// 결재요청 테이블 x 눌렀을 때 해당 행 삭제
+ 	$('#signTable').on('click', '.delete-btn', function () {
+	        $(this).closest('tr').remove();
+	    });
+ 	
+ 	// 결재요청 시 급여내역리스트 업데이트 및 워크플로우에 INSERT 후 페이지 리로딩
+ 	$('#signRequestBtn').click(function(){
+ 		swal({
+	              title: "결재요청 하시겠습니까?",
+	              text: "결재취소 요청은 워크플로우 화면에서 가능합니다.",
+	              type: "warning",
+	              buttons: {
+	                cancel: {
+	                  visible: true,
+	                  text: "취소하기",
+	                  className: "btn btn-danger",
+	                },
+	                confirm: {
+	                  text: "결재요청",
+	                  className: "btn btn-success",
+	                },
+	              },
+	            }).then(function(willDelete) {  // 일반 함수 문법으로 변경
+	             if (willDelete) {
+          		 let selectedValues = [];
+                  $('select option:selected').each(function () {
+                  	selectedValues.push($(this).val());
+                  });
+	            	 console.log(selectedValues);
+	            	if($('option[name="wf_receiver_1st"]:selected').val() == null){
+	            		swal("Error!", "1차 결재자를 선택하여 주세요.", "error");
+	            	 } else if($('#signTitle').val() == '' || $('#signContent').val() == '' ){
+	            		swal("Error!", "결재요청 정보를 입력해주세요", "error");
+	            	 } else if(new Set(selectedValues).size !== selectedValues.length){
+                   	swal("Error!", "중복된 결재유형이 존재합니다.", "error");
+                    } else if(selectedValues.includes($('option[name="wf_receiver_3rd"]:selected').val())
+                   		 && !selectedValues.includes($('option[name="wf_receiver_2nd"]:selected').val())){
+                   	swal("Error!", "2차 결재자가 존재하지 않습니다.", "error");
+                    } else {
+	            	//전달정보 (edu_id, 결재요청자 및 1~3차 결재자의 사번 )
+	             	var signData = {
+             			emp_id: $('#emp_id').val(),
+             			wf_sender: $('select option[name="wf_receiver"]:selected').closest('tr').find('input').val(),
+             			wf_receiver_1st: $('select option[name="wf_receiver_1st"]:selected').closest('tr').find('input').val(),
+             			wf_receiver_2nd: $('select option[name="wf_receiver_2nd"]:selected').closest('tr').find('input').val(),
+             			wf_receiver_3rd: $('select option[name="wf_receiver_3rd"]:selected').closest('tr').find('input').val(),
+             			wf_title: $('input[name="wf_title"]').val(),
+             			wf_content: $('textarea[name="wf_content"]').val(),
+             			reason: $('#quit_reason').val(),
+		                emp_quit_date: $('#emp_quit_date').val(),
+		                reason_detail: $('#quit_reason_detail').val()
+	             	};
+	             	$.ajax({
+	            		url:'/member/insertSignInfoForQuit',
+	            		type: 'POST',
+	            		data: JSON.stringify(signData),
+	            		contentType: 'application/json',
+	            		success: function(response) {
+	            			swal({
+	                            title: "Success!",
+	                            text: "결재요청이 완료되었습니다!",
+	                            icon: "success",
+	                            button: "OK"
+	                        }).then(function() {
+	                            window.location.href = "/member/main";  // 페이지 이동
+	                        });
+	            		},
+	            		error: function(xhr, status, error) {
+	                        swal("Error!", "정보를 가져오는데 실패하였습니다.", "error");
+	                    }
+	             		});
+	            	 }
+	             }
+	     	 });
+ 	});
+	
+	});
+    
+    
+    
+    
+    
     </script>
 
 </body>

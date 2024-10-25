@@ -76,6 +76,20 @@ public class MemberServiceImpl implements MemberService {
         }
     }
     
+    // 퇴직 승인
+    @Override
+    public void approveQuit(String emp_id) {
+        MemberVO memberVO = new MemberVO();
+        memberVO.setEmp_id(emp_id);
+        mdao.insertHisMember(memberVO); // 기존 메서드 재사용
+    }
+    
+    // 퇴직 반려
+    @Override
+    public void rejectQuit(String emp_id) {
+        mdao.deleteQuitRequest(emp_id);
+    }
+    
     // 비밀번호 찾기
     @Override
     public boolean isValidEmployee(String emp_id, String emp_email) {

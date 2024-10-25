@@ -150,7 +150,14 @@
 	    AND emp_status = '재직'
 	    ORDER BY approval DESC
 	</update>
-
+	
+	<!-- 퇴직 반려 시 요청 삭제 -->
+	<delete id="deleteQuitRequest">
+	    DELETE FROM employee 
+	    WHERE emp_id = #{emp_id} 
+	    AND emp_status = '퇴직' 
+	    AND approval = -1
+	</delete>
 	
 	<!-- 관리자 수정 -->
 	<insert id="updateEmployee" parameterType="MemberVO">

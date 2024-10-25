@@ -1405,17 +1405,37 @@ footer {
         contentType: 'application/json',
         data: JSON.stringify(formData),
         success: function(response) {
-            console.log("Update response:", response);
+            console.log("First update response:", response);
             if(response.success) {
-                alert('사원 정보가 성공적으로 업데이트되었습니다.');
-                $('#editModal').modal('hide');
-                loadMembers(1);
+                // 100ms 후 두 번째 실행
+                setTimeout(() => {
+                    $.ajax({
+                        url: '${pageContext.request.contextPath}/member/mupdate',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(formData),
+                        success: function(response) {
+                            console.log("Second update response:", response);
+                            if(response.success) {
+                                alert('사원 정보가 성공적으로 업데이트되었습니다.');
+                                $('#editModal').modal('hide');
+                                loadMembers(1);
+                            } else {
+                                alert('사원 정보 업데이트에 실패했습니다: ' + response.message);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Second update error:", error);
+                            alert('서버 오류가 발생했습니다.');
+                        }
+                    });
+                }, 100);
             } else {
                 alert('사원 정보 업데이트에 실패했습니다: ' + response.message);
             }
         },
         error: function(xhr, status, error) {
-            console.error("Update error:", error);
+            console.error("First update error:", error);
             alert('서버 오류가 발생했습니다.');
         }
     });

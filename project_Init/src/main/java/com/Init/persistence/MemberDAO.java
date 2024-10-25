@@ -93,4 +93,11 @@ public interface MemberDAO {
     
     // 퇴직신청
     int insertQuitEmployee(MemberVO memberVO);
+    
+    // 퇴직신청 반려시
+    void deleteQuitRequest(String emp_id);
+    
+    
+    
+    
 }
