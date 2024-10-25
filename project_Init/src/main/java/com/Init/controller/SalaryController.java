@@ -1,12 +1,14 @@
 package com.Init.controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -107,8 +109,6 @@ public class SalaryController {
 	@GetMapping(value = "/calSalary")
 	public String calSalary(Model model, HttpSession session){
 		logger.debug("calSalary(Model model) 실행");
-		
-		session.setAttribute("emp_id", "user31"); //테스트용 삭제해야됨
 		
 		// 급여내역리스트 가져오기
 		List<CalSalaryListVO> calSalaryList = sService.getCalSalaryList();
@@ -412,8 +412,14 @@ public class SalaryController {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=\"data.xlsx\"");
         
-        workbook.write(response.getOutputStream());
-        workbook.close();
+        try (ServletOutputStream outputStream = response.getOutputStream()) {
+            workbook.write(outputStream);
+            outputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            workbook.close();
+        }
 		
 		return "/salary/calSalary";
 	}

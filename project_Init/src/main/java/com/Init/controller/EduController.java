@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -396,8 +397,14 @@ public class EduController {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=\"data.xlsx\"");
         
-        workbook.write(response.getOutputStream());
-        workbook.close();
+        try (ServletOutputStream outputStream = response.getOutputStream()) {
+            workbook.write(outputStream);
+            outputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            workbook.close();
+        }
 		
 		return "/edu/eduManage";
 	}
