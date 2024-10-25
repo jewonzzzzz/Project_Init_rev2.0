@@ -1,11 +1,13 @@
 package com.Init.controller;
 
-import java.time.LocalDate;
+
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.sql.Date;
+import java.time.LocalDate;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -14,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -210,6 +211,7 @@ public class LeaveController {
 	        leaveService.updateAnnualLeaveA(leave_id);
 	    }
 	
+	//휴가결재
 	@PostMapping(value = "insertSignInfoForLeave")
 	@ResponseBody
 	public void insertSignInfo(@RequestBody Map<String, String> signData) {
@@ -242,13 +244,89 @@ public class LeaveController {
 		vo.setWf_content(signData.get("wf_content"));
 		
 		//결재정보를 워크플로우 디비에 저장
-		//sService.insertSalarySignInfoToWorkFlow(vo);
+		sService.insertSalarySignInfoToWorkFlow(vo);
 		
+		
+		 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		//휴가테이블에 작성될 정보(insert, status : -1)
 		LeaveVO lvo = new LeaveVO();
-		lvo.setEmp_id(emp_id);
 		
+		    lvo.setEmp_id(emp_id);  // 사번 설정
+		    lvo.setLeave_type(signData.get("leave_type"));  // 휴가 유형 설정
+		    lvo.setLeave_start_date(Date.valueOf(signData.get("leave_start_date")));  // 휴가 시작일 설정
+		    lvo.setEnd_leave_date(Date.valueOf(signData.get("end_leave_date")));  // 휴가 종료일 설정
+		    lvo.setTotal_leave_days(Integer.parseInt(signData.get("total_leave_days")));  // 총 휴가 일수 설정
+		    lvo.setLeave_status(Integer.parseInt(signData.get("leave_status")));  // 결재 상태 설정
+		    lvo.setRequested_at(Date.valueOf(signData.get("requested_at")));  // 신청 날짜 및 시간 설정
+		    lvo.setReason(signData.get("reason"));  // 신청 사유 설정
+		    lvo.setLeave_status(-1);  // 상태 설정
+
+		    // 데이터 삽입
+		
+	   
+	    
+		leaveService.insertSignInfoForLeave(lvo);
 	}
+	
+	//연차결재 
+//	@PostMapping(value = "insertSignAnnualInfo")
+//	@ResponseBody
+//	public void insertSignAnnualInfo(@RequestBody Map<String, String> signDataA) {
+//		logger.debug("signData :"+signDataA.toString());
+//		String emp_id = signDataA.get("emp_id");
+//		
+//		// wf_code 설정
+//        LocalDate today = LocalDate.now();
+//        int year = today.getYear();
+//        String wf_code = "wf" +year+"00001";
+//        
+//        // 올해 첫 워크플로우번호가 있는지 확인하기
+//        String checkWfCode = sService.checkWfCode(wf_code);
+//        
+//        if(checkWfCode != null) {
+//        	//있으면 edu_id를 가장 최근 id에서 +1
+//        	String getWfCode = sService.getWfCode();
+//        	wf_code = "wf"+(Integer.parseInt(getWfCode.substring(2))+1);
+//        }
+//		
+//		WorkflowVO vo = new WorkflowVO();
+//		vo.setWf_code(wf_code);
+//		vo.setWf_type("휴가");
+//		vo.setWf_sender(signDataA.get("wf_sender"));
+//		vo.setWf_receiver_1st(signDataA.get("wf_receiver_1st"));
+//		vo.setWf_receiver_2nd(signDataA.get("wf_receiver_2nd"));
+//		vo.setWf_receiver_3rd(signDataA.get("wf_receiver_3rd"));
+//		vo.setWf_target(emp_id);
+//		vo.setWf_title(signDataA.get("wf_title"));
+//		vo.setWf_content(signDataA.get("wf_content"));
+//		
+//		//결재정보를 워크플로우 디비에 저장
+//		sService.insertSalarySignInfoToWorkFlow(vo);
+//		
+//		
+//		 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//		//휴가테이블에 작성될 정보(insert, status : -1)
+//		LeaveVO lvo = new LeaveVO();
+//		lvo.setEmp_id(emp_id);  // 사번 설정
+//		lvo.setLeave_type(signDataA.get("leave_type"));  // 휴가 종류 설정
+//		lvo.setLeave_status(-1);  // 결재 상태 설정
+//		lvo.setAnnual_leave_start_date(signDataA.get("annual_leave_start_date"));  // 연차 시작일 설정
+//		lvo.setEnd_annual_leave(signDataA.get("end_annual_leave"));  // 연차 종료일 설정
+//		lvo.setUsed_annual_leave(signDataA.get("used_annual_leave"));  // 사용 연차 설정
+//		lvo.setTotal_annual_leave(signDataA.get("total_annual_leave"));  // 총 연차 설정
+//		lvo.setRemaining_annual_leave(signDataA.get("remaining_annual_leave"));  // 잔여 연차 설정
+//		lvo.setLgrant(signDataA.get("lgrant"));  // 연차 부여 설정
+//		lvo.setExpiry(signDataA.get("expiry"));  // 연차 소멸 설정
+//		lvo.setAdjustment(signDataA.get("adjustment"));  // 연차 조정 설정
+//		lvo.setRequested_at(signDataA.get("requested_at"));  // 신청 날짜 및 시간 설정
+//		lvo.setReason(signDataA.get("reason"));  // 신청 사유 설정
+//		 
+//		    // 데이터 삽입
+//		
+//	   
+//	    
+//		leaveService.insertSignInfoForLeave(lvo);
+//	}
 	
 	
 	

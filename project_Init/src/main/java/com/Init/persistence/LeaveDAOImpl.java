@@ -138,6 +138,10 @@ public class LeaveDAOImpl implements LeaveDAO {
 	    public void updateAnnualLeaveA(int leave_id) {
 	        sqlSession.update(NAMESPACE+".updateAnnualLeaveA",leave_id);
 	    }
-	    
+	    @Override
+	    public void insertSignInfoForLeave(LeaveVO lvo) {
+	    	sqlSession.insert(NAMESPACE+".insertLeaveRequestA",lvo);
+	    	
+	    }
 	    
 }
