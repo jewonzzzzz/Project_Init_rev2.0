@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.Init.domain.*;
 import com.Init.service.MemberService;
+import com.Init.service.SalaryService;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.sql.Date;
+import java.time.LocalDate;
 
 //http://localhost:8088/member/login
 
@@ -37,6 +39,8 @@ public class MemberController implements ServletContextAware {
 
 	@Autowired
 	private MemberService mService;
+	@Autowired
+	private SalaryService sService;
 
 	private ServletContext servletContext;
 
@@ -82,38 +86,6 @@ public class MemberController implements ServletContextAware {
 		    model.addAttribute("memberVO", memberVO);
 		    
 		    return "member/quit";  
-		}
-		
-		// 퇴직신청 - POST
-		@PostMapping("/submitQuit")
-		@ResponseBody
-		public ResponseEntity<Map<String, Object>> submitQuit(
-		        @RequestParam("emp_id") String emp_id,
-		        @RequestParam("reason") String reason,
-		        @RequestParam("emp_quit_date") Date emp_quit_date,  
-		        @RequestParam("reason_detail") String reason_detail) {
-		    Map<String, Object> response = new HashMap<>();
-		    try {
-		        MemberVO memberVO = new MemberVO();
-		        memberVO.setEmp_id(emp_id);
-		        memberVO.setReason(reason);
-		        memberVO.setEmp_quit_date(emp_quit_date);  
-		        memberVO.setReason_detail(reason_detail);
-		        
-		        boolean result = mService.insertQuitEmployee(memberVO);
-		        if(result) {
-		            response.put("success", true);
-		            response.put("message", "퇴직 신청이 완료되었습니다.");
-		        } else {
-		            response.put("success", false);
-		            response.put("message", "퇴직 신청 처리 중 오류가 발생했습니다.");
-		        }
-		        return ResponseEntity.ok(response);
-		    } catch (Exception e) {
-		        response.put("success", false);
-		        response.put("message", "서버 오류: " + e.getMessage());
-		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-		    }
 		}
 		
 	// 비밀번호 찾기
@@ -605,6 +577,59 @@ public class MemberController implements ServletContextAware {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 	    }
 	}
+	
+	// 결재요청 모달에서 결재요청 시 워크플로우(insert), 인사정보(insert)
+	@PostMapping(value = "insertSignInfoForQuit")
+	@ResponseBody
+	public void insertSignInfo(@RequestBody Map<String, String> signData) {
+		logger.debug("signData :"+signData.toString());
+		
+		// wf_code 설정
+        LocalDate today = LocalDate.now();
+        int year = today.getYear();
+        String wf_code = "wf" +year+"00001";
+        
+        // 올해 첫 워크플로우번호가 있는지 확인하기
+        String checkWfCode = sService.checkWfCode(wf_code);
+        
+        if(checkWfCode != null) {
+        	//있으면 edu_id를 가장 최근 id에서 +1
+        	String getWfCode = sService.getWfCode();
+        	wf_code = "wf"+(Integer.parseInt(getWfCode.substring(2))+1);
+        }
+		
+		WorkflowVO vo = new WorkflowVO();
+		vo.setWf_code(wf_code);
+		vo.setWf_type("퇴직");
+		vo.setWf_sender(signData.get("wf_sender"));
+		vo.setWf_receiver_1st(signData.get("wf_receiver_1st"));
+		vo.setWf_receiver_2nd(signData.get("wf_receiver_2nd"));
+		vo.setWf_receiver_3rd(signData.get("wf_receiver_3rd"));
+		vo.setWf_target(signData.get("emp_id"));
+		vo.setWf_title(signData.get("wf_title"));
+		vo.setWf_content(signData.get("wf_content"));
+		
+		//결재정보를 워크플로우 디비에 저장
+		sService.insertSalarySignInfoToWorkFlow(vo);
+		
+		//employee 테이블에 퇴사자 정보 insert(app : -1, 기본정보는 그대로)
+		MemberVO mvo = new MemberVO();
+		mvo.setEmp_id(signData.get("emp_id"));
+		mvo.setReason(signData.get("reason"));
+		mvo.setReason_detail(signData.get("reason_detail"));
+		mvo.setEmp_quit_date(signData.get("emp_quit_date"));
+		
+		mService.insertQuitEmployee(mvo);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
 //http://localhost:8088/member/login

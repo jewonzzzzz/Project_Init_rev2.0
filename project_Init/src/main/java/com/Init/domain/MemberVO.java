@@ -32,7 +32,7 @@ public class MemberVO {
 	private Date emp_start_date; 
 	private Date emp_break_date; 
 	private Date emp_restart_date; 
-	private Date emp_quit_date; 
+	private String emp_quit_date; 
 	private String emp_power; 
 	private String emp_level;
 	private Date update_date;	
