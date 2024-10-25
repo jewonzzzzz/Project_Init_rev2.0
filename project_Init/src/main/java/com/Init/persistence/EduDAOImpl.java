@@ -130,6 +130,7 @@ public class EduDAOImpl implements EduDAO{
 	@Override
 	public void endEduInfo(EduListVO vo) {
 		sqlSession.update(NAMESPACE+".endEduInfo", vo);
+		sqlSession.update(NAMESPACE+".endEduHisInfo", vo);
 	}
 	
 	// 이수처리 버튼 시 직원정보리스트 받아와서 교육이수로 변경하기

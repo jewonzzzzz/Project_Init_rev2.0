@@ -82,12 +82,8 @@
             <div class="row">
               <div class="col-md-11">
                 <div class="card">
-                  <div class="card-header" style="display: flex; justify-content:space-between; margin-right: 10px;">
+                  <div class="card-header">
                     <div class="card-title">교육 상세조회</div>
-                    <div>
-		              <button type="submit" id="eduApplyBtn" class="btn btn-primary">신청하기</button>
-		              <button type="button" class="btn btn-primary" onclick="history.back()">목록으로</button>
-		            </div>
                     </div>
                   <div class="card-body">
                     <div class="row"> 
@@ -148,6 +144,10 @@
                   	</div>
                     </div>
                   </div>
+                  <div style="display: flex; justify-content:flex-end; gap:5px;">
+		              <button type="submit" id="eduApplyBtn" class="btn btn-primary">신청하기</button>
+		              <button type="button" class="btn btn-primary" onclick="history.back()">목록으로</button>
+		            </div>
                 </div>
               </div>
               <input name="edu_id" type="hidden" value="${eduInfo.edu_id }">

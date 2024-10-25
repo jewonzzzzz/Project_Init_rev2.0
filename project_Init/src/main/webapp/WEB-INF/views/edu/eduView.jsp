@@ -136,12 +136,13 @@
                         <div style="display: flex; gap:10px; width:100%;">
                         <div style="flex:1;">
                       <div class="form-group" style="display: flex; gap:10px; width:100%;">
-                      <div style="flex:1;">
+                      <div style="flex:10;">
                           <label class="mb-2" style="font-size:16px !important"><b>교육 시작일</b></label>
                           <input name="edu_start_date" type="date" class="form-control" value="${eduInfo.edu_start_date }" required
                           <c:if test="${eduInfo.edu_list_status != '임시저장'}">readonly</c:if>>
                         </div>
-                        <div style="flex:1;">
+                        <div style="flex:1"></div>
+                        <div style="flex:10;">
                           <label class="mb-2" style="font-size:16px !important"><b>교육 접수시작일</b></label>
                           <input name="edu_apply_start" type="date" class="form-control" value="${eduInfo.edu_apply_start }" required
                           <c:if test="${eduInfo.edu_list_status != '임시저장'}">readonly</c:if>>
@@ -149,12 +150,13 @@
                       </div>
                       
                       <div class="form-group" style="display: flex; gap:10px; width:100%;">
-                        <div style="flex:1;">
+                        <div style="flex:10;">
                           <label class="mb-2" style="font-size:16px !important"><b>교육 종료일</b></label>
                           <input name="edu_end_date"type="date" class="form-control" value="${eduInfo.edu_end_date }" required
                           <c:if test="${eduInfo.edu_list_status != '임시저장'}">readonly</c:if>>
                         </div>
-                        <div style="flex:1;">
+                        <div style="flex:1"></div>
+                        <div style="flex:10;">
                           <label class="mb-2" style="font-size:16px !important"><b>교육 접수마감일</b></label>
                           <input name="edu_apply_end" type="date" class="form-control" value="${eduInfo.edu_apply_end }" required
                           <c:if test="${eduInfo.edu_list_status != '임시저장'}">readonly</c:if>>

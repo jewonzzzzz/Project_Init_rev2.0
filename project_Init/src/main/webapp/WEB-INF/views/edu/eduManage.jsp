@@ -83,30 +83,6 @@
                   <div class="card-header">
                     <div class="card-title">교육 등록내역</div>
                   </div>
-                  	<div style="display: flex; justify-content: flex-end; margin-right: 30px;">
-                  	<div style="margin-left: 15px; margin-bottom: 10px; padding-top: 10px;">
-                    	<a href="/edu/eduCreate"><button class="btn btn-primary">교육등록</button></a>
-                    	
-                    	<form id="deleteSubmit" action="/edu/deleteEduInfo" method="post" style="display: inline-block;">
-                    		<input type="hidden" id="inputForDelete" name="edu_id">
-                    		<button type="submit" class="btn btn-danger" id="deleteBtn" disabled>삭제하기</button>
-                    	</form>
-                    	
-                   		<button	class="btn btn-primary"	id ="signBtn" data-bs-toggle="modal" data-bs-target="#addRowModal" disabled>
-	                        결재요청
-                        </button>
-                        
-                    	<form id="confirmEduSubmit" action="/edu/confirmEduInfo" method="post" style="display: inline-block;">
-                    		<input type="hidden" id="inputForConfirmEdu" name="edu_id">
-                    		<button type="submit" class="btn btn-primary" id="confirmEduBtn" disabled>교육확정</button>
-                    	</form>
-                    	
-                    	<form id="endEduSubmit" action="/edu/endEduInfo" method="post" style="display: inline-block;">
-                    		<input type="hidden" id="inputForEndEdu" name="edu_id">
-                    		<button type="submit" class="btn btn-primary" id="endEduBtn" disabled>교육종료</button>
-                    	</form>
-                    	</div>
-                  	</div>
                   <div class="card-body" style="padding-top: 10px;">
                     <table id="basic-datatables"
                         class="display table table-striped table-hover">
@@ -141,6 +117,28 @@
                     </table>
                   </div>
                 </div>
+                <div style="display: flex; justify-content: flex-end; gap:5px;">
+                    	<a href="/edu/eduCreate"><button class="btn btn-primary">교육등록</button></a>
+                    	
+                    	<form id="deleteSubmit" action="/edu/deleteEduInfo" method="post" style="display: inline-block;">
+                    		<input type="hidden" id="inputForDelete" name="edu_id">
+                    		<button type="submit" class="btn btn-danger" id="deleteBtn" disabled>삭제하기</button>
+                    	</form>
+                    	
+                   		<button	class="btn btn-primary"	id ="signBtn" data-bs-toggle="modal" data-bs-target="#addRowModal" disabled>
+	                        결재요청
+                        </button>
+                        
+                    	<form id="confirmEduSubmit" action="/edu/confirmEduInfo" method="post" style="display: inline-block;">
+                    		<input type="hidden" id="inputForConfirmEdu" name="edu_id">
+                    		<button type="submit" class="btn btn-primary" id="confirmEduBtn" disabled>교육확정</button>
+                    	</form>
+                    	
+                    	<form id="endEduSubmit" action="/edu/endEduInfo" method="post" style="display: inline-block;">
+                    		<input type="hidden" id="inputForEndEdu" name="edu_id">
+                    		<button type="submit" class="btn btn-primary" id="endEduBtn" disabled>교육종료</button>
+                    	</form>
+                  	</div>
               </div>
             </div>
             <!-- 교육신청자 모달  -->

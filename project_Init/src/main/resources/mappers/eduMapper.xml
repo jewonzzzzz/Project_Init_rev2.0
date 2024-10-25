@@ -136,6 +136,13 @@
 		where edu_id = #{edu_id} and edu_list_status = '교육확정' 
 	</select>
 	
+	<!-- 교육관리에서 교육종료 시 교육이력내역 교육종료 -->
+	<select id="endEduHisInfo">
+		update his_edu 
+		set edu_status = '교육종료' 
+		where edu_id = #{edu_id} and edu_status = '교육확정' 
+	</select>
+	
 	<!-- 교육이력관리에서 교육상태 교육이수로 변경 -->
 	<select id="completeEduInfo">
 		update his_edu 

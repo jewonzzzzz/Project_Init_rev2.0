@@ -83,31 +83,6 @@
                   <div class="card-header">
                     <div class="card-title">급여산출내역</div>
                   </div>
-                  	<div style="display: flex; justify-content: flex-end; margin-right: 30px;">
-                  	<div style="margin-left: 15px; margin-bottom: 10px; padding-top: 10px;">
-                    	<a href="/salary/calSalaryStep1"><button class="btn btn-primary">신규생성</button></a>
-                    	
-                    	<form id="deleteSubmit" action="/salary/deleteSalaryInfo" method="post" style="display: inline-block;">
-                    		<input type="hidden" id="inputForDelete" name="sal_list_id">
-                    		<button type="submit" class="btn btn-danger" id="deleteBtn" disabled>삭제하기</button>
-                    	</form>
-                    	
-                   		<button	class="btn btn-primary"	id ="signBtn" data-bs-toggle="modal" data-bs-target="#addRowModal" disabled
-	                      	>
-	                        결재요청
-                        </button>
-                    	
-                    	<form id="confirmSubmit" action="/salary/confirmSalaryList" method="post" style="display: inline-block;">
-                    		<input type="hidden" id="inputForConfirm" name="sal_list_id">
-                    		<button type="submit" class="btn btn-primary" id="confirmBtn" disabled>최종확정</button>
-                    	</form>
-                    	
-                    	<form id="excelSubmit" action="/salary/excelDownload" method="get" style="display: inline-block;">
-                    		<input type="hidden" id="inputForExcel" name="sal_list_id">
-                    		<button type="submit" class="btn btn-success" id="excelBtn" disabled>이체자료 내려받기</button>
-                    	</form>
-                    	</div>
-                  	</div>
                   <div class="card-body" style="padding-top: 10px;">
                     <table id="basic-datatables"
                         class="display table table-striped table-hover">
@@ -138,6 +113,29 @@
                     </table>
                   </div>
                 </div>
+                <div style="display: flex; justify-content: flex-end; gap:5px;">
+                   	<a href="/salary/calSalaryStep1"><button class="btn btn-primary">신규생성</button></a>
+                   	
+                   	<form id="deleteSubmit" action="/salary/deleteSalaryInfo" method="post" style="display: inline-block;">
+                   		<input type="hidden" id="inputForDelete" name="sal_list_id">
+                   		<button type="submit" class="btn btn-danger" id="deleteBtn" disabled>삭제하기</button>
+                   	</form>
+                   	
+                  		<button	class="btn btn-primary"	id ="signBtn" data-bs-toggle="modal" data-bs-target="#addRowModal" disabled
+                      	>
+                        결재요청
+                       </button>
+                   	
+                   	<form id="confirmSubmit" action="/salary/confirmSalaryList" method="post" style="display: inline-block;">
+                   		<input type="hidden" id="inputForConfirm" name="sal_list_id">
+                   		<button type="submit" class="btn btn-primary" id="confirmBtn" disabled>최종확정</button>
+                   	</form>
+                   	
+                   	<form id="excelSubmit" action="/salary/excelDownload" method="get" style="display: inline-block;">
+                   		<input type="hidden" id="inputForExcel" name="sal_list_id">
+                   		<button type="submit" class="btn btn-success" id="excelBtn" disabled>이체자료 내려받기</button>
+                   	</form>
+               	</div>
               </div>
             </div>
             
@@ -321,10 +319,8 @@
         		var tdText = $(this).closest('tr').find('td:eq(5)').text();
 	        	if($(this).is(':checked') && tdText === '결재완료') {
 	                $('#confirmBtn').prop('disabled', false);
-	                $('#excelBtn').prop('disabled', false);
 	        	} else {
                     $('#confirmBtn').prop('disabled', true);
-	                $('#excelBtn').prop('disabled', true);
                 }
         	});
         		
@@ -347,6 +343,17 @@
 	                $('#deleteBtn').prop('disabled', false);
 	        	} else {
                     $('#deleteBtn').prop('disabled', true);
+                }
+        	});
+        	
+        	// 체크여부에 따른 엑셀버튼 활성화(체크버튼 클릭 + 결재완료/최종확정)
+        	$('#basic-datatables tbody').on('click', 'input[type="checkbox"]', function() {
+        		var tdText = $(this).closest('tr').find('td:eq(5)').text();
+	        	if(($(this).is(':checked') && tdText === '결재완료') ||
+        		   ($(this).is(':checked') && tdText === '최종확정')) {
+	        		$('#excelBtn').prop('disabled', false);
+	        	} else {
+	        		$('#excelBtn').prop('disabled', true);
                 }
         	});
         	

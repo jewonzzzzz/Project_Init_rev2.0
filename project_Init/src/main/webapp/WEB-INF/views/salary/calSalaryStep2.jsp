@@ -225,103 +225,101 @@
             
             <!-- 모달  -->
             <div
-                      class="modal fade"
-                      id="addRowModal"
-                      tabindex="-1"
-                      role="dialog"
-                      aria-hidden="true"
-                    >
-                      <div class="modal-dialog" role="document" style="margin-top: 100px;">
-                        <div class="modal-content">
-                          <div class="modal-header border-0">
-                            <h5 class="modal-title">
-                              <span class="fw-bold"> 직원 조회</span>
-                            </h5>
-                            <button
-                              type="button"
-                              class="close"
-                              id="modalOpenBtn"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            >
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-	                          <div id="modalNextContent">
-		                          <table class="table table-striped mt-3" id="modalTable">
-				                      <thead>
-				                        <tr>
-				                          <th>선택</th>
-				                          <th>사번</th>
-				                          <th>이름</th>
-				                          <th>직급</th>
-				                          <th>부서</th>
-				                        </tr>
-				                      </thead>
-				                      <tbody>
-				                      </tbody>
-			                      </table>
-			                      <div class="modal-footer border-0">
-	                            <button
-	                              type="button"
-	                              id="regBtn"
-	                              class="btn btn-primary"
-	                            >
-	                              등록하기
-	                            </button>
-	                            <button
-	                              type="button"
-	                              class="btn btn-danger"
-	                              data-bs-dismiss="modal"
-	                            >
-	                              취소하기
-	                            </button>
-                          </div>
-			                      
-			                      
-		                      </div>
-                          
-                          <div id="modalContent">
-                            <p class="lead">
-                              사원번호 또는 이름을 입력하세요.
-                            </p>
-                              <div class="row">
-                                <div class="col-sm-12">
-                                <div class="card-body">
-                                  <div class="form-group form-group-default">
-                                    <label>사번/이름</label>
-                                    <input
-                                      id="modalInputText"
-                                      type="text"
-                                      class="form-control"
-                                      placeholder="사번/이름을 입력하세요"
-                                      name="employeeInfo"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="modal-footer border-0">
-                            <button
-                              type="button"
-                              id="selectBtn"
-                              class="btn btn-primary"
-                            >
-                              조회하기
-                            </button>
-                            <button
-                              type="button"
-                              class="btn btn-danger"
-                              data-bs-dismiss="modal"
-                            >
-                              취소하기
-                            </button>
-                          </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+               class="modal fade"
+               id="addRowModal"
+               tabindex="-1"
+               role="dialog"
+               aria-hidden="true"
+             >
+               <div class="modal-dialog" role="document" style="margin-top: 100px; max-width: 600px;">
+                 <div class="modal-content">
+                   <div class="modal-header border-0">
+                     <h5 class="modal-title">
+                       <span class="fw-bold"> 직원 조회</span>
+                     </h5>
+                     <button
+                       type="button"
+                       class="close"
+                       id="modalOpenBtn"
+                       data-bs-dismiss="modal"
+                       aria-label="Close"
+                     >
+                       <span aria-hidden="true">&times;</span>
+                     </button>
+                   </div>
+                   <div class="modal-body">
+                    <div id="modalNextContent" style="display: none;">
+                     <table class="table table-striped mt-3" id="modalTable">
+                   <thead>
+                     <tr>
+                       <th style="width: 30px; padding: 12px 0px !important;">선택</th>
+                       <th>사번</th>
+                       <th>이름</th>
+                       <th>직급</th>
+                       <th>부서</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                   </tbody>
+                  </table>
+                  <div class="modal-footer border-0">
+                      <button
+                        type="button"
+                        id="regBtn"
+                        class="btn btn-primary"
+                      >
+                        등록하기
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-danger"
+                        data-bs-dismiss="modal"
+                      >
+                        취소하기
+                      </button>
+                   </div>
+                 </div>
+                   
+                   <div id="modalContent">
+                     <p class="lead">
+                       사원번호 또는 이름을 입력하세요.
+                     </p>
+                       <div class="row">
+                         <div class="col-sm-12">
+                         <div class="card-body">
+                           <div class="form-group form-group-default">
+                             <label>사번/이름</label>
+                             <input
+                               id="modalInputText"
+                               type="text"
+                               class="form-control"
+                               placeholder="사번/이름을 입력하세요"
+                               name="employeeInfo"
+                             />
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                     <div class="modal-footer border-0">
+                     <button
+                       type="button"
+                       id="selectBtn"
+                       class="btn btn-primary"
+                     >
+                       조회하기
+                     </button>
+                     <button
+                       type="button"
+                       class="btn btn-danger"
+                       data-bs-dismiss="modal"
+                     >
+                       취소하기
+                     </button>
+                   </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
            </div>
 	
 	<script>
@@ -500,7 +498,6 @@
             		    if (existingIds.includes(checkedDataId)) {
             		        swal("Warning!", "이미 등록된 정보가 있습니다.", "warning");
             		    } else {
-            		    	swal("Success!", "정상적으로 등록하였습니다", "success");
                 			response.forEach(function(data){
                             	var row = "<tr>" +
                                 "<td style='text-align: center;'><input class='checkItem' type='checkbox' name='checkItem' data-id='"+ data.emp_id +"' </td>" +
@@ -515,6 +512,10 @@
                                 "</tr>";
                                 $('#resultTable tbody').append(row);
                             });
+                			swal("Success!", "정상적으로 등록하였습니다", "success");
+                			$('#modalInputText').val('');
+                			$('#modalContent').show();     
+                        	$('#modalNextContent').hide();    
             		    }
             		},
             		error: function(xhr, status, error) {

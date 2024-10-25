@@ -76,9 +76,6 @@
                 </li>
               </ul>
             </div>
-            
-            
-            
             <div class="row">
               <div class="col-md-11">
                 <div class="card">
@@ -88,7 +85,6 @@
                   </div>
                   <div class="card-body">
                     <div class="row">
-                      
                       <div class="col-md-6 col-lg-4">
                         <div class="form-group">
                           <label class="mb-3"><b>시급정보</b></label>
@@ -105,7 +101,6 @@
                           </div>
                           <p>* 시급제 직원 급여산출 시 활용</p>
                         </div>
-                        
                         <div class="form-group">
                           <label class="mb-3"><b>4대보험 보험료율</b></label>
                           <div class="input-group mb-3">
@@ -155,7 +150,6 @@
                           
                         </div>
                       </div>
-                      
                       <div class="col-md-6 col-lg-4">
                         <div class="form-group">
                         <label class="mb-3"><b>소득세율</b></label>
@@ -249,7 +243,6 @@
                           </div>
                         </div>
                       </div>
-                      
                       <div class="col-md-6 col-lg-4">
                         <div class="form-group">
                         <label class="mb-3"><b>소득세율정보</b></label>
@@ -269,8 +262,8 @@
                       </div>
                     </div>
                   </div>
-                  <div class="card-action">
-                    <button class="btn btn-success" id="saveBtn" type="submit">저장하기</button>
+                  <div class="card-action" style="display: flex; justify-content: flex-end;">
+                    <button class="btn btn-primary" id="saveBtn" type="submit">저장하기</button>
                   </div>
                   </form>
                 </div>

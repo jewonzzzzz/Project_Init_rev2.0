@@ -84,13 +84,8 @@ ${checkHisInfo } --%>
             <div class="row">
               <div class="col-md-11">
                 <div class="card">
-                  <div class="card-header" style="display: flex; justify-content:space-between; margin-right: 10px;">
+                  <div class="card-header">
                     <div class="card-title">성과보고</div>
-                    <div>
-		              <button type="submit" id="saveEvalBtn" class="btn btn-primary">저장하기</button>
-		              <button type="button" id="updateEvalBtn" class="btn btn-primary">수정하기</button>
-		              <button type="button" class="btn btn-primary" onclick="location.href='/eval/reportEval'">목록으로</button>
-		            </div>
                     </div>
                   <div class="card-body">
                     <div class="row"> 
@@ -121,10 +116,15 @@ ${checkHisInfo } --%>
                     </div>
                   </div>
                 </div>
+                <div style="display: flex; justify-content: flex-end; gap:5px;">
+		              <button type="submit" id="saveEvalBtn" class="btn btn-primary">저장하기</button>
+		              <button type="button" id="updateEvalBtn" class="btn btn-primary">수정하기</button>
+		              <button type="button" class="btn btn-primary" onclick="location.href='/eval/reportEval'">목록으로</button>
+	            </div>
               </div>
             </div>
             <input type="hidden" name="eval_id" value="${evalReportInfo.eval_id }">
-            <input type="hidden" name="emp_id_eval" value="${emp_id }">
+            <input type="hidden" name="emp_id" value="${emp_id }">
           </form>
           <form id="updateEvalForm" action="/eval/updateEvalReport" method="post">
           </form>
@@ -193,7 +193,7 @@ ${checkHisInfo } --%>
         	$('#updateEvalBtn').click(function(){
         		var updateEvalInfo = {
         				eval_id: $('input[name="eval_id"]').val(),
-        				emp_id:$('input[name="emp_id_eval"]').val(),
+        				emp_id:$('input[name="emp_id"]').val(),
         				content:$('#comment').val()
         		}
         		console.log(updateEvalInfo);
