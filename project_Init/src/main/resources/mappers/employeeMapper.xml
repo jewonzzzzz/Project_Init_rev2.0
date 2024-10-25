@@ -42,8 +42,7 @@
 	    or replace(emp_job, ' ', '') like concat('%', #{keyword}, '%')
 	    or replace(emp_bnum, ' ', '') like concat('%', #{keyword}, '%')
 	    or replace(emp_work_type, ' ', '') like concat('%', #{keyword}, '%')
-	    or replace(emp_power, ' ', '') like concat('%', #{keyword}, '%')
-	    and approval=0
+	    and e.approval=0
 	</select>
 	
 	<select id="getTeamList" resultType="EmployeeVO">

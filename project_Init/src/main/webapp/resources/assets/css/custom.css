@@ -61,8 +61,8 @@
 /* fonts end */
 /* 전체 스크롤바 */
 ::-webkit-scrollbar {
-    width: 12px; /* 세로 스크롤바의 너비 */
-    height: 12px; /* 가로 스크롤바의 높이 */
+    width: 5px; /* 세로 스크롤바의 너비 */
+    height: 5px; /* 가로 스크롤바의 높이 */
 }
 
 /* 스크롤바 배경 */
@@ -469,7 +469,7 @@ button {
 	align-items: center; 
     justify-content: center;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
-    z-index:5;
+    z-index:30;
 }
 
 
@@ -640,7 +640,7 @@ button {
 .days .date{
 	display:flex;
 	width:7px;
-	font-size:16px;
+	font-size:12px;
 	padding:0px;
     align-items: flex-start;
     justify-content: flex-start;
@@ -774,9 +774,8 @@ td a{
 	background-color:rgba(0,0,0,0.1);
 	height:100%;
 	width:230px;
-	border-right:3px solid rgba(0,0,0,0.4);
 	overflow-y: auto;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+	box-shadow: 2px 0px 5px 1px rgba(0, 0, 0, 0.4);
 	z-index: 2;
 }
 .messenger_body_menu div.person{
@@ -829,10 +828,10 @@ td a{
 .messenger_system div{
 	width:auto;
 	height:22px;
-	border-radius:6px;
+	border-radius:10px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 	background-color:rgb(250,250,250);
-	font-size:14px;
+	font-size:10px;
 	text-align:center;
 	line-height:22px;
 	padding: 0px 15px;
@@ -894,4 +893,17 @@ table tr{
 
 .favorite{
 	color:rgba(255, 215, 0,0.9);
+}
+
+.custom_css tr{
+	height: 30px !important;
+	line-height: 30px !important;
+}
+
+.custom_css tr a{
+	height: 20px !important;
+	line-height: 20px !important;
+}
+.main-panel{
+	background-color: rgba(248, 249, 250, 1);
 }

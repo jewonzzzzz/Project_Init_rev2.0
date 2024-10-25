@@ -303,13 +303,13 @@
 		
 		<div class="card-box md" style="height:500px !important; width:500px; display:flex; flex-direction: column;">
 			<div class="card">
-				<div class="card-header" style="flex:0.1;">
+				<div class="card-header" style="flex:0.1; z-index: 20 ;">
 				<h4 class="card-title">WORKFLOWS</h4>
 				</div>	
-				<div class="card-body" style="flex:0.9; width:100%;">
-                    <div class="workflow_table" style="width:100%; height:100%; overflow-x: hidden; border-collapse: collapse; table-layout: fixed;">
-                      <table class="display table table-striped table-hover multi-filter-select" style="width:485px; height:100%; overflow-y: auto;">
-                        <thead style="position: sticky; top: 0; z-index: 3 ; box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1); width:100%; font-size:12px;">
+				<div class="card-body" style="flex:0.9; width:100%; overflow-y: auto;">
+                    <div class="workflow_table" style="width:100%; height:100%; overflow-x: hidden;"> 	
+                      <table class="display table table-striped table-hover multi-filter-select" style="width:485px;">
+                        <thead style="position: sticky; top: 0; z-index: 10 ; box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1); width:100%; font-size:12px; background-color:white !important;">
                           <tr style="width:100%; padding-left:5px !important; padding-right:5px !important;">
                             <th style="width: 5%; font-size:12px; padding-left:5px !important; padding-right:5px !important;">유형</th>
                             <th style="width: 40%; font-size:12px; padding-left:5px !important; padding-right:5px !important;">제목</th>
@@ -322,29 +322,39 @@
                         </tfoot>
                         <tbody class="workflow_modal" style="width:100%;">
                           <c:forEach var="workflow" items="${receivedWorkflowList}">
-					        <tr style="width:100%; padding:0 !important; height:20px !important;">
-					            <td style="text-align: center; font-size:10px; padding:0px !important; height:20px !important;">
-						            <a data-wf_code="${workflow.wf_code}" id="workflow_info" style="padding:0; height:20px;">
+					        <tr style="width:100%; padding:0 !important; height:30px !important; line-height:30px;">
+					            <td style="text-align: center; font-size:10px; padding:0px !important;">
+						            <a data-wf_code="${workflow.wf_code}" id="workflow_info" style="padding:0; height:20px; line-height:20px;">
 						            	${workflow.wf_type}
 						            </a>
 						        </td>
-					            <td style="font-size:10px; padding:0px !important; height:20px !important;">
-						            <a data-wf_code="${workflow.wf_code}" id="workflow_info" style="padding:0; height:20px;">
+					            <td style="font-size:10px; padding:0px !important;">
+						            <a data-wf_code="${workflow.wf_code}" id="workflow_info" style="padding:0; height:20px; line-height:20px;">
 			                        	${workflow.wf_title}
 			                        </a>
 		                        </td>
-					            <td style="text-align: center; font-size:10px; padding:0px !important; height:20px !important;">
-						            <a data-wf_code="${workflow.wf_code}" id="workflow_info" style="padding:0; height:20px;">
+					            <td style="text-align: center; font-size:10px; padding:0px !important;">
+						            <a data-wf_code="${workflow.wf_code}" id="workflow_info" style="padding:0; height:20px; line-height:20px;">
 						            	${workflow.sender_name}
 						            </a>
 					            </td>
-					            <td style="text-align: center; font-size:10px; padding:0px !important; height:20px !important;">
-					            	<a data-wf_code="${workflow.wf_code}" id="workflow_info" style="padding:0; height:20px;">
-					            		${workflow.wf_status}
+					            <td style="text-align: center; font-size:10px; padding:0px !important;">
+					            	<a data-wf_code="${workflow.wf_code}" id="workflow_info" style="padding:0; height:20px; line-height:20px;">
+					            		<c:choose>
+								            <c:when test="${workflow.wf_status == 1}">
+								                1차 승인 대기
+								            </c:when>
+								            <c:when test="${workflow.wf_status == 2}">
+								                2차 승인 대기
+								            </c:when>
+								            <c:when test="${workflow.wf_status == 3}">
+								                3차 승인 대기
+								            </c:when>
+								        </c:choose>
 					            	</a>
 					            </td>
-					            <td style="text-align: center; font-size:10px; padding:0px !important; height:20px !important;">
-					            	<a data-wf_code="${workflow.wf_code}" id="workflow_info" style="padding:0; height:20px;">
+					            <td style="text-align: center; font-size:10px; padding:0px !important;">
+					            	<a data-wf_code="${workflow.wf_code}" id="workflow_info" style="padding:0; height:20px; line-height:20px;">
 					           			<fmt:formatDate value="${workflow.wf_create_date}" pattern="yy.MM.dd HH:mm" />
 					           		</a>
 					           	</td>
