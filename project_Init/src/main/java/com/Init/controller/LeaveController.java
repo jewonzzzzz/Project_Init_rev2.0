@@ -1,5 +1,6 @@
 package com.Init.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.Init.domain.LeaveVO;
+import com.Init.domain.WorkflowVO;
 import com.Init.service.LeaveService;
+import com.Init.service.SalaryService;
 
 @Controller
 @RequestMapping(value = "/leave/*")
@@ -33,6 +36,8 @@ public class LeaveController {
 
 	@Autowired
 	private LeaveService leaveService;
+	@Autowired
+	private SalaryService sService;
 
 	// 템플릿 적용 확인
 	// http://localhost:8088/leave/main
@@ -204,5 +209,49 @@ public class LeaveController {
      public void deleteAnnualLeave(@RequestParam("leave_id") int leave_id) {
 	        leaveService.updateAnnualLeaveA(leave_id);
 	    }
+	
+	@PostMapping(value = "insertSignInfoForLeave")
+	@ResponseBody
+	public void insertSignInfo(@RequestBody Map<String, String> signData) {
+		logger.debug("signData :"+signData.toString());
+		String emp_id = signData.get("emp_id");
+		
+		// wf_code 설정
+        LocalDate today = LocalDate.now();
+        int year = today.getYear();
+        String wf_code = "wf" +year+"00001";
+        
+        // 올해 첫 워크플로우번호가 있는지 확인하기
+        String checkWfCode = sService.checkWfCode(wf_code);
+        
+        if(checkWfCode != null) {
+        	//있으면 edu_id를 가장 최근 id에서 +1
+        	String getWfCode = sService.getWfCode();
+        	wf_code = "wf"+(Integer.parseInt(getWfCode.substring(2))+1);
+        }
+		
+		WorkflowVO vo = new WorkflowVO();
+		vo.setWf_code(wf_code);
+		vo.setWf_type("휴가");
+		vo.setWf_sender(signData.get("wf_sender"));
+		vo.setWf_receiver_1st(signData.get("wf_receiver_1st"));
+		vo.setWf_receiver_2nd(signData.get("wf_receiver_2nd"));
+		vo.setWf_receiver_3rd(signData.get("wf_receiver_3rd"));
+		vo.setWf_target(emp_id);
+		vo.setWf_title(signData.get("wf_title"));
+		vo.setWf_content(signData.get("wf_content"));
+		
+		//결재정보를 워크플로우 디비에 저장
+		//sService.insertSalarySignInfoToWorkFlow(vo);
+		
+		//휴가테이블에 작성될 정보(insert, status : -1)
+		LeaveVO lvo = new LeaveVO();
+		lvo.setEmp_id(emp_id);
+		
+	}
+	
+	
+	
+	
 
 }

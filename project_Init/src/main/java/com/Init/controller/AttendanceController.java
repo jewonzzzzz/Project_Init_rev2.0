@@ -295,8 +295,14 @@ public class AttendanceController {
 
 	@PostMapping("/overtimeSubmit")
 	public ResponseEntity<String> submitOvertime(@RequestBody AttendanceVO attendanceVO) {
-		attendanceService.submitOvertime(attendanceVO);
-		return ResponseEntity.ok("연장 근무 신청이 성공적으로 제출되었습니다.");
+	    try {
+	        // 서비스 호출
+	        attendanceService.submitOvertime(attendanceVO);
+	        return ResponseEntity.ok("초과/특별/야간 근무 신청이 성공적으로 제출되었습니다.");
+	    } catch (Exception e) {
+	        // 예외 처리
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("초과/특별/야간 신청이오류가 발생했습니다.");
+	    }
 	}
 
 	@PostMapping("/outdoor")

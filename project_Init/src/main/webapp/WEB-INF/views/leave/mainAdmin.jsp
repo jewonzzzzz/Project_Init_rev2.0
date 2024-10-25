@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8"> <!-- 한글 인코딩 추가 -->
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -95,22 +96,20 @@
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
 
+  
+                      
   <div class="col-md-12">
                 <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">휴가관리</div>
-               
-               
-
-
-<div class="card-body">
+                  
+                 <div class="card-header">
+  <h4 class="card-title"> * 사원 휴가 관리(관리자)</h4></div>
+  
+  
     <div class="table-responsive">
-        <div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+     
             <div class="row">
                 <div class="col-sm-12">
-                    <!-- 새로운 사원 휴가 관리 테이블 -->
-                    <div class="mt-5" style="margin: 0; padding: 0;">
-                        <h1>사원 휴가 관리(관리자)</h1>
+                   
                         
                         
                         <br>
@@ -118,13 +117,13 @@
                         
  <div class="d-flex align-items-center">
   
-			<label class="me-2">사원 ID: </label>
-			<input type="text" class="form-control me-2" id="emp_id" placeholder="사원 ID를 입력하세요" required style="width: 200px;">
+			<label class="me-2"> * 사원 번호: </label>
+			<input type="text" class="form-control me-2" id="emp_id" placeholder="사원 번호를 입력하세요" required style="width: 200px;">
 			
-			<label class="me-2">휴가 시작 날짜별(선택):</label>
+			<label class="me-2"> * 휴가 시작 날짜별(선택):</label>
 			<input type="date" class="form-control me-2" id="leave_start_date" style="width: 200px;">
 			
-			<label class="me-2">연차 시작 날짜별(선택):</label>
+			<label class="me-2"> * 연차 시작 날짜별(선택):</label>
 			<input type="date" class="form-control me-2" id="annual_leave_start_date" style="width: 200px;">
 			
 			<button id="checkLeavesButton" class="btn btn-info">사원 휴가 조회</button>
@@ -137,24 +136,8 @@
             <div class="row">
                 <div class="col-sm-12 col-md-6">
                     <div class="dataTables_length" id="basic-datatables_length">
-                        <label>Show
-                            <select name="basic-datatables_length" aria-controls="basic-datatables" class="form-control form-control-sm">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                            </select>
-                            entries
-                        </label>
-                    </div>
-                </div>
-                <div class="col-sm-12 col-md-6">
-                    <div id="basic-datatables_filter" class="dataTables_filter">
-                        <label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="basic-datatables"></label>
-                    </div>
-                </div>
-            </div>
-
+                        
+               
                         <!-- 사원 휴가 데이터 테이블 -->
                         <div id="leaveData">
                             <table id="checkLeaveTable" class="table mt-3">
@@ -447,7 +430,7 @@ $("#checkLeavesButton").click(function() {
         $("#editModal").modal('show'); // 모달 열기
        
     });
-
+  
     // 모달에서 변경 저장 버튼 클릭 시
     $("#saveChangesButton").click(function() {
         var leaveId = $("#modalLeaveId").val();
@@ -542,7 +525,7 @@ $("#checkLeavesButton").click(function() {
 
 
    </div>
-                  <div class="card-body">
+                 </div>
                     
 
 <!------------------------------------------------------------------------------------------------------------------>
@@ -550,7 +533,7 @@ $("#checkLeavesButton").click(function() {
           <!-- page-inner -->
         </div>
 		<!-- container -->
-        <%@ include file="/resources/assets/inc/footer.jsp" %>
+        <%-- <%@ include file="/resources/assets/inc/footer.jsp" %> --%>
       </div>
       <!-- main-panel -->
     </div>
