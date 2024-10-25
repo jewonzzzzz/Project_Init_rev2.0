@@ -11,7 +11,7 @@
   	</select>
   	
 	<!-- 퇴사신청 -->
-	<insert id="insertQuitEmployee" parameterType="map">
+	<insert id="insertQuitEmployee" parameterType="com.Init.domain.MemberVO">
 	    INSERT INTO employee (
 	        emp_id, emp_pw, emp_name, emp_birth, emp_gender,
 	        emp_tel, emp_email, emp_addr, emp_bnum, emp_dnum,
@@ -111,7 +111,7 @@
     </delete>
   	
   	<!-- 회원정보 조회 -->
-	<select id="getMember" parameterType="map" resultType="MemberVO">
+	<select id="getMember" resultType="MemberVO">
 	    SELECT * 
 	    FROM employee 
 	    WHERE emp_id = #{emp_id} 
