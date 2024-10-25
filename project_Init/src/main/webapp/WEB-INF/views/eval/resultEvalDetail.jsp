@@ -93,13 +93,8 @@
             <div class="row">
               <div class="col-md-11">
                 <div class="card">
-                  <div class="card-header" style="display: flex; justify-content:space-between; margin-right: 10px;">
+                  <div class="card-header">
                     <div class="card-title">성과평가[${reportInfoForEval.year }년 ${reportInfoForEval.branch }]</div>
-                    <div>
-		              <button type="submit" id="saveResultEvalBtn" class="btn btn-primary">저장하기</button>
-		              <button type="button" id="updateResultEvalBtn" class="btn btn-primary">수정하기</button>
-		              <button type="button" id="backBtn" class="btn btn-primary" onclick="history.back()">목록으로</button>
-		            </div>
                    </div>
                   <div class="card-body">
                     <div class="row"> 
@@ -173,7 +168,7 @@
                           
                         <div class="form-group" >
                           <label class="mb-2" style="font-size:16px !important"><b>업무성과 상세보고</b></label>
-                          <textarea name="content" class="form-control" rows="9" readonly
+                          <textarea name="content" class="form-control" rows="6" readonly
                           >${reportInfoForEval.content }</textarea>
                           </div>
                           
@@ -181,6 +176,11 @@
                         </div>
                         </div>
                       </div>
+                      <div style="display: flex; justify-content:flex-end; gap:5px;">
+		              <button type="submit" id="saveResultEvalBtn" class="btn btn-primary">저장하기</button>
+		              <button type="button" id="updateResultEvalBtn" class="btn btn-primary">수정하기</button>
+		              <button type="button" id="backBtn" class="btn btn-primary" onclick="history.back()">목록으로</button>
+		            </div>
                     </div>
                     </div>
             <input type="hidden" name="eval_his_id" value="${reportInfoForEval.eval_his_id }">

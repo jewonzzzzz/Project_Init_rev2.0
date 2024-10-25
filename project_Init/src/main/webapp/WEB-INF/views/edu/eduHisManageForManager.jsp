@@ -100,19 +100,6 @@
                             />
                            </div>
                           <button type="button" class="btn btn-primary" id="inquiryBtn"> 조회하기 </button>
-                    	 <button type="button" id="checkAllBtn" class="btn btn-primary">
-                            전체선택
-                          </button>
-                          
-                          <form id="completeEduSubmit" action="/edu/completeEduInfo" method="post" style="display: inline-block;">
-                    		<input type="hidden" id="inputForCompleteEdu" name="completeEudIds">
-                    		<button type="submit" class="btn btn-primary" id="completeEduBtn" disabled>이수처리</button>
-                    	</form>
-                    	
-                          <form id="nonCompleteEduSubmit" action="/edu/nonCompleteEduInfo" method="post" style="display: inline-block;">
-                    		<input type="hidden" id="inputForNonCompleteEdu" name="nonCompleteEudIds">
-                    		<button type="submit" class="btn btn-primary" id="nonCompleteEduBtn" disabled>미이수처리</button>
-                    	</form>
                     </div>
                 <div class="card">
                   <div class="card-header">
@@ -153,9 +140,22 @@
                     </div>
                   </div>
                 </div>
+                <div style="display: flex; gap:5px; justify-content: flex-end;">
+                <button type="button" id="checkAllBtn" class="btn btn-primary">
+                    전체선택
+                  </button>
+                  
+                  <form id="completeEduSubmit" action="/edu/completeEduInfo" method="post" style="display: inline-block;">
+            		<input type="hidden" id="inputForCompleteEdu" name="completeEudIds">
+            		<button type="submit" class="btn btn-primary" id="completeEduBtn" disabled>이수처리</button>
+            	</form>
+            	
+                  <form id="nonCompleteEduSubmit" action="/edu/nonCompleteEduInfo" method="post" style="display: inline-block;">
+            		<input type="hidden" id="inputForNonCompleteEdu" name="nonCompleteEudIds">
+            		<button type="submit" class="btn btn-primary" id="nonCompleteEduBtn" disabled>미이수처리</button>
+            	</form>
+            	</div>
               </div>
-              
-              	
             </div>
             </div>
             
@@ -177,7 +177,7 @@
         	// 체크박스 상태를 비교하는 함수 정의
         	function compareCheckStatus() {
                 const checkedCount = $('tr').filter(function () {
-                    return $(this).find('td:eq(6)').text() === '교육확정' &&
+                    return $(this).find('td:eq(6)').text() === '교육종료' &&
                            $(this).find('input[type="checkbox"]').is(':checked');
                 }).length;
 

@@ -75,7 +75,6 @@
                 </li>
               </ul>
             </div>
-            
             <div class="row">
               <div class="col-md-11">
                 <div class="card">
@@ -176,10 +175,8 @@
                             />
                             <span class="input-group-text">원</span>
                           </div>
-                          
                         </div>
                       </div>
-                      
                       <div class="col-md-6 col-lg-4">
                         <div class="form-group">
                         <label class="mb-3"><b>직무급 정보</b></label>
@@ -271,10 +268,8 @@
                             />
                             <span class="input-group-text">원</span>
                           </div>
-                          
                         </div>
                       </div>
-                      
                       <div class="col-md-6 col-lg-4">
                         <div class="form-group">
                         <label class="mb-3">&nbsp;</label>
@@ -304,8 +299,8 @@
                       </div>
                     </div>
                   </div>
-                  <div class="card-action">
-                    <button class="btn btn-success" id="alert_demo_3_1" type="submit">저장하기</button>
+                  <div class="card-action" style="display: flex; justify-content: flex-end;">
+                    <button class="btn btn-primary" id="alert_demo_3_1" type="submit">저장하기</button>
                   </div>
                   </form>
                 </div>

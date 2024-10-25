@@ -81,15 +81,7 @@
               <div class="col-md-11">
                 <div class="card">
                   <div class="card-header">
-                    <div style="display: flex; justify-content:space-between;">
                     <div class="card-title">교육이력관리</div>
-                  	<div style="margin-right: 10px;">
-                    	<form id="cancelSubmit" action="/edu/cancelEduApplyInfo" method="post" style="display: inline-block;">
-                    		<input type="hidden" id="inputForCancel" name="edu_his_id">
-                    		<button type="submit" class="btn btn-danger" id="cancelBtn" disabled>교육취소</button>
-                    	</form>
-                   	</div>
-                  	</div>
                   </div>
                   <div class="card-body" style="padding-top: 10px;">
                     <table id="basic-datatables"
@@ -119,6 +111,12 @@
                     </table>
                   </div>
                 </div>
+                <div style="display: flex; justify-content: flex-end;">
+                    	<form id="cancelSubmit" action="/edu/cancelEduApplyInfo" method="post" style="display: inline-block;">
+                    		<input type="hidden" id="inputForCancel" name="edu_his_id">
+                    		<button type="submit" class="btn btn-danger" id="cancelBtn" disabled>교육취소</button>
+                    	</form>
+                   	</div>
               </div>
             </div>
             
