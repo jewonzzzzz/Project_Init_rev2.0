@@ -1416,7 +1416,10 @@ footer {
           data: { page: page },
           success: function(response) {
             updateTable(response);
-           },
+            setTimeout(() => {
+                updateTable(response);
+            }, 100);
+            },
           error: function() {
             alert('사원 목록을 불러오는데 실패했습니다.');
 	        }
@@ -1708,8 +1711,10 @@ footer {
 	    currentState = 'manager';
 	    currentFilterType = '';
 	    currentFilterValue = '';
+	    currentKeyword = '';
 	    $('#filterType').val('');
 	    $('#filterValue').empty().append('<option value="">선택하세요</option>');
+	    $('#keyword').val('');
 	    loadMembers(1);
 		}
 
