@@ -134,8 +134,6 @@
 		return_time = #{return_time},
 		status = #{status},
 		overtime = #{overtime},
-		new_check_in = #{new_check_in},
-		new_check_out = #{new_check_out},
 		new_WorkingOutside_time = #{new_WorkingOutside_time}, <!-- 변수명 일관성 유지 -->
 		working_time = #{working_time},
 		night_work_time = #{night_work_time},
@@ -168,30 +166,21 @@
 		LIMIT 7
 	</select>
 
-	<insert id="insertOvertime" 
+	<update id="updateOvertime" 
         parameterType="com.Init.domain.AttendanceVO">
-    INSERT INTO attendance_ch (
-        emp_id,
-        workform_status,
-        created_at,
-        overtime,
-        night_work_time,
-        special_working_time,
-        status,
-        modified_reason
-       
-    )
-    VALUES (
-        #{emp_id},
-        #{workform_status},
-        #{created_at},
-        #{overtime},
-        #{night_work_time},
-        #{special_working_time},
-        #{status},
-        #{modified_reason}  
-    )
-</insert>
+		   UPDATE attendance_ch
+		SET
+		    emp_id = #{emp_id},
+		    workform_status = #{workform_status},
+		    created_at = #{created_at},
+		    overtime = #{overtime},
+		    night_work_time = #{night_work_time},
+		    special_working_time = #{special_working_time},
+		    status = #{status},
+		    modified_reason = #{modified_reason}
+		WHERE
+		    attendance_id = #{attendance_id};
+</update>
 
 	<!-- 외출 시간 업데이트 쿼리 -->
 	<update id="updateWorkingOutsideTime"

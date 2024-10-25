@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8"> <!-- 한글 인코딩 추가 -->
 <!--QR 라이브러리  -->
@@ -57,28 +58,31 @@
     
     <!-- 사원 테이블 -->
       <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        
-        .btn-wide {
-    width: 150px; /* 원하는 너비로 조정 */
-}
+      .table-container {
+        width: 100%;
+        overflow-x: auto; /* 가로 스크롤을 추가 */
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+
+    .btn-wide {
+        width: 150px; /* 원하는 너비로 조정 */
+    }
     </style>
     
     
     
-    
-     <title>Attendance Admin</title>
+
     
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Bootstrap CSS -->
@@ -104,16 +108,18 @@
 
 
 
-<h1>사원 근태 관리</h1>
   
   <div class="col-md-12">
                 <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">근태관리</div>
+                  <div class="card-header">근태관리</div>
+                  
+                  
+              
+                   
+     
+
 <br>
-<br>
-<br>
-<br>
+  <div class="card-body">
                         <h1>사원 근태 관리(관리자)</h1>
    <form>
     <div class="d-flex align-items-center">
@@ -130,7 +136,7 @@
 <br>
 <br>
 <!-- 사원 근태 데이터 테이블 -->
-  <div id="attendanceData">
+  <div class="table-container" id="attendanceData">
             <table id="checkTimeTable" class="table mt-3">
                 <thead>
                     <tr>
@@ -144,10 +150,6 @@
                         <th>야근 시간</th>
                         <th>특별 근무 시간</th>
                         <th>근무 상태</th>
-                        <th>출근 수정 시간</th>
-                        <th>퇴근 수정 시간</th>
-                        <th>외출 수정 시간</th>
-                        <th>결재 수정 시간</th>
                         <th>신청일</th>
                         <th>상태</th>
                         <th>초과 근무 시간</th>                        
@@ -211,19 +213,7 @@
                             <div class="form-group">
                                 <label for="modalSpecialWorkingTimeInput">특별 근무 시간</label>
                                 <input type="text" class="form-control" id="modalSpecialWorkingTimeInput" >
-                            </div>
-                            <div class="form-group">
-                                <label for="modalNewCheckInInput">출근 수정 시간</label>
-                                <input type="text" class="form-control" id="modalNewCheckInInput" placeholder="yyyy-MM-dd HH:mm:ss" >
-                            </div>
-                            <div class="form-group">
-                                <label for="modalNewCheckOutInput">퇴근 수정 시간</label>
-                                <input type="text" class="form-control" id="modalNewCheckOutInput" placeholder="yyyy-MM-dd HH:mm:ss">
-                            </div>
-                            <div class="form-group">
-                                <label for="modalNewWorkingOutsideTimeInput">외출 수정 시간</label>
-                                <input type="text" class="form-control" id="modalNewWorkingOutsideTimeInput" placeholder="yyyy-MM-dd HH:mm:ss">
-                            </div>
+                            </div>                                        
                             <div class="form-group">
                                 <label for="modalModifiedTimeInput">수정 일자</label>
                                 <input type="text" class="form-control" id="modalModifiedTimeInput" placeholder="yyyy-MM-dd HH:mm:ss" >
@@ -235,9 +225,9 @@
                             <div class="form-group">
                                 <label for="modalStatusInput">상태</label>
                                 <select class="form-control" id="modalStatusInput" name="status">
-		                                <option value="1">승인</option>
-		                            <option value="0">진행중</option>
-		                            <option value="-1">반려</option>
+		                                <option value="0">현황</option>
+		                            <option value="-1">결재 진행중</option>
+		                            <option value="1">과거이력</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -263,6 +253,10 @@
                         <input type="date" class="form-control" id="modalEducationEndDateInput" placeholder="yyyy-MM-dd" required>
                     </div>
                             
+		                               <div class="form-group">
+		                    <label for="modalWorkformStatusInput">근무 상태</label>
+		                    <input type="text" class="form-control" id="modalWorkformStatusInput" placeholder="근무 상태를 입력하세요" /> <!-- 근무 상태 추가 -->
+		                </div>
                             
                             <div class="form-group">
                                 <label for="modalModifiedReasonInput">수정 사유</label>
@@ -273,10 +267,6 @@
                                 <input type="text" class="form-control" id="modalModifiedPersonInput">
                             </div>
                             
-		                               <div class="form-group">
-		                    <label for="modalWorkformStatusInput">근무 상태</label>
-		                    <input type="text" class="form-control" id="modalWorkformStatusInput" placeholder="근무 상태를 입력하세요" /> <!-- 근무 상태 추가 -->
-		                </div>
                             
                        
                         <div id="successMessage" class="alert alert-success" style="display: none;">수정 완료</div>
@@ -292,18 +282,19 @@
     $(document).ready(function() {
         var currentPage = 1; // 현재 페이지 번호
         var itemsPerPage = 10; // 페이지 당 아이템 수
-		
+      
         
         // 날짜 선택 변경 시 데이터 로드
         $("#selectedDate").change(function() {
             currentPage = 1; // 페이지를 1로 초기화
             loadAttendanceData(currentPage); // 데이터 로드
         });
-
-        
+		
+      
         
         function loadAttendanceData(page) {
             var empId = $("#emp_id").val(); // 입력된 사원 ID 가져오기
+            console.log("주요emp_id:", empId); // emp_id 로그 출력
             var selectedDate = $("#selectedDate").val(); // 선택된 날짜 가져오기
 			
          // 상태를 문자열로 변환하는 함수
@@ -319,6 +310,8 @@
                         return '없음'; // null 또는 정의되지 않은 값
                 }
             }
+            
+           
             // AJAX 요청
             $.ajax({
                 url: '/Attendance/attendanceData', // 요청 URL
@@ -350,11 +343,7 @@
                             	    "<td>" + (attendance.working_time || "-") + "</td>" +
                             	    "<td>" + (attendance.night_work_time || "-") + "</td>" +
                             	    "<td>" + (attendance.special_working_time || "-") + "</td>" +
-                            	    "<td>" + (attendance.workform_status || "-") + "</td>" +
-                            	    "<td>" + (attendance.new_check_in || "-") + "</td>" +
-                            	    "<td>" + (attendance.new_check_out || "-") + "</td>" +
-                            	    "<td>" + (attendance.new_workingoutside_time || "-") + "</td>" +
-                            	    "<td>" + (attendance.modified_time || "-") + "</td>" +
+                            	    "<td>" + (attendance.workform_status || "-") + "</td>" + 	           	   
                             	    "<td>" + (attendance.created_at || "-") + "</td>" +
                             	    "<td>" + getAttendanceStatusDisplay(attendance.status) + "</td>" + // status를 변환하여 표시
                             	    "<td>" + (attendance.overtime || "-") + "</td>" +
@@ -649,7 +638,11 @@
 	<br>
 	<br>
    </div>
-                  <div class="card-body">
+         </div>
+         </div>
+         
+         
+                
 <!------------------------------------------------------------------------------------------------------------------>
           </div>
           <!-- page-inner -->

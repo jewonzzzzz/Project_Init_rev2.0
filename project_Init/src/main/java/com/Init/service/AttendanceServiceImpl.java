@@ -132,7 +132,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 
 	@Override
 	public void submitOvertime(AttendanceVO attendanceVO) {
-		attendanceDAO.insertOvertime(attendanceVO);
+		attendanceDAO.updateOvertime(attendanceVO);
 	}
 
 	@Override

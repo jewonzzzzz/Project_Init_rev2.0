@@ -59,7 +59,7 @@ public interface AttendanceDAO {
 
 	void updateWorkformStatus(String emp_id, String workform_status);
 
-	void insertOvertime(AttendanceVO attendanceVO);
+	void updateOvertime(AttendanceVO attendanceVO);
 
 	  // 외출 시간 업데이트
     int updateWorkingOutsideTime(AttendanceVO attendanceVO);

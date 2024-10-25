@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8"> <!-- 한글 인코딩 추가 -->
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -57,11 +58,10 @@
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
 
-  
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">연차관리</div>
-               
+   <div class="col-md-12">
+  <div class="card">
+                <div class="card-header">
+  <h4 class="card-title">연차 관리(관리자)</h4></div>
                <br>
                <br>
 
@@ -201,8 +201,8 @@
 
    </div>
                   <div class="card-body">
-                    
-
+    </div>                
+</div>
 <!------------------------------------------------------------------------------------------------------------------>
           </div>
           <!-- page-inner -->

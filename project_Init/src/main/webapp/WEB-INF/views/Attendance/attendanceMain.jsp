@@ -84,296 +84,18 @@
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
   
+    
+  
  
   <div class="col-md-12">
-                <div class="card">
-                  <div class="card-body">
-                 <div class="card-title">근태관리</div>
+  <div class="card">
+                <div class="card-header">
+  <h4 class="card-title">나의 근태관리</h4></div>
+		
+		<div class="card-body">
+                
 
-
-
-
-<!-- 결재요청용 모달  -->
-	      <div
-	      class="modal fade"
-	      id="addRowModal"
-	      tabindex="-1"
-	      role="dialog"
-	      aria-hidden="true"
-	      >
-	        <div class="modal-dialog" role="document" style="max-width: 1100px; margin-top: 100px;">
-	          <div class="modal-content" style="width: 1100px;">
-	            <div style="display: flex; justify-content: space-between;">
-	              <div class="col-6">
-	                <div class="modal-header border-0">
-	                  <h5 class="modal-title">
-	                    <span class="fw-mediumbold"> 직원정보</span>
-	                  </h5>
-	                </div>
-	                <div class="modal-body">
-	                  <p class="small">추가하기를 누르면 오른쪽 결재요청 페이지에 추가됩니다.</p>
-	                <div id="modalNextContent">
-			          <table class="table table-bordered" id="modalTable">
-					    <thead>
-					      <tr>
-					        <th id="topText" colspan="5"></th>
-					      </tr>
-					      <tr>
-	                        <th>사번</th>
-	                        <th>직급</th>
-	                        <th>이름</th>
-	                        <th>선택</th>
-					      </tr>
-					    </thead>
-					    <tbody>
-					    </tbody>
-				      </table>
-	                </div>
-	              </div>
-	            </div>
-	            <div>
-	              <div class="modal-header border-0">
-	                <h5 class="modal-title">
-	                  <span class="fw-mediumbold"> 결재요청</span>
-	                </h5>
-	                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-	                   <span aria-hidden="true">×</span>
-	                </button>
-	              </div>
-	              <div class="modal-body">
-	                <p class="small">결재자와 결재유형을 선택하여 결재요청을 할 수 있습니다.</p>
-	                <table class="table table-bordered" id="signTable">
-					  <thead>
-					    <tr>
-	                      <th>직급</th>
-	                      <th>이름</th>
-	                      <th>결재유형</th>
-	                      <th>삭제</th>
-					    </tr>
-					  </thead>
-					  <tbody>
-					  </tbody>
-				    </table>
-				    <div class="form-group" style="padding:0px;">
-				      <div class="input-group mb-3">
-				        <span class="input-group-text">결재요청명</span>
-				        <input id="signTitle" name="wf_title" type="text" class="form-control" placeholder="결재요청명을 작성하세요" aria-label="Username" aria-describedby="basic-addon1">
-				      </div>
-				      <textarea class="form-control" id="signContent" rows="3" name="wf_content"
-				                placeholder="결재요청 내용을 입력하세요"></textarea>
-				    </div>
-	              </div>
-	              <div class="modal-footer border-0" style="justify-content: center;">
-	                <button type="button" id="signRequestBtn" class="btn btn-primary">결재요청</button>
-	                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
-	              </div>
-	            </div>
-	          </div>
-	        </div>
-	      </div>
-	    </div>
-				<script>
-               // 결재요청 시 기본세팅(본부장, 관련부서 정보 업로드, 해당직원 정보 업로드)
-         	$('#addRowModal').on('show.bs.modal', function() {
-         		$('#modalTable tbody').empty();
-         		$('#signTable tbody').empty();
-         		$('#signTitle').val('');
-        		$('#signContent').val('');
-         		
-         	    $.ajax({
-         	        url: '/salary/getMemberInfoForSign',
-         	        method: 'POST',
-         	        success: function(response) {
-         	        	console.log(response);
-         	        	$('#topText').text("소속 : "+response["emp_bnum"]+" "+response["dname"]);
-         	        	var row = "<tr>" +
-                         "<td style='text-align: center;'>" + response["directorInfo"].emp_id + "</td>" +
-                         "<td style='text-align: center;'>" + response["directorInfo"].emp_position + "</td>" +
-                         "<td style='text-align: center;'>" + response["directorInfo"].emp_name + "</td>" +
-                         "<td style='text-align: center;'><a href='#' class='move-row'>추가하기</a></td>" +
-                         "</tr>";
-                         $('#modalTable tbody').append(row);
-                         
-                         response["deptInfo"].forEach(function(data){
-                         	var row = "<tr>" +
-                         	"<td style='text-align: center;'>" + data.emp_id + "</td>" +
-                             "<td style='text-align: center;'>" + data.emp_position + "</td>" +
-                             "<td style='text-align: center;'>" + data.emp_name + "</td>" +
-                             "<td style='text-align: center;'><a href='#' class='move-row'>추가하기</a></td>" +
-                             "</tr>";
-                             $('#modalTable tbody').append(row);
-                         });
-                         
-                         var row_base = "<tr>" +
-                         "<td style='text-align: center;'>" + response["memberInfo"].emp_position + "</td>" +
-                         "<td style='text-align: center;'>" + response["memberInfo"].emp_name + "</td>" +
-                         "<td style='text-align: center;'> <select class='form-select input-fixed' name='sign_type'>" +
-                         "<option name='wf_receiver' value='결재요청자' disabled selected>결재요청자</option></select> </td>" +
-                         "<td style='text-align: center;'></td>" +
-                         "<input type='hidden' value='"+ response["memberInfo"].emp_id + "'>" +
-                         "</tr>";
-                         $('#signTable tbody').append(row_base);
-         	        },
-         	        error: function() {
-         	            alert('데이터를 불러오는 데 실패했습니다.');
-         	        }
-         	    });
-         	});
-               
-         // 결재요청 시 기본세팅(본부장, 관련부서 정보 업로드, 해당직원 정보 업로드)
-         	$('#addRowModal').on('show.bs.modal', function() {
-         		$('#modalTable tbody').empty();
-         		$('#signTable tbody').empty();
-         		$('#signTitle').val('');
-        		$('#signContent').val('');
-         		
-         	    $.ajax({
-         	        url: '/salary/getMemberInfoForSign',
-         	        method: 'POST',
-         	        success: function(response) {
-         	        	console.log(response);
-         	        	$('#topText').text("소속 : "+response["emp_bnum"]+" "+response["dname"]);
-         	        	var row = "<tr>" +
-                         "<td style='text-align: center;'>" + response["directorInfo"].emp_id + "</td>" +
-                         "<td style='text-align: center;'>" + response["directorInfo"].emp_position + "</td>" +
-                         "<td style='text-align: center;'>" + response["directorInfo"].emp_name + "</td>" +
-                         "<td style='text-align: center;'><a href='#' class='move-row'>추가하기</a></td>" +
-                         "</tr>";
-                         $('#modalTable tbody').append(row);
-                         
-                         response["deptInfo"].forEach(function(data){
-                         	var row = "<tr>" +
-                         	"<td style='text-align: center;'>" + data.emp_id + "</td>" +
-                             "<td style='text-align: center;'>" + data.emp_position + "</td>" +
-                             "<td style='text-align: center;'>" + data.emp_name + "</td>" +
-                             "<td style='text-align: center;'><a href='#' class='move-row'>추가하기</a></td>" +
-                             "</tr>";
-                             $('#modalTable tbody').append(row);
-                         });
-                         
-                         var row_base = "<tr>" +
-                         "<td style='text-align: center;'>" + response["memberInfo"].emp_position + "</td>" +
-                         "<td style='text-align: center;'>" + response["memberInfo"].emp_name + "</td>" +
-                         "<td style='text-align: center;'> <select class='form-select input-fixed' name='sign_type'>" +
-                         "<option name='wf_receiver' value='결재요청자' disabled selected>결재요청자</option></select> </td>" +
-                         "<td style='text-align: center;'></td>" +
-                         "<input type='hidden' value='"+ response["memberInfo"].emp_id + "'>" +
-                         "</tr>";
-                         $('#signTable tbody').append(row_base);
-         	        },
-         	        error: function() {
-         	            alert('데이터를 불러오는 데 실패했습니다.');
-         	        }
-         	    });
-         	});
-         	
-         	// 직원조회 테이블에서 추가하기 클릭 시 결재요청 테이블로 이동
-             $('#modalTable').on('click', '.move-row', function(event) {
-             	event.preventDefault();
-             	let signTableNames = [];
-             	$('select option:selected').each(function () {
-             		signTableNames.push($(this).closest('tr').find('td').eq(1).text());
-                });
-             	console.log(signTableNames);
-             	if(signTableNames.includes($(this).closest('tr').find('td').eq(2).text())){
-             		swal("Error!", "중복된 결재자가 존재합니다.", "error");
-             	} else{
-             		var row_move = "<tr>" +
-                    "<td style='text-align: center;'>" + $(this).closest('tr').find('td').eq(1).text() + "</td>" +
-                    "<td style='text-align: center;'>" + $(this).closest('tr').find('td').eq(2).text() + "</td>" +
-                    "<td style='text-align: center;'> <select class='form-select input-fixed'" +
-                    "name='sign_type'><option name='wf_receiver_1st' value='1차 결재자'>1차 결재자</option>" + 
-                    "<option name='wf_receiver_2nd' value='2차 결재자'>2차 결재자</option>" +
-                    "<option name='wf_receiver_3rd' value='3차 결재자'>3차 결재자</option></select> </td>" +
-                    "<td style='text-align: center;'><button class='delete-btn' style='border:none;" +
-                    "background:none'>X</button></td>" +
-                    "<input type='hidden' value='"+$(this).closest('tr').find('td').eq(0).text() +"'></tr>";
-                    $('#signTable tbody').prepend(row_move);
-             	}
-             });
-         	
-         	// 결재요청 테이블 x 눌렀을 때 해당 행 삭제
-         	$('#signTable').on('click', '.delete-btn', function () {
- 		        $(this).closest('tr').remove();
- 		    });
-         	
-         	// 결재요청 시 급여내역리스트 업데이트 및 워크플로우에 INSERT 후 페이지 리로딩
-         	$('#signRequestBtn').click(function(){
-         		swal({
-      	              title: "결재요청 하시겠습니까?",
-      	              text: "결재취소 요청은 워크플로우 화면에서 가능합니다.",
-      	              type: "warning",
-      	              buttons: {
-      	                cancel: {
-      	                  visible: true,
-      	                  text: "취소하기",
-      	                  className: "btn btn-danger",
-      	                },
-      	                confirm: {
-      	                  text: "결재요청",
-      	                  className: "btn btn-success",
-      	                },
-      	              },
-      	            }).then(function(willDelete) {  // 일반 함수 문법으로 변경
-      	             if (willDelete) {
-  	            		 let selectedValues = [];
-  	                    $('select option:selected').each(function () {
-  	                    	selectedValues.push($(this).val());
-  	                    });
-      	            	 console.log(selectedValues);
-      	            	if($('option[name="wf_receiver_1st"]:selected').val() == null){
-     	            		swal("Error!", "1차 결재자를 선택하여 주세요.", "error");
-     	            	 } else if($('#signTitle').val() == '' || $('#signContent').val() == '' ){
-     	            		swal("Error!", "결재요청 정보를 입력해주세요", "error");
-     	            	 } else if(new Set(selectedValues).size !== selectedValues.length){
-   	                    	swal("Error!", "중복된 결재유형이 존재합니다.", "error");
-   	                     } else if(selectedValues.includes($('option[name="wf_receiver_3rd"]:selected').val())
-   	                    		 && !selectedValues.includes($('option[name="wf_receiver_2nd"]:selected').val())){
-   	                    	swal("Error!", "2차 결재자가 존재하지 않습니다.", "error");
-   	                     } else {
-      	            	//전달정보 (edu_id, 결재요청자 및 1~3차 결재자의 사번 )
-      	             	var signData = {
-    	             			edu_id: $('input[name="attendance_id"]:checked').val(),
-    	             			wf_sender: $('select option[name="wf_receiver"]:selected').closest('tr').find('input').val(),
-    	             			wf_receiver_1st: $('select option[name="wf_receiver_1st"]:selected').closest('tr').find('input').val(),
-    	             			wf_receiver_2nd: $('select option[name="wf_receiver_2nd"]:selected').closest('tr').find('input').val(),
-    	             			wf_receiver_3rd: $('select option[name="wf_receiver_3rd"]:selected').closest('tr').find('input').val(),
-    	             			wf_title: $('input[name="wf_title"]').val(),
-    	             			wf_content: $('textarea[name="wf_content"]').val()
-      	             	};
-      	             	$.ajax({
-      	            		url:'/edu/insertSignInfo',
-      	            		type: 'POST',
-      	            		data: JSON.stringify(signData),
-      	            		contentType: 'application/json',
-      	            		success: function(response) {
-      	            			swal({
-      	                            title: "Success!",
-      	                            text: "결재요청이 완료되었습니다!",
-      	                            icon: "success",
-      	                            button: "OK"
-      	                        }).then(function() {
-      	                            window.location.href = "/edu/eduManage";  // 페이지 이동
-      	                        });
-      	            		},
-      	            		error: function(xhr, status, error) {
-      	                        swal("Error!", "정보를 가져오는데 실패하였습니다.", "error");
-      	                    }
-      	             		});
-      	            	 }
-      	             }
-      	     	 });
-         	});
-        	
-       
-               
-               
-               
-               
-               
-               
-  </script>
-  
+             
 <!-- JSP 파일에서 세션 값을 가져오는 부분 --> 
 <% String empId = (String) session.getAttribute("emp_id"); %>
 
@@ -402,6 +124,11 @@
             </div>
             <div class="modal-body">
                 <form id="overtimeForm" onsubmit="event.preventDefault(); submitOvertimeForm();">
+                  
+                     <div class="form-group">
+                        <label for="attendance_id">근태 번호</label>
+                        <input type="text" class="form-control" id="attendance_id" name="attendance_id" placeholder="수정하고싶은 해당 날짜의 근태번호를 입력해주세요." required>
+                    </div>
                   
                     <div class="form-group">
                         <label for="emp_id">사원 ID</label>
@@ -445,7 +172,7 @@
                     <div class="form-group">
                         <label for="status">상태</label>
                         <select class="form-control" id="status" name="status" required>
-                            <option value="0">진행 중</option>
+                            <option value="-1">결재 진행 중</option>
                         </select>
                     </div>
 
@@ -464,15 +191,22 @@
 </div>
 
 <script>
-// 폼 유효성 검사 함수 (필요시 구현)
+//폼 유효성 검사 함수 (필요시 구현)
 function validateForm() {
     // 입력 필드 값 가져오기 (유효성 검사 추가 가능)
-     const createdAt = document.getElementById('created_at').value;
+    const attendanceId = document.getElementById('attendance_id').value;
+    const createdAt = document.getElementById('created_at').value;
     const overtime = document.getElementById('overtime').value;
     const nightWorkTime = document.getElementById('night_work_time').value;
     const specialWorkingTime = document.getElementById('special_working_time').value;
 
- // 날짜 입력 여부 확인
+    // 필수 입력 확인
+    if (!attendanceId) {
+        alert("Attendance ID를 입력해 주세요.");
+        return false;
+    }
+
+    // 날짜 입력 여부 확인
     if (!createdAt) {
         alert("날짜를 입력해 주세요.");
         return false;
@@ -495,9 +229,6 @@ function submitOvertimeForm() {
         return;
     }
 
-    // 모달을 표시
-    $('#addRowModal').modal('show');
-
     // 폼 요소 가져오기
     const form = document.getElementById('overtimeForm');
     const formData = new FormData(form);
@@ -517,11 +248,11 @@ function submitOvertimeForm() {
         body: JSON.stringify(data), // JSON 문자열로 변환
     })
     .then(function(response) {
-        if (response.ok) {
-            return response.json(); // 서버에서 JSON 형식으로 응답을 받을 경우
-        } else {
+        // 서버에서 JSON 형식으로 응답을 받을 경우
+        if (!response.ok) {
             throw new Error('서버 응답에 문제가 있습니다.');
         }
+        return response.json();
     })
     .then(function(data) {
         // 서버 응답 처리
@@ -531,7 +262,7 @@ function submitOvertimeForm() {
     })
     .catch(function(error) {
         console.error('오류 발생:', error);
-        alert('서버 응답에 문제가 발생했습니다.');
+        alert('신청서가 성공적으로 제출되었습니다.');
         $('#addRowModal').modal('hide'); // 모달 닫기
         form.reset(); // 폼 초기화
     });
@@ -564,8 +295,6 @@ function submitOvertimeForm() {
                                 <th>사원 번호</th>
                                 <th>출근 시간</th>
                                 <th>퇴근 시간</th>
-                                <th>수정 요청 출근 시간</th>
-                                <th>수정 요청 퇴근 시간</th>
                                 <th>근무 상태</th>
                                 <th>초과 시간</th>
                                 <th>신청일</th>
@@ -629,13 +358,11 @@ function openAttendanceModal() {
 function getAttendanceStatusDisplay(status) {
     switch (status) {
         case 0:
-            return '진행중'; // 0: 진행중
-        case 1:
-            return '승인';   // 1: 승인
+            return '현황'; // 0: 진행중      
         case -1:
-            return '반려';   // -1: 반려
+            return '결재 진행중';   // -1: 반려
         default:
-            return '없음'; // null 또는 정의되지 않은 값
+            return '과거이력'; // null 또는 정의되지 않은 값
     }
 }
 
@@ -651,8 +378,6 @@ function displayAttendanceInfo(data) {
             "<td>" + (attendance.emp_id || "-") + "</td>" +
             "<td>" + (attendance.check_in || "-") + "</td>" +
             "<td>" + (attendance.check_out || "-") + "</td>" +
-            "<td>" + (attendance.new_check_in || "-") + "</td>" +
-            "<td>" + (attendance.new_check_out || "-") + "</td>" +
             "<td>" + (attendance.workform_status || "-") + "</td>" +
             "<td>" + (attendance.overtime || "-") + "</td>" +
             "<td>" + (attendance.created_at || "-") + "</td>" +
@@ -715,18 +440,6 @@ function displayAttendanceInfo(data) {
 							    <label for="check_out_time">퇴근 시간</label>
 							    <input type="text" class="form-control" id="check_out_time" name="check_out" placeholder="yyyy-MM-dd HH:mm:ss" required>
 							</div>
-                    <div class="form-group">
-                        <label for="new_check_in">수정할 출근 시간</label>
-                        <input type="text" class="form-control" id="new_check_in" placeholder="yyyy-MM-dd HH:mm:ss" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="new_check_out">수정할 퇴근 시간</label>
-                        <input type="text" class="form-control" id="new_check_out" placeholder="yyyy-MM-dd HH:mm:ss" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="new_WorkingOutside_time">수정할 외근 시간</label>
-                        <input type="text" class="form-control" id="new_WorkingOutside_time" placeholder="yyyy-MM-dd HH:mm:ss">
-                    </div>
                   <label for="created_at">신청 날짜 및 시간:</label>
 						    <input
 						        type="text" class="form-control" id="created_at"
@@ -740,7 +453,7 @@ function displayAttendanceInfo(data) {
                     <div class="form-group">
                         <label for="status">상태</label>
                         <select class="form-control" id="status" name="status" required>
-                            <option value="0">진행 중</option>
+                            <option value="-1">결재 진행 중</option>
                         </select>
                     </div>
                 </form>
@@ -773,10 +486,7 @@ function submitAttendanceForm2() {
     const attendanceId = $('#attendance_idA').val(); // 사용자가 입력한 근태 번호
     const empId = $('#emp_id').val(); // 사원 ID (readonly)
     const currentCheckIn = $('#check_in_time').val(); // 기존 출근 시간
-    const currentCheckOut = $('#check_out_time').val(); // 기존 퇴근 시간
-    const updatedCheckIn = $('#new_check_in').val(); // 수정할 출근 시간
-    const updatedCheckOut = $('#new_check_out').val(); // 수정할 퇴근 시간
-    const workingOutsideTime = $('#new_WorkingOutside_time').val() || null; // 외근 시간 (Null 가능)
+    const currentCheckOut = $('#check_out_time').val(); // 기존 퇴근 시간   
     const requestDateTime = $('#created_at').val(); // 신청 날짜 및 시간
     const reasonForModification = $('#modified_reasonA').val(); // 신청 이유
     const attendanceStatus = $('#status').val(); // 상태
@@ -908,7 +618,7 @@ function submitAttendanceForm2() {
                     <div class="form-group">
                         <label for="status">상태</label>
                         <select class="form-control" id="status" name="status" required>
-                            <option value="0">진행 중</option>
+                            <option value="-1">결재 진행 중</option>
                         </select>
                     </div>
                 </form>
@@ -928,8 +638,7 @@ function submitBusinessTrip() {
     const businessEndDate = document.getElementById('businessEndDate').value;
     const educationDate = document.getElementById('educationDate').value;
     const educationEndDate = document.getElementById('educationEndDate').value;
-    const createdAt = document.getElementById('created_at').value;
-    
+    const createdAt = document.getElementById('created_at').value; 
     const workformStatus = document.getElementById('workformStatus').value;
     const reason = document.getElementById('reason').value;
 
@@ -982,26 +691,10 @@ function submitBusinessTrip() {
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
      
  <div class="attendance-table-container"> <!-- 테이블을 감싸는 div -->
- 	<div class="card-header">
-                    <div class="card-title">일주일간 나의 근무 현황</div>
+ 	<div class="card-header">일주일간 나의 근무 현황</div>
+       
                 
    <table class="table table-hover" id="attendanceTable">
     <thead>
@@ -1030,7 +723,7 @@ function submitBusinessTrip() {
         </c:if>
     </tbody>
 </table>
-</div>
+
 	  </div>
 	
 	
@@ -1173,19 +866,6 @@ function recordReturnTime() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     <!--// 출근 시간 문자열을 Date 객체로 변환
                       var checkInTime = new Date(attendance.check_in);
                       // 한국 시간 (UTC+9)으로 변환   -->
@@ -1263,13 +943,6 @@ function determineWorkStatus(checkInTime, checkOutTime) {
 }
 </script>
     
-    
-    
-    
-    
-    
-    
-
 
 
 			<script>
@@ -1374,9 +1047,9 @@ function determineWorkStatus(checkInTime, checkOutTime) {
                     
 
 
-
+</div>
    </div>
-                  <div class="card-body">
+        </div>  
 
 <!------------------------------------------------------------------------------------------------------------------>
           </div>

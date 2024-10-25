@@ -150,8 +150,8 @@ public class AttendanceDAOImpl implements AttendanceDAO {
 	}
 	//수정 
 	@Override
-	public void insertOvertime(AttendanceVO attendanceVO) {
-		sqlSession.insert(NAMESPACE + ".insertOvertime", attendanceVO);
+	public void updateOvertime(AttendanceVO attendanceVO) {
+		sqlSession.update(NAMESPACE + ".updateOvertime", attendanceVO);
 	}
 	
 	@Override
