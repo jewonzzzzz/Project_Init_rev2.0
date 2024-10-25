@@ -90,4 +90,10 @@ public interface MemberService {
     
     // 퇴직신청
     boolean insertQuitEmployee(MemberVO memberVO);
+    
+    // 퇴직 승인
+    void approveQuit(String emp_id);
+    
+    // 퇴직 반려
+    void rejectQuit(String emp_id);
 }

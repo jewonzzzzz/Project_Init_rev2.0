@@ -58,6 +58,12 @@ public class MemberDAOImpl implements MemberDAO{
 	    return sqlSession.insert(NAMESPACE + ".insertQuitEmployee", memberVO);
 	}
 	
+	// 퇴직신청 반려시
+	@Override
+	public void deleteQuitRequest(String emp_id) {
+	    sqlSession.delete(NAMESPACE + ".deleteQuitRequest", emp_id);
+	}
+	
 	// 비밀번호 찾기
 	@Override
     public boolean isValidEmployee(String emp_id, String emp_email) {
