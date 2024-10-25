@@ -25,7 +25,7 @@ public class QrCodeController {
         String mainUrl = "http://localhost:8088/Attendance/attendanceMain";
         String qrCodeUrl = mainUrl + "?emp_id=" + emp_id;
 
-        qrCodeWriter qrCodeWriter = new QRCodeWriter();
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
         try {
             // QR 肄붾뱶 �깮�꽦
             BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeUrl, BarcodeFormat.QR_CODE, 200, 200);

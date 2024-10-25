@@ -37,7 +37,7 @@ public class MemberVO {
 	private String emp_level;
 	private Date update_date;	
 	private String newPassword;
-	private Integer approval;
+	private int approval;
 	private String reason;
 	private String reason_detail;
 	
