@@ -306,8 +306,7 @@ textarea.form-control {
 								<div class="d-flex justify-content-end mt-4">
 									<button type="button" class="btn btn-secondary me-2"
 										onclick="history.back()">취소</button>
-									<button type="button" class="btn btn-primary" id ="signBtn" data-bs-toggle="modal" 
-									data-bs-target="#addRowModal" >결재선 지정</button>
+									<button type="button" class="btn btn-primary" id="signBtn">결재선 지정</button>
 								</div>
 						</div>
 					</div>
@@ -408,68 +407,54 @@ textarea.form-control {
 
 	<script>
 	$(document).ready(function() {
-	
-    $('#quitForm').submit(function(e) {
-        e.preventDefault();
-        
-    	// 현재 날짜 가져오기
-        const today = new Date();
-        today.setHours(0, 0, 0, 0); // 시간을 제거하여 날짜만 비교
-        
-        // 선택된 퇴사 희망일
-        const quitDate = new Date($('#emp_quit_date').val());
-        
-        // 퇴사 희망일 유효성 검사
-        if (quitDate < today) {
-            alert('퇴사 희망일은 오늘 이후 날짜만 선택 가능합니다.');
-            return;
-        }
-        
-        // 폼 유효성 검사
-        if (!$('#agreeRules').is(':checked')) {
-            alert('퇴사 규칙에 동의해주세요.');
-            return;
-        }
-        if (!$('#emp_quit_date').val()) {
-            alert('퇴사희망일을 선택해주세요.');
-            return;
-        }
-        if (!$('#quit_reason').val()) {
-            alert('퇴사사유를 선택해주세요.');
-            return;
-        }
-        if (!$('#quit_reason_detail').val().trim()) {
-            alert('사유상세를 입력해주세요.');
-            return;
-        }
-        
-    });
-    
+	    // 결재선지정 버튼 클릭 이벤트
+	    $('#signBtn').click(function(e) {
+	        e.preventDefault();
+    	    
+    	    // 현재 날짜 가져오기
+    	    const today = new Date();
+    	    today.setHours(0, 0, 0, 0); 
+    	    
+    	    // 선택된 퇴사 희망일
+    	    const quitDate = new Date($('#emp_quit_date').val());
+    	    
+    	    // 유효성 검사
+    	    if (!$('#agreeRules').is(':checked')) {
+    	        swal("Error!", "퇴사 규칙에 동의해주세요.", "error");
+    	        return false;
+    	    }
+    	    if (!$('#emp_quit_date').val()) {
+    	        swal("Error!", "퇴사희망일을 선택해주세요.", "error");
+    	        return false;
+    	    }
+    	    if (quitDate < today) {
+    	        swal("Error!", "퇴사 희망일은 오늘 이후 날짜만 선택 가능합니다.", "error");
+    	        return false;
+    	    }
+    	    if (!$('#quit_reason').val()) {
+    	        swal("Error!", "퇴사사유를 선택해주세요.", "error");
+    	        return false;
+    	    }
+    	    if (!$('#quit_reason_detail').val().trim()) {
+    	        swal("Error!", "사유상세를 입력해주세요.", "error");
+    	        return false;
+    	    }
+
+    	    // 모든 유효성 검사를 통과하면 모달창 표시
+    	    $('#addRowModal').modal('show');
+    	});
     
  // 결재요청 시 기본세팅(본부장, 관련부서 정보 업로드, 해당직원 정보 업로드)
  	$('#addRowModal').on('show.bs.modal', function() {
- 		$('#modalTable tbody').empty();
- 		$('#signTable tbody').empty();
- 		$('#signTitle').val('');
-		$('#signContent').val('');
- 		
-		
-		// 유효성검사(input에 값이 있는지 없지 확인해서 알람띄위기)
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		// 유효성검사(input에 값이 있는지 없지 확인해서 알람띄위기)
-		
- 	    $.ajax({
- 	        url: '/salary/getMemberInfoForSign',
- 	        method: 'POST',
- 	        success: function(response) {
+    $('#modalTable tbody').empty();
+    $('#signTable tbody').empty();
+    $('#signTitle').val('');
+    $('#signContent').val('');
+    
+    $.ajax({
+        url: '/salary/getMemberInfoForSign',
+        method: 'POST',
+        success: function(response) {
  	        	console.log(response);
  	        	$('#topText').text("소속 : "+response["emp_bnum"]+" "+response["dname"]);
  	        	var row = "<tr>" +
