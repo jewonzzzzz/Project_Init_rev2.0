@@ -22,17 +22,7 @@
    
     
     
-    <style>
-    .custom-modal {
-        max-width: 95%; /* 너비를 95%로 설정하여 큰 화면에서도 충분한 크기 유지 */
-    }
-
-    @media (min-width: 992px) { /* 중간 이상 화면에서 적용 */
-        .custom-modal {
-            max-width: 100%; /* 너비를 90%로 설정 */
-        }
-    }
-</style>
+  
     
      
     <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/webfont/webfont.min.js"></script>
@@ -126,102 +116,110 @@
         <i class="fa fa-bookmark"></i>
     </span> 연차 신청서
 </button>
-
 <!-- 연차 신청 모달 -->
-<div id="leaveModal" class="modal" style="display: none;">
-    <div class="modal-content">
-        <span class="close" onclick="closeLeaveModal()">&times;</span>
-        <h2>연차 신청서</h2>
-        <form id="leaveForm">
-            <div class="form-group">
-                <label for="empId">사원 번호:</label>
-                <input type="text" id="empId" name="emp_id" class="form-control" 
-                       value="<%= empId %>" readonly required>
+
+<div class="modal fade" id="leaveModal" tabindex="-1" role="dialog" aria-labelledby="leaveModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="leaveModalLabel">연차 신청서</h5>
+                <button type="button" class="close" onclick="closeLeaveModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-              
-              <div class="form-group">
-					    <label for="employee_name">직원 이름</label>
-					    <input type="text" class="form-control" id="employee_name" value="${emp_name}" readonly>
-					</div>
-            
-            <div class="form-group">
-                <label for="annualLeaveStartDate">연차 시작일:</label>
-                <input type="date" id="annualLeaveStartDate" name="annual_leave_start_date" class="form-control" required>
+            <div class="modal-body">
+                <form id="leaveForm">
+                    <div class="form-group">
+                        <label for="empId">사원 번호:</label>
+                        <input type="text" id="empId" name="emp_id" class="form-control" 
+                               value="<%= empId %>" readonly required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="employee_name">직원 이름</label>
+                        <input type="text" class="form-control" id="employee_name" value="${emp_name}" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="annualLeaveStartDate">연차 시작일:</label>
+                        <input type="date" id="annualLeaveStartDate" name="annual_leave_start_date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endAnnualLeave">연차 종료일:</label>
+                        <input type="date" id="endAnnualLeave" name="end_annual_leave" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="usedLeave">사용 연차:</label>
+                        <input type="number" id="usedLeave" name="used_annual_leave" class="form-control" 
+                               placeholder="사용할 연차 일수를 입력하세요." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="totalLeave">총 연차:</label>
+                        <input type="number" id="totalLeave" name="total_annual_leave" class="form-control" 
+                               value="15" readonly required>
+                    </div>
+                    <div class="form-group">
+                        <label for="remainingLeave">잔여 연차:</label>
+                        <input type="number" id="remainingLeave" name="remaining_annual_leave" class="form-control" 
+                               value="15" readonly required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lgrant">연차 부여:</label>
+                        <input type="number" id="lgrant" name="lgrant" class="form-control" 
+                               value="0" readonly required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expiry">연차 소멸:</label>
+                        <input type="number" id="expiry" name="expiry" class="form-control" 
+                               value="0" readonly required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adjustment">연차 조정:</label>
+                        <input type="number" id="adjustment" name="adjustment" class="form-control" 
+                               readonly required>
+                    </div>
+                    <div class="form-group">
+                        <label for="leaveType">휴가 종류:</label>
+                        <select id="leaveType" name="leave_type" class="form-control" required>
+                            <option value="연차">연차</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="leaveStatus">결재 상태:</label>
+                        <select id="leaveStatus" name="leave_status" class="form-control" required>
+                            <option value="-1">결재 진행중</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="requested_at">신청 날짜 및 시간:</label>
+                        <input
+                            type="text" class="form-control" id="requested_at"
+                            name="requested_at" placeholder="yyyy-MM-dd HH:mm:ss"
+                            value="<%= requestedAt %>" required readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="reason">신청 사유:</label>
+                        <textarea id="reason" name="reason" class="form-control" rows="4" required></textarea>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="endAnnualLeave">연차 종료일:</label>
-                <input type="date" id="endAnnualLeave" name="end_annual_leave" class="form-control" required>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="signBtn" data-bs-toggle="modal" data-bs-target="#addRowModalA">결재요청</button>
+                <button type="button" class="btn btn-secondary" onclick="closeLeaveModal()">닫기</button>
             </div>
-            <div class="form-group">
-                <label for="usedLeave">사용 연차:</label>
-                <input type="number" id="usedLeave" name="used_annual_leave" class="form-control" 
-                       placeholder="사용할 연차 일수를 입력하세요." required>
-            </div>
-			           <div class="form-group">
-			    <label for="totalLeave">총 연차:</label>
-			    <input type="number" id="totalLeave" name="total_annual_leave" class="form-control" 
-			           value="15" readonly required> <!-- 기본값 예시로 20일 설정 -->
-			</div>
-			<div class="form-group">
-			    <label for="remainingLeave">잔여 연차:</label>
-			    <input type="number" id="remainingLeave" name="remaining_annual_leave" class="form-control" 
-			           value="15" readonly required> <!-- 초기 잔여 연차 설정 -->
-			</div>
-			<div class="form-group">
-			    <label for="lgrant">연차 부여:</label>
-			    <input type="number" id="lgrant" name="lgrant" class="form-control" 
-			           value="0" readonly required> <!-- 기본값 설정 -->
-			</div>
-			<div class="form-group">
-			    <label for="expiry">연차 소멸:</label>
-			    <input type="number" id="expiry" name="expiry" class="form-control" 
-			           value="0" readonly required> <!-- 기본값 설정 -->
-			</div>
-			<div class="form-group">
-			    <label for="adjustment">연차 조정:</label>
-			    <input type="number" id="adjustment" name="adjustment" class="form-control" 
-			           readonly required> <!-- 기본값 설정 -->
-			</div>
-            <div class="form-group">
-                <label for="leaveType">휴가 종류:</label>
-                <select id="leaveType" name="leave_type" class="form-control" required>
-                    <option value="연차">연차</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="leaveStatus">결재 상태:</label>
-                <select id="leaveStatus" name="leave_status" class="form-control" required>
-                    <option value="-1">결재 진행중</option>
-                </select>
-            </div>
-            
-             <div>
-    <label for="requested_at">신청 날짜 및 시간:</label>
-    <input
-        type="text" class="form-control" id="requested_at"
-        name="requested_at" placeholder="yyyy-MM-dd HH:mm:ss"
-        value="<%= requestedAt %>" required readonly>
-</div>
-            
-            <div class="form-group">
-                <label for="reason">신청 사유:</label>
-                <textarea id="reason" name="reason" class="form-control" rows="4" required></textarea>
-            </div>
-        </form>
-        <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" onclick="submitLeaveForm()">신청</button>
-            <button type="button" class="btn btn-secondary" onclick="closeLeaveModal()">닫기</button>
         </div>
     </div>
 </div>
 
 <script>
 function openLeaveModal() {
-    document.getElementById("leaveModal").style.display = "block";
+	 $('#leaveRequestModal').modal('show'); // Bootstrap의 모달을 수동으로 열기
 }
 
+
+
 function closeLeaveModal() {
-    document.getElementById("leaveModal").style.display = "none";
+	 $('#leaveRequestModal').modal('hide'); 
 }
 
 // 사용 연차 입력 시 잔여 연차 및 조정 연차 자동 계산
@@ -390,6 +388,13 @@ function submitLeaveForm() {
 </div>
 
 <script>
+
+
+
+
+
+
+
 function openLeaveRequestModal() {
     $('#leaveRequestModal').modal('show'); // Bootstrap의 모달을 수동으로 열기
 }
@@ -430,43 +435,45 @@ document.getElementById("leaveRequestForm").addEventListener("submit", function(
         return; // 유효성 검사 실패 시 종료
     }
 
-    // 입력된 값 가져오기
-    const empId = document.getElementById("empId").value;
-    const leaveType = document.getElementById("leave_type").value;
-    const leaveStartDate = document.getElementById("leave_start_date").value;
-    const endLeaveDate = document.getElementById("end_leave_date").value;
-    const totalLeaveDays = document.getElementById("total_leave_days").value;
-    const leaveStatus = document.getElementById("leave_status").value;
-    const reason = document.getElementById("reason").value;
-    const requestedAt = document.getElementById("requested_at").value; // 신청 날짜 및 시간 가져오기
+//     // 입력된 값 가져오기
+     const empId = document.getElementById("empId").value;
+     const leaveType = document.getElementById("leave_type").value;
+     const leaveStartDate = document.getElementById("leave_start_date").value;
+     const endLeaveDate = document.getElementById("end_leave_date").value;
+     const totalLeaveDays = document.getElementById("total_leave_days").value;
+     const leaveStatus = document.getElementById("leave_status").value;
+     const reason = document.getElementById("reason").value;
+     const requestedAt = document.getElementById("requested_at").value; // 신청 날짜 및 시간 가져오기
 
-    // 서버에 데이터 전송하는 로직 추가 (AJAX 사용)
-    $.ajax({
-        type: "POST",
-        url: "leavesubmit", // 서버의 API 엔드포인트
-        contentType: "application/json", // JSON 형태로 전송
-        data: JSON.stringify({
-            emp_id: empId,
-            leave_type: leaveType,
-            leave_start_date: leaveStartDate,
-            end_leave_date: endLeaveDate,
-            reason: reason,
-            total_leave_days: totalLeaveDays,
-            leave_status: leaveStatus,
-            requested_at: requestedAt // 신청 날짜 및 시간 전송
-        }),
-        success: function(response) {
-            // 요청이 성공했을 때의 처리
-            console.log("휴가 신청이 완료되었습니다:", response);
-            alert("휴가 신청이 완료되었습니다."); // 알림창으로 결과 보여주기
-            closeLeaveRequestModal(); // 성공한 후에 모달 닫기
-        },
-        error: function(xhr, status, error) {
+     // 서버에 데이터 전송하는 로직 추가 (AJAX 사용)
+     $.ajax({
+         type: "POST",
+         url: "leavesubmit", // 서버의 API 엔드포인트
+         contentType: "application/json", // JSON 형태로 전송
+         data: JSON.stringify({
+             emp_id: empId,
+             leave_type: leaveType,
+             leave_start_date: leaveStartDate,
+             end_leave_date: endLeaveDate,
+             reason: reason,
+             total_leave_days: totalLeaveDays,
+             leave_status: leaveStatus,
+             requested_at: requestedAt // 신청 날짜 및 시간 전송
+         }),
+         success: function(response) {
+             // 요청이 성공했을 때의 처리
+             console.log("휴가 신청이 완료되었습니다:", response);
+             
+             $('#addRowModal').modal('show');
+             
+             closeLeaveRequestModal(); // 성공한 후에 모달 닫기
+         },
+         error: function(xhr, status, error) {
             // 요청이 실패했을 때의 처리
-            console.error("휴가 신청 실패:", error);
-            alert("휴가 신청 실패: " + error); // 에러 메시지 보여주기
-        }
-    });
+             console.error("휴가 신청 실패:", error);
+             alert("휴가 신청 실패: " + error); // 에러 메시지 보여주기
+         }
+     });
 });
 
 // 이벤트 리스너 추가: 시작일 및 종료일 변경 시 총 휴가 일수 계산
@@ -1074,8 +1081,15 @@ function getAttendanceStatusDisplay(leave_status) {
 	             			wf_receiver_2nd: $('select option[name="wf_receiver_2nd"]:selected').closest('tr').find('input').val(),
 	             			wf_receiver_3rd: $('select option[name="wf_receiver_3rd"]:selected').closest('tr').find('input').val(),
 	             			wf_title: $('input[name="wf_title"]').val(),
-	             			wf_content: $('textarea[name="wf_content"]').val(),
-	             			leave_type:$('#leaveType').val(),
+	             			wf_content: $('textarea[name="wf_content"]').val(),	             			
+	             			leave_type: $('#leave_type').val(),  // 휴가 유형
+	             		    leave_start_date: $('#leave_start_date').val(),  // 휴가 시작일
+	             		    end_leave_date: $('#end_leave_date').val(),  // 휴가 종료일
+	             		    total_leave_days: $('#total_leave_days').val(),  // 총 휴가 일수
+	             		    leave_status: $('#leave_status').val(),  // 결재 상태
+	             		    requested_at: $('#requested_at').val(),  // 신청 날짜 및 시간
+	             		    reason: $('#reason').val()  // 신청 사유
+	             		};
 	             			
 	             			
 	             			
@@ -1083,7 +1097,7 @@ function getAttendanceStatusDisplay(leave_status) {
 	             			
 	             			
 	             			
-  	             	};
+  	             
   	             	$.ajax({
   	            		url:'/leave/insertSignInfoForLeave',
   	            		type: 'POST',
@@ -1103,18 +1117,15 @@ function getAttendanceStatusDisplay(leave_status) {
   	                        swal("Error!", "정보를 가져오는데 실패하였습니다.", "error");
   	                    }
   	             		});
-  	            	 }
-  	             }
-  	     	 });
-     	});
+  	             	
+	                }
+	             }
+	     	 });
+ 		});
+	
+	});
         
-        
-        
-        
-        
-        
-        
-    });
+      
     
 </script>
 					

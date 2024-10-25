@@ -2,6 +2,7 @@ package com.Init.domain;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -62,12 +63,12 @@ public class LeaveVO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
     private Date requested_at; 
 
+    
+    
+    
     // 총 휴가 일수 관련 필드
     private int total_leave_days; 
-   
-    
-    
-    
+
     
     
    

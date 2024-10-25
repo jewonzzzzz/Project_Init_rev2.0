@@ -103,5 +103,9 @@ public class LeaveServiceImpl implements LeaveService {
 	public void updateAnnualLeaveA(int leave_id) {
 		leaveDAO.updateAnnualLeaveA(leave_id);
 	}
-
+	@Override
+	public void insertSignInfoForLeave(LeaveVO lvo) {
+	   leaveDAO.insertSignInfoForLeave(lvo);
+	}
+	
 }

@@ -29,4 +29,6 @@ public interface LeaveService {
 	public LeaveVO getLatestLeaveInfo(String emp_id);
 	
 	public void updateAnnualLeaveA(int leave_id);
+
+	void insertSignInfoForLeave(LeaveVO lvo);
 }
