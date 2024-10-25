@@ -435,6 +435,9 @@ footer {
 											<th>직책</th>
 											<th>연봉</th>
 											<th>근무형태</th>
+											<th>예금주</th>
+											<th>계좌번호</th>
+											<th>은행명</th>
 											<th>재직구분</th>
 											<th>입사일</th>
 											<th>휴직일</th>
@@ -460,6 +463,9 @@ footer {
 													<td>${member.emp_job}</td>
 													<td>${member.emp_salary}</td>
 													<td>${member.emp_work_type}</td>
+													<td>${member.emp_account_name}</td>
+													<td>${member.emp_account_num}</td>
+													<td>${member.emp_bank_name}</td>
 													<td>${member.emp_status}</td>
 													<td>${member.emp_start_date}</td>
 													<td>${member.emp_break_date}</td>
@@ -746,6 +752,27 @@ footer {
 													</select>
 												</div>
 												<div class="form-group">
+												    <label for="edit_emp_account_holder">예금주</label>
+												    <input type="text" class="form-control" id="emp_account_name" name="emp_account_name">
+												</div>
+												<div class="form-group">
+												    <label for="edit_emp_account">계좌번호</label>
+												    <input type="text" class="form-control" id="emp_account_num" name="emp_account_num">
+												</div>
+												<div class="form-group">
+												    <label for="edit_emp_bank">은행명</label>
+												    <select class="form-control" id="emp_bank_name" name="emp_bank_name">
+												        <option value="">선택하세요</option>
+												        <option value="KB국민은행">KB국민은행</option>
+												        <option value="신한은행">신한은행</option>
+												        <option value="우리은행">우리은행</option>
+												        <option value="하나은행">하나은행</option>
+												        <option value="NH농협은행">NH농협은행</option>
+												        <option value="IBK기업은행">IBK기업은행</option>
+												        <option value="카카오뱅크">카카오뱅크</option>
+												    </select>
+												</div>
+												<div class="form-group">
 													<label for="edit_emp_status">재직구분</label> <select
 														class="form-control" id="edit_emp_status"
 														name="emp_status">
@@ -904,7 +931,21 @@ footer {
     	            $('#edit_emp_job').val(member.emp_job || '');
     	            $('#edit_emp_salary').val(member.emp_salary || '');
     	            $('#edit_emp_work_type').val(member.emp_work_type || '');
+    	            $('#edit_emp_account_name').val(member.emp_account_name || '');
+    	            $('#edit_emp_account_num').val(member.emp_num || '');
+    	            $('#edit_emp_bank_name').val(member.emp_bank_name || '');
     	            $('#edit_emp_status').val(member.emp_status || '');
+    	            
+    	         	// 계좌 정보 설정
+    	            if(member.emp_account_name) {
+    	                $('#edit_emp_account_name').val(member.emp_account_name);
+    	            }
+    	            if(member.emp_account_num) {
+    	                $('#edit_emp_account_num').val(member.emp_account_num);
+    	            }
+    	            if(member.emp_bank_name) {
+    	                $('#edit_emp_bank_name').val(member.emp_bank_name);
+    	            }
 
     	            // 날짜 데이터 처리
     	            try {
