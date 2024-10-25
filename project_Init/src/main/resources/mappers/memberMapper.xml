@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.Init.mapper.MemberMapper">
+	
+	<!-- 시간정보 조회  -->
+  	<select id="getTime" resultType="string">
+  		select now()
+  	</select>
+  	
+  	<!-- 퇴사신청 -->
+	<insert id="insertQuitEmployee" parameterType="map">
+	    INSERT INTO employee (
+	        emp_id, emp_pw, emp_name, emp_birth, emp_gender,
+	        emp_tel, emp_email, emp_addr, emp_bnum, emp_dnum,
+	        emp_position, emp_job, emp_salary, emp_work_type,
+	        emp_bank_name, emp_account_num, emp_account_name,
+	        emp_profile, emp_start_date, emp_break_date,
+	        emp_restart_date, emp_quit_date, emp_status, approval,
+	        reason, reason_detail
+	    )
+	    SELECT 
+	        e.emp_id, e.emp_pw, e.emp_name, e.emp_birth, e.emp_gender,
+	        e.emp_tel, e.emp_email, e.emp_addr, e.emp_bnum, e.emp_dnum,
+	        e.emp_position, e.emp_job, e.emp_salary, e.emp_work_type,
+	        e.emp_bank_name, e.emp_account_num, e.emp_account_name,
+	        e.emp_profile, e.emp_start_date, e.emp_break_date,
+	        e.emp_restart_date, #{emp_quit_date}, '퇴직', -1, 
+	        #{reason}, #{reason_detail}
+	    FROM employee e
+	    WHERE e.emp_id = #{emp_id}
+	</insert>
+		
+    
+    <!-- 비밀번호 찾기 -->
+    <select id="isValidEmployee" resultType="int">
+        SELECT COUNT(*) FROM employee WHERE emp_id = #{emp_id} AND emp_email = #{emp_email}
+        AND approval = 0
+    </select>
+
+	<select id="verifyCode" resultType="int">
+	    SELECT COUNT(*) FROM verification_codes 
+	    WHERE emp_id = #{emp_id} 
+	    AND code = #{code}
+	    AND expiry_time > #{currentTime}
+	</select>
+
+  	<!-- 사원 등록 -->
+    <insert id="insertMember" parameterType="com.Init.domain.MemberVO">
+        INSERT INTO employee (
+            emp_id, emp_pw, emp_name, emp_birth, emp_gender, 
+            emp_bnum, emp_dnum, emp_position, emp_job, 
+            emp_salary, emp_work_type, emp_status, emp_start_date
+        ) VALUES (
+            #{emp_id}, #{emp_pw}, #{emp_name}, #{emp_birth}, #{emp_gender}, 
+            #{emp_bnum}, #{emp_dnum}, #{emp_position}, #{emp_job}, 
+            #{emp_salary}, #{emp_work_type}, #{emp_status}, #{emp_start_date}
+        )
+    </insert>
+
+    <!-- 다음 사원 번호 시퀀스 가져오기 -->
+    <select id="getNextEmployeeSequence" resultType="int">
+        SELECT IFNULL(MAX(CAST(SUBSTRING(emp_id, 3) AS UNSIGNED)), 0) + 1
+        FROM employee
+        WHERE emp_id LIKE CONCAT(DATE_FORMAT(CURDATE(), '%y'), '%')
+    </select>
+	
+	<!-- 로그인 체크 -->
+  	<select id="loginMember" resultType="MemberVO">
+	    select * from employee 
+	    where emp_id=#{emp_id} 
+	    and emp_pw=#{emp_pw}
+	    and approval = 0
+	</select>
+  	
+  	<select id="getMemberById" resultType="MemberVO">
+	    SELECT * FROM employee 
+	    WHERE emp_id = #{emp_id}
+	    AND approval = 0
+	</select>
+  	
+  	<!-- 비밀번호 찾기 -->
+  	<update id="resetPassword">
+	    UPDATE employee 
+	    SET emp_pw = #{newPassword} 
+	    WHERE emp_id = #{emp_id}
+	    AND approval = 0
+	</update>
+	
+	<!-- 인증번호 -->
+	<select id="getVerificationCode" resultType="com.Init.domain.VerificationCode">
+	    SELECT emp_id, code, expiry_time as expiryTime
+	    FROM verification_codes
+	    WHERE emp_id = #{emp_id}
+	    ORDER BY expiry_time DESC
+	    LIMIT 1
+	</select>
+
+    <insert id="saveVerificationCode">
+        INSERT INTO verification_codes (emp_id, code, expiry_time)
+        VALUES (#{emp_id}, #{code}, #{expiryTime})
+        ON DUPLICATE KEY UPDATE
+        code = #{code}, expiry_time = #{expiryTime}
+    </insert>
+
+    <delete id="deleteVerificationCode">
+        DELETE FROM verification_codes
+        WHERE emp_id = #{emp_id}
+    </delete>
+  	
+  	<!-- 회원정보 조회 -->
+	<select id="getMember" parameterType="String" resultType="MemberVO">
+	    SELECT * 
+	    FROM employee 
+	    WHERE emp_id = #{emp_id} 
+	    AND approval = 0
+	    LIMIT 1
+	</select>
+  	
+	<!-- 2. 새로운 데이터 삽입 -->
+	<insert id="updateMember">
+	    INSERT INTO employee (
+	        emp_id, emp_name, emp_birth, emp_gender, emp_tel, emp_email, 
+	        emp_addr, emp_dnum, emp_position, emp_job, emp_status, emp_bnum, 
+	        emp_work_type, emp_bank_name, emp_account_num, emp_account_name, 
+	        emp_start_date, emp_salary, emp_break_date, emp_restart_date, 
+	        emp_quit_date, emp_pw, emp_profile, reason, reason_detail, approval
+	    )
+	    SELECT 
+	        #{emp_id}, #{emp_name}, #{emp_birth}, #{emp_gender}, #{emp_tel}, #{emp_email}, 
+	        #{emp_addr}, #{emp_dnum}, #{emp_position}, #{emp_job}, #{emp_status}, #{emp_bnum}, 
+	        #{emp_work_type}, #{emp_bank_name}, #{emp_account_num}, #{emp_account_name}, 
+	        #{emp_start_date}, e.emp_salary, #{emp_break_date}, #{emp_restart_date}, 
+	        #{emp_quit_date}, e.emp_pw, e.emp_profile, #{reason}, #{reason_detail}, 0
+	    FROM employee e
+	    WHERE e.emp_id = #{emp_id}
+	    AND e.approval = (
+	        SELECT MIN(approval) 
+	        FROM employee 
+	        WHERE emp_id = #{emp_id}
+	    )
+	</insert>
+
+	<!-- 1. approval 값 높은 순서대로 증가 -->
+	<update id="insertHisMember">
+	    UPDATE employee 
+	    SET approval = approval + 1
+	    WHERE emp_id = #{emp_id}
+	    AND emp_status = '재직'
+	    ORDER BY approval DESC
+	</update>
+
+	
+	<!-- 관리자 수정 -->
+    <update id="updateEmployee" parameterType="MemberVO">
+        UPDATE employee
+        SET emp_name = #{emp_name},
+            emp_birth = #{emp_birth},
+            emp_gender = #{emp_gender},
+            emp_tel = #{emp_tel},
+            emp_email = #{emp_email},
+            emp_addr = #{emp_addr},
+            emp_bnum = #{emp_bnum},
+            emp_dnum = #{emp_dnum},
+            emp_position = #{emp_position},
+            emp_job = #{emp_job},
+            emp_salary = #{emp_salary},
+            emp_work_type = #{emp_work_type},
+            emp_status = #{emp_status},
+            emp_start_date = #{emp_start_date},
+            emp_break_date = #{emp_break_date},
+            emp_restart_date = #{emp_restart_date},
+            emp_quit_date = #{emp_quit_date}
+        WHERE emp_id = #{emp_id}
+        AND approval = 0
+    </update>
+
+    <insert id="insertEmployeeHistory" parameterType="MemberVO">
+        INSERT INTO his_employee (
+            id, name, birth, gender, tel, email, addr,
+            bnum, dnum, position, job, salary, work_type,
+            status, start_date, break_date, restart_date, quit_date,
+            update_date
+        ) VALUES (
+            #{emp_id}, #{emp_name}, #{emp_birth}, #{emp_gender}, #{emp_tel}, #{emp_email}, #{emp_addr},
+            #{emp_bnum}, #{emp_dnum}, #{emp_position}, #{emp_job}, #{emp_salary}, #{emp_work_type},
+            #{emp_status}, #{emp_start_date}, #{emp_break_date}, #{emp_restart_date}, #{emp_quit_date},
+            NOW()
+        )
+    </insert>
+	
+	<!-- 비밀번호 수정 -->
+	<update id="updatePassword">
+        UPDATE employee SET emp_pw = #{emp_pw} WHERE emp_id = #{emp_id}
+        AND approval = 0
+    </update>
+  	
+  	<!-- 회원정보 삭제  -->
+  	<delete id="deleteMember">
+  		delete from employee
+  		where emp_id=#{emp_id} and emp_pw=#{emp_pw} 
+  	</delete>
+  	
+  	<!-- 회원정보 목록조회 -->
+	<select id="getMemberList" resultType="MemberVO">
+	    SELECT * FROM employee
+	    WHERE approval = 0
+	</select>
+  	
+  	<!-- 계좌 정보 조회 -->
+	<select id="getAccount" parameterType="String" resultType="AccountVO">
+	    SELECT emp_account_name, emp_account_num, emp_bank_name
+	    FROM employee
+	    WHERE emp_id = #{emp_id}
+	    AND approval = 0
+	</select>
+
+    <!-- 자격증 정보 조회 -->
+    <select id="getEmpLicense" parameterType="String" resultType="LicenseVO">
+        SELECT ll.li_id, ll.li_name, ll.li_issu, l.li_date
+        FROM li_list ll
+        JOIN license l ON ll.li_id = l.li_id
+        WHERE l.emp_id = #{emp_id}
+    </select>
+    
+    <!-- 자격증 추가 -->
+    <select id="getLicenseList" resultType="map">
+        SELECT li_id, li_name, li_issu
+        FROM li_list
+    </select>
+
+    <insert id="addLicense" parameterType="LicenseVO">
+        INSERT INTO license (li_id, emp_id, li_date)
+        VALUES (#{li_id}, #{emp_id}, #{li_date})
+    </insert>
+
+    <delete id="deleteLicense" parameterType="map">
+        DELETE FROM license
+        WHERE li_id = #{licenseId} AND emp_id = #{emp_id}
+    </delete>
+
+    <!-- 교육이력 정보 조회 -->
+    <select id="getHis_edu" parameterType="String" resultType="His_eduVO">
+	    SELECT his_edu.emp_id, edu_list.edu_end_date, his_edu.edu_status, 
+	           edu_list.edu_name, edu_list.edu_teacher
+	    FROM his_edu 
+	    JOIN edu_list ON his_edu.edu_id = edu_list.edu_id
+	    WHERE his_edu.emp_id = #{emp_id} 
+	    AND his_edu.edu_status = '교육이수'
+	</select>
+	
+
+    <!-- 포상/징계 정보 조회 -->
+    <select id="getReward" parameterType="String" resultType="RewardVO">
+        SELECT rid, division, rname, reason, rdate
+        FROM reward
+        WHERE emp_id = #{emp_id}
+    </select>
+
+    <!-- 인사평가 정보 조회 -->
+    <select id="getEval" parameterType="String" resultType="EvalVO">
+        SELECT eval_name, score_total, eval_grade, eval_comment, eval_his_status, employee.emp_name, eval_end_date
+        FROM eval_his_list
+        JOIN eval_list ON eval_his_list.eval_id = eval_list.eval_id
+        JOIN employee ON eval_his_list.evaluator = employee.emp_id
+        WHERE eval_his_list.emp_id = #{emp_id}
+        AND eval_his_list.eval_his_status = '평가종료'
+    </select>
+    
+    <!-- 프로필 사진 업데이트 -->
+	<update id="updateProfilePicture" parameterType="MemberVO">
+	    UPDATE employee
+	    SET emp_profile = #{emp_profile}
+	    WHERE emp_id = #{emp_id}
+	    AND approval = 0
+	</update>
+    
+    <!-- 계좌 정보 업데이트 -->
+	<update id="updateAccount" parameterType="MemberVO">
+	    UPDATE employee
+	    SET emp_account_name = #{emp_account_name},
+	        emp_account_num = #{emp_account_num},
+	        emp_bank_name = #{emp_bank_name}
+	    WHERE emp_id = #{emp_id}
+	    AND approval = 0
+	</update>
+    
+    <!-- 회원 정보 조회  -->
+	<select id="getPaginatedMembers" parameterType="map" resultType="MemberVO">
+	    SELECT * 
+	    FROM employee
+	    WHERE approval = 0
+	    ORDER BY emp_id
+	    LIMIT #{offset}, #{pageSize}
+	</select>
+    
+    <select id="getTotalMembersCount" resultType="int">
+        SELECT COUNT(*) FROM employee
+        WHERE approval = 0
+    </select>
+
+	<select id="getMemberDetail" resultType="MemberVO" parameterType="String">
+	    SELECT * FROM employee 
+	    WHERE emp_id = #{emp_id}
+	    AND approval = 0
+	</select>
+    
+    <!-- 조직도 -->
+    <select id="getAllMembers" resultType="MemberVO">
+        SELECT * FROM employee ORDER BY emp_dnum, emp_position
+    </select>
+    
+	<select id="getBranchList" resultType="String">
+   		SELECT DISTINCT emp_bnum FROM employee ORDER BY emp_bnum
+	</select>
+	
+	<select id="getTeamMembers" resultType="MemberVO">
+	    SELECT * FROM employee 
+	    WHERE emp_dnum = #{emp_dnum}
+	    AND approval = 0
+	    ORDER BY emp_position
+	</select>
+	
+	<!-- 조직도 페이지  -->
+	<select id="getAllMemPage" resultType="MemberVO">
+        SELECT * FROM employee ORDER BY emp_bnum, emp_dnum, emp_position
+    </select>
+
+    <select id="getTeamMemPage" parameterType="string" resultType="MemberVO">
+        SELECT * FROM employee WHERE emp_dnum = #{deptId} AND emp_job != '부서장' ORDER BY emp_position
+    </select>
+    
+    <select id="getFilterOptions" parameterType="string" resultType="string">
+    SELECT DISTINCT 
+    <choose>
+        <when test="_parameter == 'emp_dnum'">emp_dnum</when>
+        <when test="_parameter == 'emp_bnum'">emp_bnum</when>
+        <when test="_parameter == 'emp_position'">emp_position</when>
+        <when test="_parameter == 'emp_job'">emp_job</when>
+        <when test="_parameter == 'emp_status'">emp_status</when>
+    </choose>
+    FROM employee
+    ORDER BY 
+    <choose>
+        <when test="_parameter == 'emp_dnum'">emp_dnum</when>
+        <when test="_parameter == 'emp_bnum'">emp_bnum</when>
+        <when test="_parameter == 'emp_position'">emp_position</when>
+        <when test="_parameter == 'emp_job'">emp_job</when>
+        <when test="_parameter == 'emp_status'">emp_status</when>
+    </choose>
+	</select>
+
+	<!-- 필터링된 회원 목록 가져오기 -->
+	<select id="getFilteredMembers" parameterType="map" resultType="MemberVO">
+        SELECT * FROM employee
+        <where>
+            <if test="filterType != null and filterValue != null">
+                ${filterType} = #{filterValue}
+            </if>
+        AND approval = 0
+        </where>
+        ORDER BY emp_id
+        LIMIT #{offset}, #{pageSize}
+    </select>
+    
+    <!-- 필터링된 회원 수 가져오기 -->
+    <select id="getFilteredMembersCount" parameterType="map" resultType="int">
+        SELECT COUNT(*) 
+        FROM employee
+        WHERE approval = 0
+            <if test="filterType != null and filterValue != null">
+                AND ${filterType} = #{filterValue}
+            </if>
+    </select>
+    
+    <!-- 검색기능 -->
+    <select id="searchMembers" parameterType="map" resultType="MemberVO">
+        SELECT * FROM employee
+        <where>
+            <choose>
+                <when test="searchType == 'emp_id'">
+                    emp_id LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'emp_name'">
+                    emp_name LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'emp_dnum'">
+                    emp_dnum LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'emp_position'">
+                    emp_position LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'emp_job'">
+                    emp_job LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+            </choose>
+        AND approval = 0
+        </where>
+        ORDER BY emp_id
+        LIMIT #{offset}, #{pageSize}
+    </select>
+    
+    <select id="getSearchMembersCount" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM employee
+        <where>
+            <choose>
+                <when test="searchType == 'emp_id'">
+                    emp_id LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'emp_name'">
+                    emp_name LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'emp_dnum'">
+                    emp_dnum LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'emp_position'">
+                    emp_position LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+                <when test="searchType == 'emp_job'">
+                    emp_job LIKE CONCAT('%', #{keyword}, '%')
+                </when>
+            </choose>
+        AND approval = 0
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.Init.mapper.SalaryMapper">
+
+	<!-- 기본급여정보 가져오기 -->
+	<select id="getSalaryBasicInfo" resultType="com.Init.domain.SalaryBasicInfoVO">
+		select * 
+		from salary_basic_info 
+		where sal_basic_id = 1
+	</select>
+	
+	<!-- 기본급여정보 초기화 -->
+	<select id="initSalaryBasicInfo">
+		insert into salary_basic_info(sal_basic_id) 
+		values(1)
+	</select>
+	
+	<!-- 기본급여정보 수정 -->
+	<select id="updateSalaryBasicInfo">
+		update salary_basic_info 
+		set hourwage=#{hourwage}, incometax_rate1=#{incometax_rate1}, incometax_rate2=#{incometax_rate2}, 
+		incometax_rate3=#{incometax_rate3}, incometax_rate4=#{incometax_rate4}, incometax_rate5=#{incometax_rate5}, 
+		incometax_rate6=#{incometax_rate6}, incometax_rate7=#{incometax_rate7}, incometax_rate8=#{incometax_rate8}, 
+		pension_rate=#{pension_rate}, heal_ins_rate=#{heal_ins_rate}, long_ins_rate=#{long_ins_rate}, 
+		emp_ins_rate=#{emp_ins_rate} 
+		where sal_basic_id=1
+	</select>
+	
+	<!-- 직급급/직무급 가져오기 -->
+	<select id="getSalaryPositionJobInfo" resultType="com.Init.domain.SalaryPositionJobVO">
+		select *  
+		from salary_position_job
+		where sal_position_job_id = 1
+	</select>
+	
+	<!-- 직급급/직무급 정보 초기화 -->
+	<select id="initSalaryPositionJobInfo">
+		insert into salary_position_job(sal_position_job_id) 
+		values(1)
+	</select>
+	
+	<!-- 직급급/직무급 정보 수정 -->
+	<select id="updatesalaryPositionJobInfo">
+		update salary_position_job  
+		set sal_position_ceo=#{sal_position_ceo}, sal_position_vice=#{sal_position_vice}, 
+		sal_position_director=#{sal_position_director}, sal_position_depart=#{sal_position_depart}, 
+		sal_position_team=#{sal_position_team}, sal_position_manager=#{sal_position_manager}, 
+		sal_position_assist=#{sal_position_assist}, sal_position_staff=#{sal_position_staff}, 
+		sal_job1=#{sal_job1}, sal_job2=#{sal_job2}, sal_job3=#{sal_job3}, sal_job4=#{sal_job4}, 
+		sal_job5=#{sal_job5}, sal_job6=#{sal_job6}, sal_job7=#{sal_job7}, sal_job8=#{sal_job8}, 
+		sal_job9=#{sal_job9}, sal_job10=#{sal_job10} 
+		where sal_position_job_id=1
+	</select>
+	
+	<!-- 급여산출페이지 이동 시 급여내역리스트 가져오기 -->
+	<select id="getCalSalaryList" resultType="CalSalaryListVO">
+		select * from salary_list 
+		order by year desc, CAST(month AS UNSIGNED) DESC
+	</select>
+	
+	<!-- 급여생성 중복방지 체크 -->
+	<select id="checkCreateSalary" resultType="CalSalaryListVO">
+		select * from salary_list where sal_type = #{sal_type} and year= #{year} and month=#{month} 
+		and sal_list_status not in ('반려') limit 1   
+	</select>
+	
+	<!-- 사번으로 직원정보 가져오기 -->
+	<select id="getMemberInfoToId" resultType="MemberInfoForSalaryVO">
+		select emp_id, emp_name, dname, emp_position, emp_job
+		from employee e, dept d 
+		where e.emp_dnum = d.dnum and emp_id = #{emp_id} and emp_status = '재직' and approval = 0
+	</select>
+	
+	<!-- 이름으로 직원정보 가져오기 -->
+	<select id="getMemberInfoToName" resultType="MemberInfoForSalaryVO">
+		select emp_id, emp_name, dname, emp_position, emp_job
+		from employee e, dept d 
+		where e.emp_dnum = d.dnum and emp_name = #{emp_name} and emp_status = '재직' and approval = 0 
+	</select>
+	
+	<!-- 모달창에서 검색된 직원정보를 본 테이블로 이동(근무이력 포함하여 출력) -->
+	<select id="getMemberInfoForSalary" resultType="MemberInfoForSalaryVO">
+		select e.emp_id, emp_name, dname, dgrade, perform_rate, emp_position, emp_job, emp_work_type, 
+		sum(working_time) working_time, sum(overtime) overtime, sum(night_work_time) night_work_time, 
+		sum(special_working_time) special_working_time 
+		from employee e, attendance_ch a, dept d 
+		where e.emp_id = a.emp_id and e.emp_dnum = d.dnum and e.emp_id = #{emp_id} and check_in 
+		between #{check_in } and concat(last_day(#{check_in}), ' 23:59:59') and approval = 0 
+	</select>
+	
+	<!-- 전체 직원정보 가져오기 -->
+	<select id="getMemberAllInfo" resultType="MemberInfoForSalaryVO">
+		select e.emp_id, emp_name, dname, emp_position, emp_job, 
+		emp_work_type, sum(working_time) working_time, sum(overtime) overtime, 
+		sum(night_work_time) night_work_time, sum(special_working_time) special_working_time 
+		from employee e, attendance_ch a, dept d 
+		where e.emp_id = a.emp_id and e.emp_dnum = d.dnum and check_in 
+		between #{check_in } and concat(last_day(#{check_in}), ' 23:59:59') and emp_status = '재직' 
+		and approval = 0 group by e.emp_id 
+	</select>
+	
+	<!-- 급여산출결과 급여내역리스트 저장 -->
+	<select id="saveCalSalaryList">
+		insert into salary_list(sal_list_id, year, month, sal_type, sal_list_subject, sal_list_date, 
+		sal_list_status) values(#{sal_list_id}, #{year}, #{month}, #{sal_type}, #{sal_list_subject}, 
+		now(), '임시저장')
+	</select>	
+	
+	<!-- 급여산출정보를 테이블에 저장하기 -->
+	<select id="saveCalSalaryFinal">
+		insert into salary_final(sal_list_id, emp_id, emp_name, dname, dgrade, perform_rate, bonus_rate, 
+		emp_position, emp_job, emp_work_type, sal_position, sal_job, sal_allow, sal_month, sal_total_basic, 
+		sal_perform, sal_bonus, sal_total_before, incometax, pension, heal_ins, long_ins, emp_ins, 
+		sal_total_deduct, sal_total_after) 
+		values(#{sal_list_id}, #{emp_id}, #{emp_name}, #{dname}, #{dgrade}, #{perform_rate}, #{bonus_rate}, 
+		#{emp_position}, #{emp_job}, #{emp_work_type}, #{sal_position}, #{sal_job}, #{sal_allow}, #{sal_month}, 
+		#{sal_total_basic}, #{sal_perform}, #{sal_bonus}, #{sal_total_before}, #{incometax}, #{pension}, 
+		#{heal_ins}, #{long_ins}, #{emp_ins}, #{sal_total_deduct}, #{sal_total_after} )
+	</select>
+	
+	<!-- 급여내역리스트에서 삭제시 급여내역리스트 테이블 삭제 -->
+	<select id="deleteCalSalaryList">
+		delete from salary_list where sal_list_id = #{sal_list_id} 
+	</select>	
+	
+	<!-- 급여내역리스트에서 삭제시 급여상세내역 테이블 삭제 -->
+	<select id="deleteCalSalaryFinal">
+		delete from salary_final where sal_list_id = #{sal_list_id} 
+	</select>	
+	
+	<!-- 급여내역리스트에서 최종확정으로 변경 -->
+	<select id="confirmSalaryList">
+		update salary_list set sal_list_status = '최종확정' where sal_list_id = #{sal_list_id} 
+	</select>	
+	
+	<!-- 급여내역리스트에서 조회시 급여상세내역 조회 -->
+	<select id="getCalSalaryFinalListForView" resultType="CalSalaryFinalVO">
+		select * from salary_final where sal_list_id = #{sal_list_id} 
+	</select>	
+	
+	<!-- 급여내역리스트에서 조회시 급여정보(형태/연/월) 조회 -->
+	<select id="getCalSalaryListForView" resultType="CalSalaryListVO">
+		select year, month, sal_type from salary_list where sal_list_id = #{sal_list_id} 
+	</select>
+	
+	<!-- 급여조회(사번)하기 급여정보(연/월/사번) 급여상세정보로 리턴-->
+	<select id="getSalaryInquiryForManageToId" resultType="CalSalaryFinalVO">
+		select f.emp_id, sal_final_id, f.sal_list_id, sal_type, year, month, sal_total_before, sal_total_deduct, sal_total_after 
+		from salary_final f, salary_list l 
+		where f.sal_list_id = l.sal_list_id 
+		and year=#{year} and emp_id=#{emp_id} and sal_list_status = '최종확정' 
+		order by emp_id desc, year desc, CAST(month AS UNSIGNED) DESC 
+	</select>	
+	
+	<!-- 급여조회(이름)하기 급여정보(연/월/이름) 급여상세정보로 리턴-->
+	<select id="getSalaryInquiryForManageToName" resultType="CalSalaryFinalVO">
+		select f.emp_id, sal_final_id, f.sal_list_id, sal_type, year, month, sal_total_before, sal_total_deduct, sal_total_after 
+		from salary_final f, salary_list l 
+		where f.sal_list_id = l.sal_list_id 
+		and year=#{year} and emp_name=#{emp_name} and sal_list_status = '최종확정' 
+		order by emp_id desc, year desc, CAST(month AS UNSIGNED) DESC 
+	</select>
+	
+	<!-- 급여조회 : 상세보기 클릭 시 상세급여 가져오기 -->
+	<select id="getSalaryDetail" resultType="CalSalaryFinalVO">
+		select emp_id, emp_name, emp_position, emp_job, emp_work_type, year, month, sal_type, sal_position, 
+		sal_job, perform_rate, dname, dgrade, bonus_rate, sal_month, sal_perform, sal_bonus, sal_allow, 
+		incometax, pension, heal_ins, long_ins, emp_ins, sal_total_basic ,sal_total_before, sal_total_deduct, 
+		sal_total_after 
+		from salary_final f, salary_list l 
+		where f.sal_list_id = l.sal_list_id and sal_final_id=#{sal_final_id} 
+	</select>
+	
+	<!-- 엑셀내려받기 테스트용 전체직원정보 가져오기 -->
+	<select id="excelDownload" resultType="BankTransperVO">
+		select emp_account_name, emp_bank_name, emp_account_num, sal_total_after, sal_type, year, month  
+		from employee e, salary_final f, salary_list l 
+		where l.sal_list_id = f.sal_list_id and e.emp_id = f.emp_id and l.sal_list_id =#{sal_list_id}
+		and approval = 0 
+	</select>
+	
+	<!-- 결재요청 버튼 클릭 시 해당직원 정보 가져오기 -->
+	<select id="getMemberInfoForSignToId" resultType="MemberInfoForSalaryVO">
+		select emp_id, emp_name, emp_bnum, dname, emp_position 
+		from employee e, dept d 
+		where e.emp_dnum = d.dnum and emp_id = #{emp_id} and approval = 0 
+	</select>
+	
+	<!-- 결재요청 버튼 클릭 시 본부정보로 본부장 정보 가져오기 -->
+	<select id="getMemberInfoForSignToBnum" resultType="MemberInfoForSalaryVO">
+		select emp_id, emp_name, emp_position, dname 
+		from employee e, dept d 
+		where e.emp_dnum = d.dnum and emp_bnum = #{emp_bnum} and emp_position = '본부장' 
+		and approval = 0 
+	</select>
+	
+	<!-- 결재요청 버튼 클릭 시 본부정보로 본부장 정보 가져오기 -->
+	<select id="getMemberInfoForSignToDname" resultType="MemberInfoForSalaryVO">
+		select emp_id, emp_name, emp_position, dname 
+		from employee e, dept d 
+		where e.emp_dnum = d.dnum and emp_bnum = #{emp_bnum} and dname = #{dname} 
+		and emp_position in ('부장', '팀장') and approval = 0 
+	</select>
+	
+	<!-- 결재요청 시 급여내역리스트 결재중으로 변경 -->
+	<select id="updateCalSalaryListForSigning">
+		update salary_list 
+		set sal_list_status = '결재중' 
+		where sal_list_id = #{sal_list_id} 
+	</select>
+	
+	<!-- 올해 첫 급여리스트번호가 있는지 확인하기 -->
+	<select id="checkSalListId" resultType="String">
+		select sal_list_id from salary_list where sal_list_id =#{sal_list_id}  
+	</select>
+	
+	<!-- 가장 최근의 급여리스트번호 가져오기 -->
+	<select id="getSalListId" resultType="String">
+		select sal_list_id from salary_list order by sal_list_id desc limit 1 
+	</select>
+	
+	<!-- 결재요청시 결재정보 워크플로우에 추가하기 -->
+	<select id="insertSalarySignInfoToWorkFlow">
+		insert into workflow(wf_code, wf_type, wf_sender, wf_receiver, wf_receiver_1st, wf_receiver_2nd, 
+		wf_receiver_3rd, wf_target, wf_title, wf_content)  
+		values(#{wf_code}, #{wf_type}, #{wf_sender}, #{wf_receiver_1st}, #{wf_receiver_1st}, #{wf_receiver_2nd}, 
+		#{wf_receiver_3rd}, #{wf_target}, #{wf_title}, #{wf_content}) 
+	</select>
+	
+	<!-- 올해 첫 워크플로우 번호가 있는지 확인하기 -->
+	<select id="checkWfCode" resultType="String">
+		select wf_code from workflow where wf_code =#{wf_code}  
+	</select>
+	
+	<!-- 가장 최근의 워크플로우 번호 가져오기 -->
+	<select id="getWfCode" resultType="String">
+		select wf_code from workflow order by wf_code desc limit 1 
+	</select>
+	
+	<!-- 결재완료 시 급여내역리스트 상태를 결재완료로 변경 -->
+	<select id="whenSalarySignComplete">
+		update salary_list 
+		set sal_list_status = '결재완료' 
+		where sal_list_id = #{sal_list_id} 
+	</select>
+	
+	<!-- 결재반려 시 급여내역리스트 상태를 반려로 변경 -->
+	<select id="whenSalarySignReject">
+		update salary_list 
+		set sal_list_status = '반려' 
+		where sal_list_id = #{sal_list_id} 
+	</select>
+
+</mapper>

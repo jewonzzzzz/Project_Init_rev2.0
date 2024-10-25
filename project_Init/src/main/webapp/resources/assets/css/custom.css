@@ -1,0 +1,893 @@
+@charset "UTF-8";
+/* fonts start */
+@font-face {
+    font-family: 'Apple';
+    src: url('../fonts/AppleSDGothicNeoR.woff2') format('woff2'), 
+         url('../fonts/AppleSDGothicNeoR.woff') format('woff'),  
+         url('../fonts/AppleSDGothicNeoR.ttf') format('truetype'); 
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'aptos';
+    src: url('../fonts/aptos.woff2') format('woff2'),
+         url('../fonts/aptos.woff') format('woff'), 
+         url('../fonts/aptos.ttf') format('truetype'); 
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+/* bold */
+@font-face {
+    font-family: 'Apple';
+    src: url('../fonts/AppleSDGothicNeoB.woff2') format('woff2'),
+         url('../fonts/AppleSDGothicNeoB.woff') format('woff'),   
+         url('../fonts/AppleSDGothicNeoB.ttf') format('truetype'); 
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'aptos';
+    src: url('../fonts/aptosB.woff2') format('woff2'), 
+         url('../fonts/aptosB.woff') format('woff'),  
+         url('../fonts/aptosB.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* italic */
+@font-face {
+    font-family: 'aptos';
+    src: url('../fonts/aptosB_I.woff2') format('woff2'),
+         url('../fonts/aptosB_I.woff') format('woff'),   
+         url('../fonts/aptosB_I.ttf') format('truetype'); 
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+/* bold italic */
+@font-face {
+    font-family: 'aptos';
+    src: url('../fonts/aptosB_I.woff2') format('woff2'), 
+         url('../fonts/aptosB_I.woff') format('woff'),   
+         url('../fonts/aptosB_I.ttf') format('truetype'); 
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+/* fonts end */
+/* 전체 스크롤바 */
+::-webkit-scrollbar {
+    width: 12px; /* 세로 스크롤바의 너비 */
+    height: 12px; /* 가로 스크롤바의 높이 */
+}
+
+/* 스크롤바 배경 */
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1); /* 스크롤바의 배경색 */
+    border-radius: 6px; /* 테두리 둥글게 */
+}
+
+/* 스크롤바 핸들 */
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5); /* 핸들의 배경색 */
+    border-radius: 6px; /* 핸들의 테두리 둥글게 */
+}
+
+/* 핸들이 hover될 때 */
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.7); /* 핸들의 hover 색상 */
+}
+
+.right_top{
+	position: fixed; 
+	top: calc(100% + 5px);
+    right: 20px; 
+	z-index: 1050;   
+	display: flex;
+}
+
+.realtime_alarm{
+	position: fixed; /* 뷰포트에 고정 */
+	bottom: 20px;    /* 아래에서 20px 위로 위치 */
+	right: 15px;      /* 왼쪽에서 20px 오른쪽으로 위치 */
+	background-color: rgba(0, 0, 0, 0.5); /* 배경색 설정 */
+	color: black;    /* 텍스트 색상 */
+	border-radius: 5px; /* 둥근 모서리 */
+	z-index: 1050;   /* 다른 요소보다 위에 나타나도록 설정 */
+	width: 450px;
+	height: 200px;
+	display: none; /* 기본적으로 숨김 */
+	justify-content: center; /* 가로 가운데 정렬 */
+	align-items: center;     /* 세로 가운데 정렬 */
+	text-align: center;      /* 텍스트가 여러 줄일 경우 가운데 정렬 */
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.realtime_alarm.left_down{
+	position: fixed; /* 뷰포트에 고정 */
+	bottom: 20px;    /* 아래에서 20px 위로 위치 */
+	left: 15px;      /* 왼쪽에서 20px 오른쪽으로 위치 */
+	background-color: rgba(0, 0, 0, 0.5); /* 배경색 설정 */
+	color: black;    /* 텍스트 색상 */
+	border-radius: 5px; /* 둥근 모서리 */
+	z-index: 1050;   /* 다른 요소보다 위에 나타나도록 설정 */
+	width: 450px;
+	height: 200px;
+	display: none; /* 기본적으로 숨김 */
+	justify-content: center; /* 가로 가운데 정렬 */
+	align-items: center;     /* 세로 가운데 정렬 */
+	text-align: center;      /* 텍스트가 여러 줄일 경우 가운데 정렬 */
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+#small_alarm_section{
+	position: fixed; /* 뷰포트에 고정 */
+	bottom: 5px;    /* 아래에서 20px 위로 위치 */
+	left: 5px;      /* 왼쪽에서 20px 오른쪽으로 위치 */
+	background-color: white; /* 배경색 설정 */
+	color: black;    /* 텍스트 색상 */
+	border-radius: 5px; /* 둥근 모서리 */
+	z-index: 1050;   /* 다른 요소보다 위에 나타나도록 설정 */
+	width: 255px;
+	height: 600px;
+	justify-content: center; /* 가로 가운데 정렬 */
+	align-items: center;     /* 세로 가운데 정렬 */
+	text-align: center;      /* 텍스트가 여러 줄일 경우 가운데 정렬 */
+	display:flex;
+	flex-direction:column;
+	align-items: center; 
+	justify-content: flex-end;
+}
+
+.small_alarm_container{
+	background-color: rgba(0, 0, 0, 0.7);
+	width: 100%;
+	height: 60px;
+	border-radius: 5px;
+	margin-top: 5px;
+	justify-content: center; /* 가로 가운데 정렬 */
+	align-items: center;     /* 세로 가운데 정렬 */
+	text-align: center;
+    opacity: 0; /* 초기 투명도 */
+    transform: translateY(20px); /* 아래에서 위로 올라오도록 설정 */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* 페이드인 및 이동 애니메이션 */
+}
+.small_alarm_container.show {
+    display: flex; /* 보이도록 설정 */
+    opacity: 1; /* 완전 불투명 */
+    transform: translateY(0); /* 원래 위치로 이동 */
+}
+
+.small_alarm_inner_box{
+	background-color: rgb(250,250,250);
+	width: 95%;
+	height: 80%;
+	border-radius: 5px;
+}
+
+.alarm_inner_box{
+	background-color: rgb(250, 250, 250);
+	border-radius: 5px; /* 둥근 모서리 */
+	width: 97%;
+	height: 93%;
+	padding: 10px;
+}
+
+.showAlarmButton {
+	margin: 20px; /* 버튼과의 간격을 위한 여백 */
+	padding: 10px 15px; /* 버튼 패딩 */
+	font-size: 16px; /* 글자 크기 */
+}
+
+@keyframes fadeIn {
+   from {
+       opacity: 0;
+       transform: translateY(20px); /* 아래에서 위로 올라오는 효과 */
+   }
+   to {
+       opacity: 1;
+       transform: translateY(0);
+   }
+}
+
+@keyframes fadeOut {
+   from {
+       opacity: 1;
+   }
+   to {
+       opacity: 0;
+   }
+}
+
+.fadeOut {
+    animation: fadeOut 0.5s ease forwards; /* 페이드 인 애니메이션 */
+}
+
+.fadeIn {
+    animation: fadeIn 0.5s ease forwards; /* 페이드 아웃 애니메이션 */
+}
+@keyframes fadeUp {
+    0% {
+        opacity: 0; /* 처음에 보이지 않음 */
+        transform: scale(0.95); /* 작게 시작 */
+    }
+    100% {
+        opacity: 1; /* 완전히 보임 */
+        transform: scale(1); /* 원래 크기로 돌아옴 */
+    }
+}
+
+@keyframes fadeDown {
+    0% {
+        opacity: 1;
+        transform: scale(1); 
+    }
+    100% {
+        opacity: 0; 
+        transform: scale(0.95); 
+    }
+}
+
+.fadeDown {
+    animation: fadeDown 0.1s ease forwards; /* 페이드 인 애니메이션 */
+}
+
+.fadeUp {
+    animation: fadeUp 0.1s ease forwards; /* 페이드 아웃 애니메이션 */
+}
+
+
+@keyframes dropDown {
+    from {
+        opacity: 0; /* 처음에는 보이지 않음 */
+        transform: translateY(-50px); /* 위에서 내려오는 효과 */
+    }
+    to {
+        opacity: 1; /* 완전히 보이게 함 */
+        transform: translateY(0); /* 원래 위치로 돌아옴 */
+    }
+}
+
+@keyframes dropUp {
+    from {
+        opacity: 1; /* 처음에는 완전히 보임 */
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0; /* 완전히 사라짐 */
+        transform: translateY(-50px);
+    }
+}
+
+@keyframes twinkle {
+    0% {
+        background-color: rgba(150,200,255,0.9);
+    }
+    50% {
+        background-color: rgba(255,255,255,0.9);
+    }
+    100% {
+        background-color: rgba(150,200,255,0.9);
+    }
+}
+
+@keyframes twinkle_inner {
+    0% {
+        color: rgba(150,200,255,0.9);
+    }
+    50% {
+        color: black;
+    }
+    100% {
+        color: rgba(150,200,255,0.9);
+    }
+}
+
+@keyframes log_on {
+    0% {
+        color: rgba(30,220,20,0.7);
+    }
+    25% {
+        color: rgba(30,220,20,0.6);
+    }
+    50% {
+        color: rgba(30,220,20,0.4);
+    }
+    75% {
+        color: rgba(30,220,20,0.6);
+    }
+    100% {
+        color: rgba(30,220,20,0.7);
+    }
+}
+
+@keyframes focus_border {
+    0% {
+        border:7px solid rgba(0,0,0,0.5);
+    }
+    50% {
+        border:7px solid rgb(250,250,250);
+    }
+    100% {
+        border:7px solid rgba(0,0,0,0.5);
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0) rotate(0deg); /* 시작 위치 */
+    }
+    25% {
+        transform: translateX(-3px) rotate(-3deg); /* 왼쪽으로 이동하고 기울임 */
+    }
+    50% {
+        transform: translateX(3px) rotate(3deg); /* 오른쪽으로 이동하고 기울임 */
+    }
+    75% {
+        transform: translateX(-3px) rotate(-3deg); /* 다시 왼쪽으로 이동하고 기울임 */
+    }
+    100% {
+        transform: translateX(0) rotate(0deg); /* 원래 위치로 돌아옴 */
+    }
+}
+
+@keyframes focus {
+    0% {
+    	background-color: rgba(0,0,0,0.2);
+    }
+    50% {
+    	background-color: rgba(0,0,0,0.9);
+    }
+    100% {
+        background-color: rgba(0,0,0,0.2);
+    }
+}
+/* ------------------------------------ */
+a{
+	cursor: pointer;
+}
+#search_form_extended {
+    position: absolute; /* 부모 요소에 대해 절대 위치 설정 */
+    top: calc(100% + 5px); /* 검색 입력창 바로 아래 위치 */
+    left: 0; /* 왼쪽 정렬 */
+    width: 100%; /* 검색 입력창과 동일한 너비 */
+    background-color: rgb(250,250,250); /* 배경색 설정 */
+    border: 1px solid #ccc; /* 테두리 추가 */
+    z-index: 1000; /* 다른 요소 위에 표시되도록 설정 */
+    display: none; /* 기본적으로 숨김 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+    border-radius: 6px;
+    opacity: 0; /* 초기 불투명도 설정 */
+}
+
+#search_form_extended ul {
+    list-style: none;
+    padding: 0; /* 패딩 제거 */
+    margin: 0; /* 마진 제거 */
+}
+
+#search_form_extended li {
+    padding: 8px 12px; /* 각 항목의 패딩 */
+    cursor: pointer; /* 포인터 커서 */
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+#search_form_extended li:hover {
+    background-color: #f0f0f0; /* 호버 시 배경색 변경 */
+}
+/* ------------------------------------ */
+#extended_navbar {
+    position: absolute; 
+    top: calc(100% + 5px);
+    right: 20px; 
+    width: 600px; 
+    min-height: 70px; 
+    max-height: 800px;
+    background-color: rgba(0,0,0,0.5);
+    overflow-y: auto;
+    display:none;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    opacity: 0;
+    align-items: flex-start; 
+    justify-content: center;
+    padding:10px 0px;
+}
+#extended_navbar_inner{
+    width: 97%; 
+    border-radius: 6px;
+    display:flex;
+    flex-direction:column;
+    background-color: rgb(250,250,250);
+    align-items: center; 
+    justify-content: center;
+}
+/* ------------------------------------ */
+
+
+* :not(i) {
+    font-family: 'Apple', sans-serif !important;
+}
+
+a,
+a:visited, 
+a:hover, 
+a:active {
+    color: inherit !important; /* 방문, 호버, 활성 상태에서도 글자색을 유지 */
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+
+button {
+	background: transparent; /* 배경색을 투명으로 설정 */
+    border: none;           /* 테두리를 없앰 */
+    cursor: pointer;       /* 마우스 포인터를 손가락으로 변경 */
+    outline: none;         /* 클릭 시 생기는 외곽선을 제거 */
+}
+
+.card-box{
+	background-color: rgba(0,0,0,0.3);
+	display:flex; 
+	justify-content: center; 
+	align-items: center; 
+	border-radius:5px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.card-box:hover{
+    background-color: rgba(0,0,0,0.7);
+    transform: scale(1.02);
+}
+
+.card-box.hover{
+    background-color: rgba(150,200,250,0.9);
+    transform: scale(1.02);
+}
+
+.card-box .card .card-header{
+	flex:0.1;
+	padding:0px;
+	width:100%;
+	display:flex;
+	align-items: center; 
+    justify-content: center;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+.card-header{
+	flex:0.1;
+	padding:0px;
+	width:100%;
+	display:flex;
+	align-items: center; 
+    justify-content: center;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+    z-index:5;
+}
+
+
+.card-box .card .card-body{
+	flex:0.9;
+	padding:0px;
+	width:100%;
+	display:flex;
+	align-content: center; 
+    justify-content: center;
+}
+
+
+.card-box .card{
+	width:98%; 
+	height:94%; 
+	margin:0px;
+	display:flex;
+	flex-direction: column;
+    align-items: center;
+    justify-content: center;
+   	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+/* default end*/
+
+.card-box.button{
+	width:200px;
+	height:60px;
+	margin:15px;
+}
+
+.card-box.button .card{
+	width:95%; 
+	height:85%; 
+	margin:0px;
+}
+
+.card-box.md{
+	height:700px;
+}
+
+.card-box.md .card{
+	width:97%; 
+	height:97%; 
+	margin:0px;
+}
+
+
+.shake{
+	animation: shake 1s infinite;
+}
+
+.badge {
+    position: absolute; /* 절대 위치 설정 */
+    top: 0; /* 상단에 위치 */
+    right: 0; /* 우측에 위치 */
+    background-color: white; /* 배경색을 파란색으로 설정 */
+    color: black; /* 글자색을 흰색으로 설정 */
+    font-weight:bold;
+    border-radius: 50%; /* 동그란 모양으로 설정 */
+    width: 20px; /* 배지의 너비 */
+    height: 50px; /* 배지의 높이 */
+    display: flex; /* flexbox를 사용하여 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    font-size: 12px; /* 글자 크기 설정 */
+    border: none; /* 테두리 제거 */
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+}
+
+.twinkle{
+	animation: twinkle 1s infinite;
+}
+
+.twinkle_inner{
+	animation: twinkle_inner 1s infinite;
+}
+
+
+#search_form.focus_border{
+	animation: focus_border 2s infinite;
+}
+
+
+.calendar-container {
+	width:100%;
+	flex-direction:column;
+    font-size:16px;
+    padding: 10px;
+	display:flex;
+    align-items: center;
+    justify-content: center;
+}
+.calendar-head {
+	width:100%;
+	height:100px;
+	display:flex;
+    align-items: center;
+    justify-content: center;
+}
+.calendar-head .year_month{
+	font-size:25px;
+	font-weight:bold;
+	display:flex; 
+	flex-direction:column; 
+	flex:1;
+    align-items: center;
+    justify-content: center;
+}
+.calendar-head .year_month button{
+	font-size:15px;
+	font-weight:regular;
+	background: transparent; /* 배경색을 투명으로 설정 */
+    border: none;           /* 테두리를 없앰 */
+    cursor: pointer;       /* 마우스 포인터를 손가락으로 변경 */
+    outline: none;         /* 클릭 시 생기는 외곽선을 제거 */
+    padding:0px 20px;
+}
+.calendar-head .year_month .year{
+	display:flex;
+    align-items: center;
+    justify-content: center;
+}
+.calendar-head .year_month .month{
+	display:flex;
+    align-items: center;
+    justify-content: center;
+}
+.calendar-head .day{
+	font-size:25px;
+	font-weight:bold;
+	display:flex;
+    align-items: center;
+    justify-content: center;
+	flex:1;
+}
+.calendar-head .day:hover{
+	cursor: pointer; /* 포인터 커서 */
+	transform: scale(1.1);
+}
+.calendar-head .time{
+	font-size:25px;
+	font-weight:bold;
+	display:flex;
+    align-items: center;
+    justify-content: center;
+	flex:1;
+}
+.calendar-body {
+	width:100%;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7열 설정 */
+    gap:5px;
+    margin-top: 10px;
+}
+.days {
+	border-radius:5px;
+	display:flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    border-bottom: 1px solid #ccc; /* 칸의 테두리 */
+    padding: 5px 3px; /* 패딩 */
+    text-align: center; /* 가운데 정렬 */
+    height: 60px; /* 최소 높이 설정 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.days .date{
+	display:flex;
+	width:7px;
+	font-size:16px;
+	padding:0px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-right:8px;
+}
+.days .flag{
+	display:flex;
+	width:8px;
+	font-size:12px;
+	padding:0px;
+	margin-left:6px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
+}
+.days .flag.workflow{
+	color:rgba(150,200,250,0.9);
+}
+.days .flag.enter{
+	color:rgba(119, 221, 119, 0.8);
+}
+.days .flag.workout{
+	color:rgba(255, 182, 193, 0.8);
+}
+.days.saturday .date{
+	color:rgba(0,100,200,1) ;
+}
+.days.sunday .date{
+	color:rgba(204,0,0,1) ;
+}
+.days:hover{
+    background-color: rgba(150,200,255,0.7);
+}
+.days.null{
+    background-color: rgba(100,100,100,0.1);
+    border : none;
+}
+.today {
+	
+    font-weight: bold; /* 오늘 날짜 강조 */
+    border: 3px solid rgba(0,0,0,0.7); /* 오늘 날짜 배경색 */
+    color: black;
+}
+.today:hover{
+    border: 3px solid rgba(0,0,0,0.3);
+}
+.fa-solid.fa-bookmark{ 
+	font-size: 10px; 
+	transform: scaleY(2);
+}
+.main-box-title{
+	font-size:18px;
+	font-weight: bold;
+	height:40px;
+	display:flex; 
+	color:rgba(0,0,0,0.8);
+	z-index:0;
+}
+.main-box-title div{
+	background-color:rgba(130,130,130,0.1); 
+	flex:0.2; 
+	display: flex; 
+	justify-content: center; 
+	align-items: center; 
+	border-radius: 10px 10px 0 0;
+	box-shadow: 2px 0px 2px 1px rgba(0, 0, 0, 0.4);
+}
+.main-box-title div.run{
+	background-color:rgba(50,50,50,0.2); 
+	flex:0.2; 
+	display: flex; 
+	justify-content: center; 
+	align-items: center; 
+	border-radius: 10px 10px 0 0;
+}
+.main-box-title div.run:hover{
+	border:none;
+	background-color:rgba(50,50,50,0.2); 
+	color:rgba(0,0,0,0.8);
+}
+.main-box-title div:hover{
+	border-top: 4px solid rgba(0,0,0,0.5);
+	border-left: 4px solid rgba(0,0,0,0.5);
+	border-right: 4px solid rgba(0,0,0,0.5);
+	background-color:rgba(0,0,0,0.5);
+	color: white;
+}
+.main-box-body{
+	z-index:5;
+	background-color: rgba(200,200,200,0.1);
+	overflow-y: auto;
+	height:180px;
+	border-radius: 5px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+.main-box-body div{
+	height: 35px;
+    min-height: 35px;
+	border-bottom:1px solid rgba(0,0,0,0.5);
+	margin:0px 10px;
+}
+td,th{
+	text-align: center; 
+	padding:0px !important;
+	white-space: nowrap; 
+	overflow: hidden; 
+	text-overflow: ellipsis;
+}
+td a{
+	box-sizing: border-box; 
+	display: block; 
+	cursor: pointer; 
+	width: 100%; 
+	height: 100%;
+}
+
+.messenger_body{
+	background-color:rgba(200,200,200,0.1);
+	display:flex; 
+	width:100%;
+	height: 600px;
+}
+.messenger_body input,textarea,button{
+	background-color: transparent; /* 배경을 투명하게 설정 */
+    border: none; /* 기본 테두리 제거 */
+    border-bottom:2px solid rgba(0,0,0,0.1);
+    outline: none; /* 포커스 시 테두리 제거 */
+}
+
+.messenger_body_menu{
+	background-color:rgba(0,0,0,0.1);
+	height:100%;
+	flex:0.4; 
+	border-right:3px solid rgba(0,0,0,0.4);
+	overflow-y: auto;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+	z-index: 2;
+}
+.messenger_body_menu div.person{
+	background-color:white;
+	height:60px;	
+	margin-bottom:5px;
+	padding-left:10px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+.messenger_body_menu div.messenger_search_person{
+	background-color:rgba(0,0,0,0.1);
+	height:60px;	
+	margin-bottom:5px;
+	padding-left:10px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+.messenger_body_chat.list{
+	height:100%;
+	flex:0.6;
+	overflow-y: auto;
+	z-index: 1;
+}
+.messenger_body_chat.list div.room{
+	padding-left:10px;
+	height:80px;
+	background-color:rgb(250,250,250);
+	border-bottom:1px solid rgba(0,0,0,0.1);
+	box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.7);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+	margin-bottom:5px;
+}
+.messenger_body_chat.room{
+	z-index: 1;
+	height:100%;
+	flex:0.6;
+	display:flex; 
+	flex-direction:column; 
+}
+
+.messenger_system{
+	width:100%;
+	height:22px;
+	display:flex;
+	justify-content: center; 
+	align-items: center; 
+	margin: 5px;
+}
+
+.messenger_system div{
+	width:auto;
+	height:22px;
+	border-radius:6px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+	background-color:rgb(250,250,250);
+	font-size:14px;
+	text-align:center;
+	line-height:22px;
+	padding: 0px 15px;
+
+}
+
+table tr{
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.game {
+	display: grid;
+	width:1000px;
+	height:1000px;
+	border:1px solid black;
+    grid-template-columns: repeat(100, 1fr); /* 100개의 열 생성 */
+    grid-template-rows: repeat(100, 1fr); /* 100개의 행 생성 */
+    gap: 1px; /* 각 셀 사이의 간격 */
+    margin:0px !important;
+    border:0px !important;
+}
+
+.game .box {
+	width:10px;
+	height:10px;
+    background-color: rgba(200,200,200,0.1);
+    text-align: center;
+    border:1px solid black;
+    margin:0px !important;
+    border:0px !important;
+}
+
+.game .box.monster {
+    background-color: rgba(0,0,0,0.9);
+}
+
+.game .box.user {
+    background-color: rgba(255, 182, 193, 0.8);
+}
+
+.game .box.coin {
+    background-color: rgb(255, 215, 0);
+}
+
+#user_setting{
+	position: absolute; /* 부모 요소에 대해 절대 위치 설정 */
+    top: calc(30%); /* 검색 입력창 바로 아래 위치 */
+    right: 0; /* 왼쪽 정렬 */
+    width: 500px; /* 검색 입력창과 동일한 너비 */
+    height: 500px;
+    z-index: 1050; /* 다른 요소 위에 표시되도록 설정 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+    border-radius: 6px;
+}
+
+.log_on{
+	animation: log_on 2s infinite;
+}
+
+.favorite{
+	color:rgba(255, 215, 0,0.9);
+}

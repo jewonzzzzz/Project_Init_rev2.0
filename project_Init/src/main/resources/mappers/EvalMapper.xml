@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.Init.mapper.EvalMapper">
+
+	<!-- 성과평가 신규등록 하기 -->
+	<select id="evalCreate">
+		insert into eval_list(eval_id, eval_type, eval_name, year, branch, eval_report_start, eval_report_end, 
+		eval_start_date, eval_end_date, eval_status) 
+		values(#{eval_id}, #{eval_type}, #{eval_name}, #{year}, #{branch}, #{eval_report_start}, #{eval_report_end}, 
+		#{eval_start_date}, #{eval_end_date}, '평가준비') 
+	</select>
+	
+	<!-- 올해 첫 평가번호가 있는지 확인하기 -->
+	<select id="checkEvalId" resultType="String">
+		select eval_id from eval_list where eval_id = #{eval_id} 
+	</select>
+
+	<!-- 가장 최근의 eval_id 가져오기  -->
+	<select id="getEvalId" resultType="String">
+		select eval_id from eval_list order by eval_id desc limit 1
+	</select>
+	
+	<!-- 가장 최근의 eval_id 가져오기  -->
+	<select id="getEvalList" resultType="EvalVO">
+		select * from eval_list order by year desc, branch desc 
+	</select>
+
+	<!-- 유형/연도/반기로 중복여부 확인 -->
+	<select id="checkCreateEval" resultType="EvalVO">
+		select * from eval_list where year=#{year} and branch=#{branch} and eval_type=#{eval_type} 
+	</select>
+	
+	<!-- 성과평가 리스트 삭제 -->
+	<select id="deleteEvalInfo">
+		delete from eval_list where eval_id=#{eval_id} 
+	</select>
+	
+	<!-- 성과보고를 위한 성과평가리스트 가져오기 -->
+	<select id="getEvalReportList" resultType="EvalVO">
+		select * from eval_list where eval_status = '성과보고' 
+	</select>
+	
+	<!-- 성과보고 클릭 시 평가준비에서 성과보고로 변경 -->
+	<select id="updateEvalInfoToReport">
+		update eval_list 
+		set eval_status = '성과보고' 
+		where eval_id=#{eval_id} 
+	</select>
+
+	<!-- 성과보고 페이지 업무성과 보고대상용 리스트 정보 가져오기 -->
+	<select id="getEvalInfoForView" resultType="EvalVO">
+		select * from eval_list where eval_id = #{eval_id}  
+	</select>
+	
+	<!-- 성과보고 내용 성과이력테이블에 저장하기 -->
+	<select id="saveEvalReport">
+		insert into eval_his_list(eval_id, emp_id, content, eval_his_status) 
+		values(#{eval_id}, #{emp_id}, #{content}, '작성완료' ) 
+	</select>
+
+	<!-- 성과보고 작성내역 확인용 가져오기 -->
+	<select id="getHisEvaReport" resultType="EvalVO">
+		select * from eval_his_list where eval_id = #{eval_id} and emp_id = #{emp_id} 
+	</select>
+
+	<!-- 성과보고 내용 수정하기 -->
+	<select id="updateEvalReport" >
+		update eval_his_list 
+		set content = #{content} 
+		where eval_id = #{eval_id} and emp_id=#{emp_id} 
+	</select>
+	
+	<!-- 성과관리페이지에서 평가시작으로 변경(성과테이블 평가시작으로 변경) -->
+	<select id="startEval" >
+		update eval_list 
+		set eval_status = '평가시작' 
+		where eval_id = #{eval_id} 
+	</select>
+	
+	<!-- 성과관리페이지에서 평가시작으로 변경(성과테이블 평가시작으로 변경) -->
+	<select id="startEvalForHis" >
+		update eval_his_list 
+		set eval_his_status = '평가미완료' 
+		where eval_id = #{eval_id} 
+	</select>
+	
+	<!-- 성과보고페이지 접근 시 이전 모든 이력 가져오기 -->
+	<select id="getHisEvalReportAll" resultType="EvalVO">
+		select * from eval_his_list where emp_id = #{emp_id} and eval_his_status not in ('작성완료') 
+	</select>
+	
+	<!-- 성과보고페이지 접근 시 이전 모든 이력 가져오기 -->
+	<select id="getEvaluatorInfo" resultType="EvalVO">
+		select emp_dnum, emp_id, emp_name, emp_position from employee where emp_id = #{emp_id} and approval = 0
+	</select>
+	
+	<!-- 평가시작된 eval_id와 부서 하위직원 내역 가져오기 -->
+	<select id="getResultInfoForEval" resultType="EvalVO">
+		select h.emp_id, emp_name,emp_position, eval_his_id, h.eval_id, year, branch, eval_type, eval_name, 
+		eval_start_date, eval_end_date, eval_his_status  
+		from eval_his_list h, eval_list l, employee e 
+		where h.eval_id = l.eval_id and h.emp_id = e.emp_id 
+		and eval_status = '평가시작' 
+		and emp_dnum = #{emp_dnum} 
+		and emp_position in ('팀장','과장','대리','사원') and approval = 0
+	</select>
+	
+	<!-- 성과평과 상세페이지에서 보여줄 정보 가져오기 -->
+	<select id="getReportInfoForEval" resultType="EvalVO">
+		select h.emp_id, emp_name, emp_position, eval_his_id, h.eval_id, year, branch, eval_type, eval_name, 
+		eval_start_date, eval_end_date, eval_his_status, content, score_perform, score_attendance, 
+		score_develop, score_total, eval_grade, eval_comment  
+		from eval_his_list h, eval_list l, employee e 
+		where h.eval_id = l.eval_id and h.emp_id = e.emp_id 
+		and eval_his_id = #{eval_his_id} and approval = 0
+	</select>
+	
+	<!-- 성과평가 저장하기 -->
+	<select id="saveResultEval" >
+		update eval_his_list 
+		set evaluator=#{evaluator}, score_perform=#{score_perform}, score_attendance=#{score_attendance}, 
+		score_develop=#{score_develop}, score_total=#{score_total}, eval_grade=#{eval_grade}, 
+		eval_comment=#{eval_comment}, eval_his_status = '평가완료' 
+		where eval_his_id = #{eval_his_id} 
+	</select>
+	
+	<!-- 성과관리페이지에서 평가종료로 변경 -->
+	<select id="endEval" >
+		update eval_list 
+		set eval_status = '평가종료' 
+		where eval_id = #{eval_id} 
+	</select>
+	
+	<!-- 성과관리페이지에서 평가종료로 변경(이력 평가종료로 변경) -->
+	<select id="endEvalForHis" >
+		update eval_his_list 
+		set eval_his_status = '평가종료' 
+		where eval_id = #{eval_id} 
+	</select>
+	
+	<!-- 성과이력조회 이동 후 데이터 가져오기  -->
+	<select id="getEvalHisInquiry" resultType="EvalVO">
+		select eval_his_id, h.eval_id, year, branch, eval_type, eval_name, score_total, eval_grade   
+		from eval_his_list h, eval_list l 
+		where h.eval_id = l.eval_id and emp_id = #{emp_id} and eval_his_status = '평가종료' 
+		order by year desc, branch desc 
+	</select>
+	
+	<!-- 성과관리 상세페이지에서 수정하기 -->
+	<select id="evalUpdate">
+		update eval_list 
+		set eval_type=#{eval_type}, eval_name=#{eval_name}, year=#{year}, branch=#{branch}, 
+		eval_report_start=#{eval_report_start}, eval_report_end=#{eval_report_end}, 
+		eval_start_date=#{eval_start_date}, eval_end_date=#{eval_end_date}, eval_name=#{eval_name} 
+		where eval_id=#{eval_id} 
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>
