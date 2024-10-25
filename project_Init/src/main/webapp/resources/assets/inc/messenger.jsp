@@ -1,39 +1,38 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <script src="${pageContext.request.contextPath }/resources/assets/js/chat.js"></script>
 
-<div id="open_messenger" class="col-md-4" style="display:none; flex-direction:column; justify-content: flex-end;  align-content: flex-end;">
-	<div class="card-box md">
-		<div class="card">
-			<div class="card-header">
-			<h4 class="card-title">MESSENGER</h4>
-			</div>	
-			<div class="card-body">
-				<div class="messenger_body">
-					<!-- 메뉴 -->
-					<div class="messenger_body_menu">
-						<div class="messenger_search" style="width:100%; height:40px;">
-							<i class="fa-solid fa-magnifying-glass" style="width:15%; line-height:30px; justify-content: center; text-align: center; font-size:15px;"></i>
-							<input id="messenger_search" oninput="messenger_search(this.value)" type="text" style="width:80%; line-height:30px;" placeholder="두글자 이상의 검색어를 입력하세요."/>
-						</div>
+<div id="open_messenger" class="card-box md" style="height:500px !important; width:500px; display:none; flex-direction: column;">
+	<div class="card">
+		<div class="card-header" style="flex:0.1;">
+		<h4 class="card-title">MESSENGER</h4>
+		</div>	
+		<div class="card-body" style="flex:0.9;">
+			<div class="messenger_body" style="height:445px;">
+				<!-- 메뉴 -->
+				<div class="messenger_body_menu">
+					<div class="messenger_search" style="width:100%; height:20px; font-size:10px; margin-top:10px; margin-bottom:15px;">
+						<i class="fa-solid fa-magnifying-glass" style="width:15%; line-height:10px; justify-content: center; text-align: center; font-size:10px;"></i>
+						<input id="messenger_search" oninput="messenger_search(this.value)" type="text" style="width:80%; line-height:10px;" placeholder="두글자 이상의 검색어를 입력하세요."/>
 					</div>
-					<!-- 메뉴 -->
-					
-					<!-- 채팅목록 -->
-					<div class="messenger_body_chat list">
-						<div class="messenger_room_search" style="width:100%; height:40px;">
-							<i class="fa-solid fa-magnifying-glass" style="width:10%; line-height:30px;  justify-content: center; text-align: center; font-size:15px;"></i>
-							<input id="room_search" oninput="room_search(this.value)" type="text" style="width:85%; line-height:30px;" placeholder="두글자 이상의 검색어를 입력하세요."/>
-						</div>
+				</div>
+				<!-- 메뉴 -->
+				
+				<!-- 채팅목록 -->
+				<div class="messenger_body_chat list">
+					<div class="messenger_room_search" style="width:100%; height:20px; font-size:10px; margin-top:10px; margin-bottom:15px;">
+						<i class="fa-solid fa-magnifying-glass" style="width:10%; line-height:10px;  justify-content: center; text-align: center; font-size:10px;"></i>
+						<input id="room_search" oninput="room_search(this.value)" type="text" style="width:85%; line-height:10px; font-size:10px;" placeholder="두글자 이상의 검색어를 입력하세요."/>
 					</div>
-					<!-- 채팅목록 -->
-					
-					<!-- 채팅방-->
-					<div class="messenger_body_chat room" style="display:none">
-						<!-- 채팅방 상단 -->
-						<div class="head_chat" style="display:flex; flex:0.1; width:100%; box-shadow: 0 3px 5px rgba(0, 0, 0, 0.4); background-color: rgba(0,0,0,0.7); color: rgb(250,250,250); font-size:18px; padding:0 10px;">
-							<div id ="to_chat_list" style="display:flex; flex:0.1; justify-content: center; align-items: center;">
-								<button style="border: none;">
-									<i style="color: rgb(250,250,250);  font-size:22px;" class="fa-solid fa-arrow-left"></i>
+				</div>
+				<!-- 채팅목록 -->
+				
+				<!-- 채팅방-->
+				<div class="messenger_body_chat room" style="display:none">
+					<!-- 채팅방 상단 -->
+					<div class="head_chat" style="display:flex; flex:0.1; width:100%; box-shadow: 0 3px 5px rgba(0, 0, 0, 0.4); background-color: rgba(0,0,0,0.7); color: rgb(250,250,250); font-size:13px; padding:0 10px;">
+						<div id ="to_chat_list" style="display:flex; flex:0.1; justify-content: center; align-items: center;">
+							<button style="border: none;">
+									<i style="color: rgb(250,250,250);  font-size:15px;" class="fa-solid fa-arrow-left"></i>
 								</button>
 							</div>
 							<div style="display:flex; flex:0.8;">
@@ -42,7 +41,7 @@
 							</div>
 							<div class ="messenger_exit_room" style="display:flex; flex:0.1; justify-content: center; align-items: center; position: relative;">
 								<button style="border: none;">
-									<i style="color: rgb(250,250,250); font-size:22px;" class="fa-solid fa-arrow-right-from-bracket"></i>
+									<i style="color: rgb(250,250,250); font-size:15px;" class="fa-solid fa-arrow-right-from-bracket"></i>
 								</button>
 							</div>
 						</div>
@@ -51,7 +50,7 @@
 						
 						
 						<!-- 채팅방 안쪽 -->
-						<div class="chat_content" style="display:flex; flex-direction:column; flex:0.7; width:100%; padding:0 10px; overflow-y: auto; background-color: rgba(100,100,100,0.1); overflow-x: hidden;"> 
+						<div class="chat_content" style="display:flex; flex-direction:column; flex:0.75; width:100%; padding:0 10px; overflow-y: auto; background-color: rgba(100,100,100,0.1); overflow-x: hidden;"> 
 						</div>
 						<!-- 채팅방 안쪽 -->
 						
@@ -74,11 +73,7 @@
 						<!-- 채팅방 입력란 -->
 					</div>
 					<!-- 채팅방 -->
-					
-					
-					
 				</div>
 			</div>
 		</div>
 	</div>
-</div>		

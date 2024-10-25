@@ -127,7 +127,7 @@
 	    JOIN 
 	        msg_room r ON m.room_id = r.room_id
 	    JOIN 
-	        employee e ON m.msg_sender = e.emp_id
+	        employee e ON m.msg_sender = e.emp_id and e.approval=0
 	    WHERE 
 	        m.room_id = #{room_id}
 	</select>
@@ -304,7 +304,7 @@
 	    SELECT e.emp_id, 
 	           e.emp_profile
 	    FROM msg_room_participant p
-	    JOIN employee e ON p.room_people = e.emp_id
+	    JOIN employee e ON p.room_people = e.emp_id and e.approval=0
 	    WHERE p.room_id = #{room_id}
 	</select>
 	
@@ -328,7 +328,7 @@
 	    SELECT m.*, r.room_name,
 	           e.emp_name, e.emp_bnum, e.emp_dnum, e.emp_position, e.emp_id
 	    FROM messages m
-	    JOIN employee e ON m.msg_sender = e.emp_id
+	    JOIN employee e ON m.msg_sender = e.emp_id and e.approval=0
 	    join msg_room r on m.room_id = r.room_id
 	    WHERE msg_alarm_token LIKE CONCAT('%', #{emp_id}, '%')
 	    AND msg_alarm_token IS NOT NULL
@@ -353,7 +353,7 @@
 	    SELECT r.*,e.emp_id,e.emp_name, e.emp_dnum, e.emp_bnum, e.emp_position, e.emp_job
 		 FROM msg_room r
 		 JOIN msg_room_participant p ON r.room_id = p.room_id
-		 join employee e on p.room_people = e.emp_id
+		 join employee e on p.room_people = e.emp_id and e.approval=0
 		 WHERE r.room_id = #{room_id}
 	</select>
 	
@@ -372,8 +372,8 @@
 	<select id="getMessengerSetting" resultMap="MessengerSettingMap">
 		select f.emp_id as user_emp_id, f.favorite_room_id,e.emp_id,e.emp_name,e.emp_profile,e.emp_bnum,e.emp_dnum,e.emp_position,e.emp_job,s.log_on
 		 from user_favorites f
-		 left join employee e on f.favorite_emp_id = e.emp_id
-		 left join user_setting s on e.emp_id = s.emp_id
+		 left join employee e on f.favorite_emp_id = e.emp_id and e.approval=0
+		 left join user_setting s on e.emp_id = s.emp_id and e.approval=0
 		 where f.emp_id=#{emp_id};
 	</select>
 	
