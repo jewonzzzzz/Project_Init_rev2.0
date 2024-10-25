@@ -487,12 +487,24 @@
 
 	    $('#saveAccountBtn').click(function(e) {
 	        e.preventDefault();
+	        
+	    	 // 입력값 검증
+	        const accountName = $('#accountName').val().trim();
+	        const accountNumber = $('#accountNumber').val().trim();
+	        const bankName = $('#bankName').val();
+	        
+	        if (!accountName || !accountNumber || !bankName) {
+	            alert('모든 필드를 입력해주세요.');
+	            return;
+	        }
+	        
+	     	// 계좌정보 업데이트 데이터
 	        var accountData = {
-	            emp_id: '${memberVO.emp_id}',
-	            emp_account_name: $('#accountName').val(),
-	            emp_account_num: $('#accountNumber').val(),
-	            emp_bank_name: $('#bankName').val()
+	            emp_account_name: accountName,
+	            emp_account_num: accountNumber,
+	            emp_bank_name: bankName
 	        };
+	     	
 	        $.ajax({
 	            url: '${pageContext.request.contextPath}/member/account/update',
 	            type: 'POST',
@@ -509,6 +521,7 @@
 	            },
 	            error: function(xhr, status, error) {
 	                console.error("AJAX Error: " + error);
+	                alert('서버 오류가 발생했습니다.');
 	            }
 	        });
 	    });
@@ -725,9 +738,17 @@
 										placeholder="계좌번호를 입력하세요">
 								</div>
 								<div class="mb-3">
-									<label for="bankName" class="form-label">은행명</label> <input
-										type="text" class="form-control" id="bankName"
-										placeholder="은행명을 입력하세요">
+									<label for="bankName" class="form-label">은행명</label>
+			                        <select class="form-control" id="bankName">
+			                            <option value="">선택하세요</option>
+			                            <option value="KB국민은행">KB국민은행</option>
+			                            <option value="신한은행">신한은행</option>
+			                            <option value="우리은행">우리은행</option>
+			                            <option value="하나은행">하나은행</option>
+			                            <option value="NH농협은행">NH농협은행</option>
+			                            <option value="IBK기업은행">IBK기업은행</option>
+			                            <option value="카카오뱅크">카카오뱅크</option>
+			                        </select>
 								</div>
 							</form>
 						</div>

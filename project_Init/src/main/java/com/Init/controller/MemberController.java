@@ -393,18 +393,35 @@ public class MemberController implements ServletContextAware {
 
 	@PostMapping("/account/update")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> updateAccount(@RequestBody MemberVO memberVO) {
-		Map<String, Object> response = new HashMap<>();
-		try {
-			mService.updateAccountInfo(memberVO);
-			response.put("success", true);
-			response.put("message", "계좌 정보가 성공적으로 업데이트되었습니다.");
-			return ResponseEntity.ok(response);
-		} catch (Exception e) {
-			response.put("success", false);
-			response.put("message", "계좌 정보 업데이트에 실패했습니다: " + e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-		}
+	public ResponseEntity<Map<String, Object>> updateAccount(@RequestBody Map<String, String> accountData, HttpSession session) {
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+	        String emp_id = (String) session.getAttribute("emp_id");
+	        
+	        // 현재 사원 정보 조회
+	        MemberVO memberVO = mService.memberInfo(emp_id);
+	        
+	        // 새로운 계좌 정보 설정
+	        memberVO.setEmp_account_name(accountData.get("emp_account_name"));
+	        memberVO.setEmp_account_num(accountData.get("emp_account_num"));
+	        memberVO.setEmp_bank_name(accountData.get("emp_bank_name"));
+	        
+	        // memberUpdate 메서드 재사용 (기존 approval 증가 및 새 데이터 삽입 로직 포함)
+	        int result = mService.memberUpdate(memberVO);
+	        
+	        if(result > 0) {
+	            response.put("success", true);
+	            response.put("message", "계좌 정보가 성공적으로 업데이트되었습니다.");
+	        } else {
+	            response.put("success", false);
+	            response.put("message", "계좌 정보 업데이트에 실패했습니다.");
+	        }
+	        return ResponseEntity.ok(response);
+	    } catch (Exception e) {
+	        response.put("success", false);
+	        response.put("message", "계좌 정보 업데이트 중 오류가 발생했습니다: " + e.getMessage());
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+	    }
 	}
 
 	@GetMapping("/list")
