@@ -67,7 +67,7 @@
               	<!-- 아이콘1 -->
                 <li style="margin-right:30px;" id="to_home" class="nav-item topbar-icon dropdown hidden-caret">
                  	<button type="button" style="border: none !important;">
-                 		<a href='/project/main'>
+                 		<a href='/main/home'>
                  			<i style="color:white; font-size:25px;" class="fa-solid fa-house"></i>
                  		</a>
 					</button>

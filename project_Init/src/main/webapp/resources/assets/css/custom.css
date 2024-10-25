@@ -419,10 +419,12 @@ a:visited,
 a:hover, 
 a:active {
     color: inherit !important; /* 방문, 호버, 활성 상태에서도 글자색을 유지 */
+}
+
+a:hover{
     border-bottom: 1px solid rgba(0,0,0,0.1);
     cursor: pointer;
 }
-
 button {
 	background: transparent; /* 배경색을 투명으로 설정 */
     border: none;           /* 테두리를 없앰 */
@@ -480,7 +482,9 @@ button {
     justify-content: center;
 }
 
-
+.card-title{
+	font-size:15px;	
+}
 .card-box .card{
 	width:98%; 
 	height:94%; 
@@ -492,21 +496,21 @@ button {
    	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 /* default end*/
+.tool_name{
+	font-size:13px;
+}
+
 
 .card-box.button{
-	width:200px;
-	height:60px;
-	margin:15px;
+	width:130px;
+	height:40px;
+	margin:0 15px;
 }
 
 .card-box.button .card{
 	width:95%; 
 	height:85%; 
 	margin:0px;
-}
-
-.card-box.md{
-	height:700px;
 }
 
 .card-box.md .card{
@@ -551,7 +555,6 @@ button {
 	animation: focus_border 2s infinite;
 }
 
-
 .calendar-container {
 	width:100%;
 	flex-direction:column;
@@ -563,13 +566,13 @@ button {
 }
 .calendar-head {
 	width:100%;
-	height:100px;
+	height:80px;
 	display:flex;
     align-items: center;
     justify-content: center;
 }
 .calendar-head .year_month{
-	font-size:25px;
+	font-size:20px;
 	font-weight:bold;
 	display:flex; 
 	flex-direction:column; 
@@ -617,7 +620,7 @@ button {
 	flex:1;
 }
 .calendar-body {
-	width:100%;
+	width:95%;
     display: grid;
     grid-template-columns: repeat(7, 1fr); /* 7열 설정 */
     gap:5px;
@@ -628,10 +631,10 @@ button {
 	display:flex;
     align-items: flex-start;
     justify-content: flex-start;
-    border-bottom: 1px solid #ccc; /* 칸의 테두리 */
-    padding: 5px 3px; /* 패딩 */
-    text-align: center; /* 가운데 정렬 */
-    height: 60px; /* 최소 높이 설정 */
+    border-bottom: 1px solid #ccc;
+    padding: 5px 3px; 
+    text-align: center;
+    height: 50px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 .days .date{
@@ -641,11 +644,11 @@ button {
 	padding:0px;
     align-items: flex-start;
     justify-content: flex-start;
-    margin-right:8px;
+    margin-right:6px;
 }
 .days .flag{
 	display:flex;
-	width:8px;
+	width:6px;
 	font-size:12px;
 	padding:0px;
 	margin-left:6px;
@@ -689,9 +692,9 @@ button {
 	transform: scaleY(2);
 }
 .main-box-title{
-	font-size:18px;
+	font-size:14px;
 	font-weight: bold;
-	height:40px;
+	height:30px;
 	display:flex; 
 	color:rgba(0,0,0,0.8);
 	z-index:0;
@@ -755,10 +758,10 @@ td a{
 }
 
 .messenger_body{
+	height:100%;
 	background-color:rgba(200,200,200,0.1);
 	display:flex; 
 	width:100%;
-	height: 600px;
 }
 .messenger_body input,textarea,button{
 	background-color: transparent; /* 배경을 투명하게 설정 */
@@ -770,7 +773,7 @@ td a{
 .messenger_body_menu{
 	background-color:rgba(0,0,0,0.1);
 	height:100%;
-	flex:0.4; 
+	width:230px;
 	border-right:3px solid rgba(0,0,0,0.4);
 	overflow-y: auto;
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
@@ -792,13 +795,14 @@ td a{
 }
 .messenger_body_chat.list{
 	height:100%;
-	flex:0.6;
+	width:270px;
 	overflow-y: auto;
 	z-index: 1;
 }
 .messenger_body_chat.list div.room{
 	padding-left:10px;
-	height:80px;
+	width:100%;
+	height:60px;
 	background-color:rgb(250,250,250);
 	border-bottom:1px solid rgba(0,0,0,0.1);
 	box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.7);
@@ -808,7 +812,7 @@ td a{
 .messenger_body_chat.room{
 	z-index: 1;
 	height:100%;
-	flex:0.6;
+	width:270px;
 	display:flex; 
 	flex-direction:column; 
 }

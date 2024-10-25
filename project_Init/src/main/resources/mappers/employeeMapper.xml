@@ -7,12 +7,12 @@
 
 	<select id="loginMember" resultType="EmployeeVO">
 	   select * from employee
-	   where emp_id=#{emp_id} and emp_pw=#{emp_pw}	
+	   where emp_id=#{emp_id} and emp_pw=#{emp_pw} and approval=0
 	</select>
 	
 	<select id="getMember" resultType="EmployeeVO">		
 		 select * from employee
-	   where emp_id=#{emp_id}
+	   where emp_id=#{emp_id} and approval=0
 	</select>
 	
 	<select id="getSetting" resultType="SettingVO">
@@ -32,7 +32,7 @@
 	<select id="getSearchedMemberList" resultType="EmployeeVO">
 	    select e.*,s.log_on
 	    from employee e
-	    left join user_setting s on e.emp_id = s.emp_id
+	    left join user_setting s on e.emp_id = s.emp_id and e.approval=0
 	    where 
 	    replace(emp_name, ' ', '') like concat('%', #{keyword}, '%')
 	    or replace(emp_tel, ' ', '') like concat('%', #{keyword}, '%')
@@ -43,20 +43,21 @@
 	    or replace(emp_bnum, ' ', '') like concat('%', #{keyword}, '%')
 	    or replace(emp_work_type, ' ', '') like concat('%', #{keyword}, '%')
 	    or replace(emp_power, ' ', '') like concat('%', #{keyword}, '%')
+	    and approval=0
 	</select>
 	
 	<select id="getTeamList" resultType="EmployeeVO">
 		select e.*,s.log_on
 	     from employee e
-	     left join user_setting s on e.emp_id = s.emp_id
+	     left join user_setting s on e.emp_id = s.emp_id and e.approval=0
 	     where emp_dnum = (
 	         select emp_dnum
 	         from employee
-	         where emp_id = #{emp_id}
+	         where emp_id = #{emp_id} and approval=0
 	     ) and emp_bnum = (
 	         select emp_bnum
 	         from employee
-	         where emp_id = #{emp_id}
+	         where emp_id = #{emp_id} and approval=0
 	     ) and e.emp_id != #{emp_id} and e.emp_id not in (select favorite_emp_id from user_favorites where emp_id = #{emp_id} and favorite_emp_id is not null)
 	     order by s.log_on desc;
 	</select>

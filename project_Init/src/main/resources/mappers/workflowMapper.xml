@@ -21,11 +21,11 @@
 		emp5.emp_bnum as receiver_bnum_3rd, emp5.emp_position as receiver_position_3rd, emp5.emp_job as receiver_job_3rd
 	    from workflow wf
 	  
-	    join employee emp1 on wf.wf_sender = emp1.emp_id
-	    join employee emp2 on wf.wf_receiver = emp2.emp_id
-	    join employee emp3 on wf.wf_receiver_1st = emp3.emp_id
-	    left join employee emp4 on wf.wf_receiver_2nd = emp4.emp_id
-	    left join employee emp5 on wf.wf_receiver_3rd = emp5.emp_id
+	    join employee emp1 on wf.wf_sender = emp1.emp_id and emp1.approval = 0
+	    join employee emp2 on wf.wf_receiver = emp2.emp_id and emp2.approval = 0
+	    join employee emp3 on wf.wf_receiver_1st = emp3.emp_id and emp3.approval = 0
+	    left join employee emp4 on wf.wf_receiver_2nd = emp4.emp_id and emp4.approval = 0
+	    left join employee emp5 on wf.wf_receiver_3rd = emp5.emp_id and emp5.approval = 0
 	    where wf.wf_code = #{wf_code}
 	</select>
 	
@@ -34,7 +34,7 @@
 		select * , 
 		 emp.emp_name as receiver_name, emp.emp_bnum as receiver_bnum, emp.emp_dnum as receiver_dnum, emp.emp_position as receiver_position, emp.emp_profile as receiver_profile, emp.emp_job as receiver_job
 		 from workflow wf
-		 join employee emp on wf.wf_receiver = emp.emp_id
+		 join employee emp on wf.wf_receiver = emp.emp_id and emp.approval = 0
 		 where wf_sender=#{wf_sender} and wf_status=#{wf_status}
 	</select>
 	
@@ -43,7 +43,7 @@
 		select * ,
 		 emp.emp_name as sender_name, emp.emp_bnum as sender_bnum, emp.emp_dnum as sender_dnum, emp.emp_position as sender_position, emp.emp_profile as sender_profile, emp.emp_job as sender_job
 		 from workflow wf
-		 join employee emp on wf.wf_sender = emp.emp_id
+		 join employee emp on wf.wf_sender = emp.emp_id and emp.approval = 0
 		 where wf_receiver=#{wf_receiver} and wf_status=#{wf_status}
 	</select>
 	
@@ -239,11 +239,11 @@
 		emp5.emp_bnum as receiver_bnum_3rd, emp5.emp_position as receiver_position_3rd, emp5.emp_job as receiver_job_3rd
 	    from workflow wf
 	  
-	    join employee emp1 on wf.wf_sender = emp1.emp_id
-	    join employee emp2 on wf.wf_receiver = emp2.emp_id
-	    join employee emp3 on wf.wf_receiver_1st = emp3.emp_id
-	    left join employee emp4 on wf.wf_receiver_2nd = emp4.emp_id
-	    left join employee emp5 on wf.wf_receiver_3rd = emp5.emp_id
+	    join employee emp1 on wf.wf_sender = emp1.emp_id and emp1.approval = 0
+	    join employee emp2 on wf.wf_receiver = emp2.emp_id and emp2.approval = 0
+	    join employee emp3 on wf.wf_receiver_1st = emp3.emp_id and emp3.approval = 0
+	    left join employee emp4 on wf.wf_receiver_2nd = emp4.emp_id and emp4.approval = 0
+	    left join employee emp5 on wf.wf_receiver_3rd = emp5.emp_id and emp5.approval = 0
 	    where wf_sender=#{emp_id} and wf_sender_alarm_token='1'
 	</select>
 	
@@ -263,11 +263,11 @@
 		emp5.emp_bnum as receiver_bnum_3rd, emp5.emp_position as receiver_position_3rd, emp5.emp_job as receiver_job_3rd
 	    from workflow wf
 	  
-	    join employee emp1 on wf.wf_sender = emp1.emp_id
-	    join employee emp2 on wf.wf_receiver = emp2.emp_id
-	    join employee emp3 on wf.wf_receiver_1st = emp3.emp_id
-	    left join employee emp4 on wf.wf_receiver_2nd = emp4.emp_id
-	    left join employee emp5 on wf.wf_receiver_3rd = emp5.emp_id
+	    join employee emp1 on wf.wf_sender = emp1.emp_id and emp1.approval = 0
+	    join employee emp2 on wf.wf_receiver = emp2.emp_id and emp2.approval = 0
+	    join employee emp3 on wf.wf_receiver_1st = emp3.emp_id and emp3.approval = 0
+	    left join employee emp4 on wf.wf_receiver_2nd = emp4.emp_id and emp4.approval = 0
+	    left join employee emp5 on wf.wf_receiver_3rd = emp5.emp_id and emp5.approval = 0
 	    where wf_receiver=#{emp_id} and wf_receiver_alarm_token='1' and wf_status='1'
 	</select>
 	
@@ -287,11 +287,11 @@
 		emp5.emp_bnum as receiver_bnum_3rd, emp5.emp_position as receiver_position_3rd, emp5.emp_job as receiver_job_3rd
 	    from workflow wf
 	  
-	    join employee emp1 on wf.wf_sender = emp1.emp_id
-	    join employee emp2 on wf.wf_receiver = emp2.emp_id
-	    join employee emp3 on wf.wf_receiver_1st = emp3.emp_id
-	    left join employee emp4 on wf.wf_receiver_2nd = emp4.emp_id
-	    left join employee emp5 on wf.wf_receiver_3rd = emp5.emp_id
+	    join employee emp1 on wf.wf_sender = emp1.emp_id and emp1.approval = 0
+	    join employee emp2 on wf.wf_receiver = emp2.emp_id and emp2.approval = 0
+	    join employee emp3 on wf.wf_receiver_1st = emp3.emp_id and emp3.approval = 0
+	    left join employee emp4 on wf.wf_receiver_2nd = emp4.emp_id and emp4.approval = 0
+	    left join employee emp5 on wf.wf_receiver_3rd = emp5.emp_id and emp5.approval = 0
 	    where wf_sender=#{emp_id} and wf_sender_alarm_token='1'
 	</select>
 	
@@ -311,11 +311,11 @@
 		emp5.emp_bnum as receiver_bnum_3rd, emp5.emp_position as receiver_position_3rd, emp5.emp_job as receiver_job_3rd
 	    from workflow wf
 	  
-	    join employee emp1 on wf.wf_sender = emp1.emp_id
-	    join employee emp2 on wf.wf_receiver = emp2.emp_id
-	    join employee emp3 on wf.wf_receiver_1st = emp3.emp_id
-	    left join employee emp4 on wf.wf_receiver_2nd = emp4.emp_id
-	    left join employee emp5 on wf.wf_receiver_3rd = emp5.emp_id
+	    join employee emp1 on wf.wf_sender = emp1.emp_id and emp1.approval = 0
+	    join employee emp2 on wf.wf_receiver = emp2.emp_id and emp2.approval = 0
+	    join employee emp3 on wf.wf_receiver_1st = emp3.emp_id and emp3.approval = 0
+	    left join employee emp4 on wf.wf_receiver_2nd = emp4.emp_id and emp4.approval = 0
+	    left join employee emp5 on wf.wf_receiver_3rd = emp5.emp_id and emp5.approval = 0
 	    where wf_receiver=#{emp_id} and wf_status='1'
 	</select>
 	
