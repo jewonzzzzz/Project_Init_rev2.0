@@ -411,6 +411,19 @@ textarea.form-control {
     $('#quitForm').submit(function(e) {
         e.preventDefault();
         
+    	// 현재 날짜 가져오기
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // 시간을 제거하여 날짜만 비교
+        
+        // 선택된 퇴사 희망일
+        const quitDate = new Date($('#emp_quit_date').val());
+        
+        // 퇴사 희망일 유효성 검사
+        if (quitDate < today) {
+            alert('퇴사 희망일은 오늘 이후 날짜만 선택 가능합니다.');
+            return;
+        }
+        
         // 폼 유효성 검사
         if (!$('#agreeRules').is(':checked')) {
             alert('퇴사 규칙에 동의해주세요.');
@@ -448,7 +461,7 @@ textarea.form-control {
                 }
             },
             error: function(xhr, status, error) {
-                alert('퇴직 신청 처리 중 오류가 발생했습니다.');
+                alert('이미 퇴직신청 하셨습니다.');
                 console.error('Error:', error);
             }
         });
