@@ -11,14 +11,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Fonts and icons -->
     
-     <style>
-        #qrFrame {
-            width: 200px;
-            height: 200px;
-            border: none;
-            overflow: hidden; /* 스크롤바 숨기기 */
-        }
-    </style>
+    
     
     <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
@@ -40,6 +33,8 @@
     </script>
     <!--qr코드 숨김 스타일  -->
     <style>
+     
+        
         #qrcode {
             margin-top: 20px;
             display: none; /* 처음에는 QR 코드 숨김 */
@@ -273,7 +268,8 @@
                     </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="saveChangesButton">변경 저장</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+      
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
         </div>
     </div>
@@ -609,6 +605,8 @@
     </div>
 </div>
 <script>
+    let redirectTimeout;
+
     function showQrModal(event) {
         event.preventDefault(); // 기본 폼 제출 방지
         var form = event.target;
@@ -620,17 +618,29 @@
 
         // 모달 보여주기
         $('#qrModal').modal('show');
+
+        // 10초 뒤에 해당 URL로 이동
+        redirectTimeout = setTimeout(function() {
+            // 지정된 주소로 리다이렉트
+            window.location.href = "http://localhost:8088/Attendance/attendanceMain?emp_id=" + empId;
+        }, 10000); // 10000ms = 10초
     }
 
     function closeQrModal() {
         // 모달을 닫고 원래 상태로 되돌리기
         $('#qrModal').modal('hide'); // Bootstrap 모달 닫기
         document.getElementById('qrFrame').src = ''; // iframe을 초기화하여 내용 제거
+
+        // 자동 이동 타이머를 취소
+        clearTimeout(redirectTimeout);
     }
 
     // 모달이 완전히 숨겨졌을 때 실행되는 이벤트
     $('#qrModal').on('hidden.bs.modal', function () {
         document.getElementById('qrFrame').src = ''; // 모달이 닫힐 때 iframe 초기화
+
+        // 자동 이동 타이머를 취소
+        clearTimeout(redirectTimeout);
     });
 </script>
 	<br>

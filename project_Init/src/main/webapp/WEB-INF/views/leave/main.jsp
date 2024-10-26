@@ -204,7 +204,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="signBtn" data-bs-toggle="modal" data-bs-target="#addRowModalA">결재요청</button>
+                <button type="submit" class="btn btn-primary" onclick="submitLeaveForm(event)">신청</button>
                 <button type="button" class="btn btn-secondary" onclick="closeLeaveModal()">닫기</button>
             </div>
         </div>
@@ -213,28 +213,47 @@
 
 <script>
 function openLeaveModal() {
-	 $('#leaveRequestModal').modal('show'); // Bootstrap의 모달을 수동으로 열기
+    $('#leaveModal').modal('show'); // 모달 ID 수정
 }
-
-
 
 function closeLeaveModal() {
-	 $('#leaveRequestModal').modal('hide'); 
+    $('#leaveModal').modal('hide'); // 모달 ID 수정
 }
 
-// 사용 연차 입력 시 잔여 연차 및 조정 연차 자동 계산
-document.getElementById("usedLeave").addEventListener("input", function() {
-    const totalLeave = parseInt(document.getElementById("totalLeave").value) || 0;
-    const usedLeave = parseInt(this.value) || 0; // 현재 입력된 값 또는 0
-    const remainingLeave = totalLeave - usedLeave;
+//연차 시작일 및 종료일 변경 시 사용 연차 자동 계산
+document.getElementById("annualLeaveStartDate").addEventListener("change", calculateUsedLeave);
+document.getElementById("endAnnualLeave").addEventListener("change", calculateUsedLeave);
 
-    // 잔여 연차 업데이트
-    document.getElementById("remainingLeave").value = remainingLeave < 0 ? 0 : remainingLeave;
+function calculateUsedLeave() {
+    const startDate = new Date(document.getElementById("annualLeaveStartDate").value);
+    const endDate = new Date(document.getElementById("endAnnualLeave").value);
 
-    // 조정 연차 계산 (조정 연차는 사용 연차와 같고 음수로 설정)
-    const adjustedLeave = -usedLeave; // 사용 연차를 음수로 변환
-    document.getElementById("adjustment").value = adjustedLeave; // 조정 연차 업데이트
-});
+    // 시작일과 종료일 모두 입력되었는지 확인
+    if (!isNaN(startDate) && !isNaN(endDate) && endDate >= startDate) {
+        let usedDays = 0;
+
+        // 날짜 계산
+        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+            // 0: 일요일, 6: 토요일
+            if (d.getDay() !== 0 && d.getDay() !== 6) { 
+                usedDays++;
+            }
+        }
+
+        // 사용 연차 입력란에 계산된 사용 일수 설정
+        document.getElementById("usedLeave").value = usedDays;
+
+        // 잔여 연차 업데이트
+        const totalLeave = parseInt(document.getElementById("totalLeave").value) || 0;
+        const remainingLeave = totalLeave - usedDays;
+
+        document.getElementById("remainingLeave").value = remainingLeave < 0 ? 0 : remainingLeave;
+
+        // 조정 연차 계산 (조정 연차는 사용 연차와 같고 음수로 설정)
+        const adjustedLeave = -usedDays; // 사용 연차를 음수로 변환
+        document.getElementById("adjustment").value = adjustedLeave; // 조정 연차 업데이트
+    }
+}
 
 // 연차 신청서 제출 함수
 function submitLeaveForm() {
@@ -379,7 +398,7 @@ function submitLeaveForm() {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id ="signBtn" data-bs-toggle="modal" data-bs-target="#addRowModal">결재요청</button>
+                   <button type="submit" class="btn btn-primary">신청</button>
                     <button type="button" class="btn btn-secondary" onclick="closeLeaveRequestModal()">닫기</button>
                 </div>	
             </form>
@@ -464,7 +483,9 @@ document.getElementById("leaveRequestForm").addEventListener("submit", function(
              // 요청이 성공했을 때의 처리
              console.log("휴가 신청이 완료되었습니다:", response);
              
-             $('#addRowModal').modal('show');
+             // 사용자에게 성공 메시지 알림
+             alert("휴가 신청이 완료되었습니다."); 
+
              
              closeLeaveRequestModal(); // 성공한 후에 모달 닫기
          },
@@ -1091,7 +1112,7 @@ function getAttendanceStatusDisplay(leave_status) {
 	             		    reason: $('#reason').val()  // 신청 사유
 	             		};
 	             			
-	             			
+	                     
 	             			
 	             			
 	             			

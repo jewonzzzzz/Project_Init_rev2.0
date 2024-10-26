@@ -255,7 +255,7 @@
 	    WHERE leave_id = #{leave_id};
 	</update>
 	<insert id="insertSignInfoForLeave" parameterType="com.Init.domain.LeaveVO">
-			    INSERT INTO leave_management (
+	INSERT INTO leave_management (
 	        emp_id,
 	        leave_type,
 	        leave_start_date,

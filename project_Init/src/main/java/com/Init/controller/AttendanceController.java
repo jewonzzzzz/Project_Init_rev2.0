@@ -125,20 +125,24 @@ public class AttendanceController {
 	public ResponseEntity<Map<String, Object>> calculateWorkingTime(HttpSession session) {
 		String emp_id = (String) session.getAttribute("emp_id");
 		Map<String, Object> response = new HashMap<>();
+		   try {
+		        // 근무 시간을 자동으로 계산하고 업데이트
+		        attendanceService.calculateAndUpdateWorkingTime(emp_id);
 
-		// 근무 시간을 자동으로 계산하고 업데이트
-		attendanceService.calculateAndUpdateWorkingTime(emp_id);
+		        // 업데이트된 근무 시간을 조회
+		        double workingTime = attendanceService.getLatestWorkingTime(emp_id);
 
-		// 업데이트된 근무 시간을 조회
-		double workingTime = attendanceService.getLatestWorkingTime(emp_id);
+		        // 응답에 데이터 추가
+		        response.put("success", true); // success 필드로 변경
+		        response.put("message", "근무 시간이 성공적으로 업데이트되었습니다.");
+		        response.put("workingTime", workingTime); // 근무 시간을 응답에 추가
+		    } catch (Exception e) {
+		        response.put("success", false); // 실패 시 success를 false로 설정
+		        response.put("message", "근무 시간 계산 중 오류가 발생했습니다: " + e.getMessage());
+		    }
 
-		response.put("status", "success");
-		response.put("message", "근무 시간이 성공적으로 업데이트되었습니다.");
-		response.put("workingTime", workingTime); // 근무 시간을 응답에 추가
-
-		return ResponseEntity.ok(response);
+		    return ResponseEntity.ok(response);
 	}
-
 	// 어드민
 	// http://localhost:8088/Attendance/attendanceAdmin
 	@RequestMapping(value = "attendanceAdmin", method = RequestMethod.GET)

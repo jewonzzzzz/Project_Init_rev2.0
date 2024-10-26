@@ -752,14 +752,19 @@ function submitBusinessTrip() {
             <span class="font-semibold">이름:</span>
             <span>${sessionScope.emp_name}</span>
         </div>
-        <div class="flex justify-between">
-        <span class="font-semibold">출근 시간:</span>
-          <c:if test="${checkInTime != null}">
-		    <c:if test="${not empty checkInTime}">        
-		        <span>${checkInTime}</span>
-		    </c:if>
-		     </c:if>
-		</div>
+       <div class="flex justify-between">
+    <span class="font-semibold">출근 시간:</span>
+    <span id="checkinTimeDisplay"> <!-- ID를 추가 -->
+        <c:choose>
+            <c:when test="${not empty checkInTime}">
+                ${checkInTime} <!-- 출근 시간이 있을 경우 표시 -->
+            </c:when>
+            <c:otherwise>
+                <span class="text-gray-500">출근 기록이 없습니다.</span> <!-- 출근 시간이 없을 경우 기본 메시지 -->
+            </c:otherwise>
+        </c:choose>
+    </span>
+</div>
         <div class="flex justify-between">
             <span class="font-semibold">퇴근 시간:</span>
             <span id="checkoutTimeDisplay"></span>
@@ -946,35 +951,47 @@ function determineWorkStatus(checkInTime, checkOutTime) {
 
 
 			<script>
-		    $(document).ready(function() {
-		        $('#checkoutButton').click(function() {
-		            $.ajax({
-		                url: '<c:url value="checkOut" />',
-		                type: 'GET',
-		                success: function(response) {
-		                    if (response.status === 'success') {
-		                        alert(response.message);
-		
-		                        // 퇴근 시간이 성공적으로 업데이트되면 현재 시간을 퇴근 시간으로 표시
-		                        const now = new Date();
-		                        const formattedTime = now.getFullYear() + '-' +
-		                            ('0' + (now.getMonth() + 1)).slice(-2) + '-' +
-		                            ('0' + now.getDate()).slice(-2) + ' ' +
-		                            ('0' + now.getHours()).slice(-2) + ':' +
-		                            ('0' + now.getMinutes()).slice(-2) + ':' +
-		                            ('0' + now.getSeconds()).slice(-2);
-		                        
-		                        $('#checkoutTimeDisplay').text('' + formattedTime);
-		                    } else {
-		                        alert(response.message);
-		                    }
-		                },
-		                error: function() {
-		                    alert('퇴근 요청 중 오류가 발생했습니다.');
-		                }
-		            });
-		        });
-		    });
+			
+			
+			$(document).ready(function() {
+			    $('#checkoutButton').click(function() {
+			        // 출근 기록이 있는지 확인
+			        const checkinTime = $('#checkinTimeDisplay').text().trim(); // 출근 시간 가져오기
+
+			        // 출근 시간이 없으면 퇴근 불가
+			        if (!checkinTime) {
+			            alert('먼저 출근 기록이 필요합니다.');
+			            return; // AJAX 요청을 중단
+			        }
+
+			        // 출근 시간이 있는 경우 퇴근 요청
+			        $.ajax({
+			            url: '<c:url value="checkOut" />',
+			            type: 'GET',
+			            success: function(response) {
+			                if (response.status === 'success') {
+			                    alert(response.message);
+
+			                    // 퇴근 시간이 성공적으로 업데이트되면 현재 시간을 퇴근 시간으로 표시
+			                    const now = new Date();
+			                    const formattedTime = now.getFullYear() + '-' +
+			                        ('0' + (now.getMonth() + 1)).slice(-2) + '-' +
+			                        ('0' + now.getDate()).slice(-2) + ' ' +
+			                        ('0' + now.getHours()).slice(-2) + ':' +
+			                        ('0' + now.getMinutes()).slice(-2) + ':' +
+			                        ('0' + now.getSeconds()).slice(-2);
+			                    
+			                    $('#checkoutTimeDisplay').text(formattedTime);
+			                } else {
+			                    alert(response.message);
+			                }
+			            },
+			            error: function() {
+			                alert('퇴근 요청 중 오류가 발생했습니다.');
+			            }
+			        });
+			    });
+			});
 		    </script>
 		    
 		    
@@ -998,46 +1015,17 @@ function determineWorkStatus(checkInTime, checkOutTime) {
 		        });
 		    });
 
-		    // 근무 시간을 hh:mm 형식으로 변환하는 함수
-		    function formatWorkingTime(totalMinutes) {
-		        var hours = Math.floor(totalMinutes / 60); // 시간 계산
-		        var minutes = totalMinutes % 60; // 남은 분 계산
+		 // 근무 시간을 hh:mm 형식으로 변환하는 함수
+		    function formatWorkingTime(totalHours) {
+		        var hours = Math.floor(totalHours); // 시간 계산 (정수 부분)
+		        var minutes = Math.round((totalHours - hours) * 60); // 소수 부분을 분으로 변환 (필요 시)
+
 		        // 2자리 숫자 형식으로 변환
 		        return (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
 		    }
 </script>
 		   
-		<!-- 출퇴근   -->
 		
-		
-<script>
-        // 퇴근 버튼 클릭 시 유효성 검증
-        $('#checkoutButton').click(function() {
-            // 출근 기록이 있는지 확인
-            const checkinTime = $('#checkinTimeDisplay').text();
-           
-            if (confirm('퇴근하시겠습니까?')) {
-                $.ajax({
-                    url: '<c:url value="checkOut" />',
-                    type: 'GET',
-                    success: function(response) {
-                        if (response.status === 'success') {
-                           
-                            $('#checkoutTimeDisplay').text('퇴근 시간: ' + response.checkOutTime);
-                        } else {
-                            alert(response.message);
-                        }
-                    },
-                    error: function() {
-                        alert('퇴근 요청 중 오류가 발생했습니다.');
-                    }
-                });
-            }
-        });
-  
-</script>
-
-
 
 
 
