@@ -71,14 +71,13 @@
 
 	<!-- 근무 시간 계산 및 업데이트 -->
 	<update id="calculateAndUpdateWorkingTime"
-		parameterType="String">
+        parameterType="String">
 		UPDATE attendance_ch
-		SET working_time = TIMESTAMPDIFF(MINUTE, check_in,
-		check_out)
-		WHERE emp_id = #{emp_id}
-		AND check_out IS NOT NULL; <!-- 퇴근 시간이 
-			존재하는 경우만 업데이트 -->
-	</update>
+			SET 
+			    working_time = TIMESTAMPDIFF(MINUTE, check_in, check_out) / 60.0 
+			WHERE emp_id = #{emp_id}
+			AND check_out IS NOT NULL;  -- 퇴근 시간이 존재하는 경우만 업데이트
+		</update>
 
 	<select id="getWorkingTime" resultType="double">
 		SELECT working_time
