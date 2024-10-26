@@ -580,7 +580,7 @@ textarea.form-control {
 	                            icon: "success",
 	                            button: "OK"
 	                        }).then(function() {
-	                            window.location.href = "/member/main";  // 페이지 이동
+	                            window.location.href = "/main/home";  // 페이지 이동
 	                        });
 	            		},
 	            		error: function(xhr, status, error) {

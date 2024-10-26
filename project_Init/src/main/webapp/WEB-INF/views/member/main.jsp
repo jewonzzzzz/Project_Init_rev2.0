@@ -56,7 +56,7 @@
 
 
             <h1> ${emp_id}님 환영합니다. </h1>
-            <button type="button" onclick="confirmLogout()" class="btn btn-danger">로그아웃</button>
+            <button id="logoutBtn" class="nav-link btn btn-danger">로그아웃</button>
 
                          
                  
@@ -103,7 +103,7 @@
 
     <!-- Kaiadmin JS -->
     <script src="${pageContext.request.contextPath }/resources/assets/js/kaiadmin.min.js"></script>
-
+	
     <script>
       $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
         type: "line",
@@ -132,39 +132,50 @@
         fillColor: "rgba(255, 165, 52, .14)",
       });
       
-      // 로그아웃 관련
-      function confirmLogout() {
-          swal({
-            title: "로그아웃",
-            text: "정말 로그아웃 하시겠습니까?",
-            icon: "warning",
-            buttons: ["아니오", "예"],
-            dangerMode: true,
-          })
-          .then((willLogout) => {
-            if (willLogout) {
-              // 사용자가 "예"를 선택한 경우
-              window.location.href = '/member/login';
-            } else {
-              // 사용자가 "아니오"를 선택한 경우
-              swal("로그아웃이 취소되었습니다.", {
-                icon: "info",
-              });
-            }
-          });
-        }
-      </script>
-      
-      <script>
-      // 최초 로그인 시 회원정보 수정페이지 보내기
-		$(document).ready(function() {
-		    var needInfoUpdate = ${needInfoUpdate};
-		    if (needInfoUpdate) {
-		        alert("개인정보를 업데이트해야 합니다. 정보 수정 페이지로 이동합니다.");
-		        window.location.href = "${pageContext.request.contextPath}/member/update";
-		    }
-		});
-      
+      $(document).ready(function() {
+    	    $("#logoutBtn").click(function() {
+    	        confirmLogout();  
+    	    });
+    	    
+    	    // 최초 로그인 시 회원정보 수정페이지 보내기
+    	    var needInfoUpdate = ${needInfoUpdate};
+    	    if (needInfoUpdate) {
+    	        alert("개인정보를 업데이트해야 합니다. 정보 수정 페이지로 이동합니다.");
+    	        window.location.href = "${pageContext.request.contextPath}/member/update";
+    	    }
+    	});
+
+    	// 로그아웃 관련 
+    	function confirmLogout() {
+    	    swal({
+    	        title: "로그아웃",
+    	        text: "정말 로그아웃 하시겠습니까?",
+    	        icon: "warning",
+    	        buttons: ["아니오", "예"],
+    	        dangerMode: true,
+    	    })
+    	    .then((willLogout) => {
+    	        if (willLogout) {
+    	            $.ajax({
+    	                url: '${pageContext.request.contextPath}/member/logout',
+    	                type: 'GET',
+    	                success: function() {
+    	                    window.location.href = '${pageContext.request.contextPath}/member/login';
+    	                },
+    	                error: function() {
+    	                    swal("로그아웃 처리 중 오류가 발생했습니다.", {
+    	                        icon: "error"
+    	                    });
+    	                }
+    	            });
+    	        } else {
+    	            swal("로그아웃이 취소되었습니다.", {
+    	                icon: "info",
+    	            });
+    	        }
+    	    });
+    	}
+
     </script>
   </body>
 </html>

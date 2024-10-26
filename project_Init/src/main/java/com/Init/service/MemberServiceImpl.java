@@ -90,6 +90,22 @@ public class MemberServiceImpl implements MemberService {
         mdao.deleteQuitRequest(emp_id);
     }
     
+    // 카카오 로그인
+    @Override
+    public MemberVO findMemberByEmail(String emp_email) {
+        try {
+            MemberVO member = mdao.findByEmail(emp_email);
+            if (member == null) {
+                logger.debug("Email {} not found in the system", emp_email);
+                return null;
+            }
+            return member;
+        } catch (Exception e) {
+            logger.error("Error finding member by email: {}", emp_email, e);
+            throw new RuntimeException("Failed to find member by email", e);
+        }
+    }
+    
     // 비밀번호 찾기
     @Override
     public boolean isValidEmployee(String emp_id, String emp_email) {

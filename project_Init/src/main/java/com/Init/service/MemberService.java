@@ -19,6 +19,9 @@ public interface MemberService {
 	// 회원로그인 체크 동작
 	public MemberVO memberLoginCheck(MemberVO vo);
 	
+	// 카카오 로그인
+	MemberVO findMemberByEmail(String emp_email);
+	
 	// 비밀번호 찾기
 	boolean isValidEmployee(String emp_id, String emp_email);
 	void sendVerificationEmail(String emp_id, String emp_email, String verificationCode);

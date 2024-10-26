@@ -19,6 +19,9 @@ public interface MemberDAO {
 	public MemberVO loginMember(String emp_id);
 	public MemberVO loginMember(MemberVO vo);
 	
+	// 카카오 로그인
+	MemberVO findByEmail(String emp_email);
+	
 	// 비밀번호 찾기
 	boolean isValidEmployee(String emp_id, String emp_email);
     boolean verifyCode(String emp_id, String verificationCode);
@@ -26,7 +29,6 @@ public interface MemberDAO {
     VerificationCode getVerificationCode(String emp_id);
     void saveVerificationCode(String emp_id, String code, Date expiryTime);
     void deleteVerificationCode(String emp_id);
-    
 	
 	// 사용자 정보조회
 	public MemberVO getMember(String emp_id);

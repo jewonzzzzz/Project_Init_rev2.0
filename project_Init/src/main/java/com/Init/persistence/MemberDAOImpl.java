@@ -64,6 +64,12 @@ public class MemberDAOImpl implements MemberDAO{
 	    sqlSession.delete(NAMESPACE + ".deleteQuitRequest", emp_id);
 	}
 	
+	// 카카오 로그인
+	@Override
+    public MemberVO findByEmail(String emp_email) {
+        return sqlSession.selectOne(NAMESPACE + ".findByEmail", emp_email);
+    }
+	
 	// 비밀번호 찾기
 	@Override
     public boolean isValidEmployee(String emp_id, String emp_email) {

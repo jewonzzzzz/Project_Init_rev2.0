@@ -81,6 +81,15 @@
 	    AND approval = 0
 	</select>
   	
+  	<!-- 카카오 로그인  -->
+  	<select id="findByEmail" resultType="MemberVO">
+	    SELECT e.*, d.dname as dept_name 
+	    FROM employee e
+	    LEFT JOIN dept d ON e.emp_dnum = d.dnum
+	    WHERE e.emp_email = #{emp_email}
+	    AND e.approval = 0
+	</select>
+  	
   	<!-- 비밀번호 찾기 -->
   	<update id="resetPassword">
 	    UPDATE employee 
