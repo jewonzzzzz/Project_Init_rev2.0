@@ -583,7 +583,7 @@ footer {
 												<td>${member.emp_id}</td>
 												<td>${member.emp_name}</td>
 												<td>${member.emp_position}</td>
-												<td>${member.emp_dnum}</td>
+												<td>${member.dept_name}</td>
 												<td>
 													<button class="btn btn-info btn-sm"
 														onclick="showDetail('${member.emp_id}')">상세보기</button>
@@ -678,7 +678,7 @@ footer {
 												</tr>
 												<tr>
 													<th>부서</th>
-													<td id="emp_dnum"></td>
+													<td id="dept_name"></td>
 													<th>근무지</th>
 													<td id="emp_bnum"></td>
 												</tr>
@@ -804,7 +804,7 @@ footer {
     	                $('#emp_name').text(member.emp_name);
     	                $('#emp_position').text(member.emp_position);
     	                $('#emp_job').text(member.emp_job);
-    	                $('#emp_dnum').text(member.emp_dnum);
+    	                $('#dept_name').text(member.dept_name);
     	                $('#emp_bnum').text(member.emp_bnum);
     	                $('#emp_email').text(member.emp_email);
     	                $('#emp_tel').text(member.emp_tel);
@@ -1018,10 +1018,16 @@ footer {
 		        type: 'GET',
 		        data: { emp_bnum: branchName },
 		        success: function(data) {
+		            console.log("Received org chart data:", data);  // 데이터 로깅 추가
 		            drawOrgChart(data);
 		        },
-		        error: function() {
-		            alert('조직도 데이터를 불러오는데 실패했습니다.');
+		        error: function(xhr, status, error) {
+		            console.error("조직도 데이터 로드 실패:", {
+		                status: status,
+		                error: error,
+		                response: xhr.responseText
+		            });
+		            alert('조직도 데이터를 불러오는데 실패했습니다. 콘솔을 확인해주세요.');
 		        }
 		    });
 		}
@@ -1030,62 +1036,52 @@ footer {
 		    console.log("Drawing org chart with data:", data);
 		    var chart = new OrgChart(document.getElementById("orgChart"), {
 		        template: "ula",
-		        enableDragDrop: true,
+		        enableDragDrop: false,
+		        mouseScrool: OrgChart.action.none,
 		        nodeBinding: {
-		            field_0: "name",
-		            field_1: "title"
+		            field_0: function(data) {
+		                return data.name + " (" + data.position + ")";
+		            },
+		            field_1: function(data) {
+		                return data.dept_name + " " + data.emp_job;
+		            }
 		        },
-		        nodes: data.map(node => ({
-		            id: node.id,
-		            pid: node.pid,
-		            name: node.name,
-		            title: node.title,
-		            emp_job: node.emp_job,
-		            emp_dnum: node.emp_dnum
-		        })),
-		        nodeMouseClick: OrgChart.action.none,
+		        nodes: data
 		    });
 
 		    chart.on('click', function(sender, args) {
 		        var node = chart.get(args.node.id);
-		        console.log("Node clicked:", node);
-		        
-		        if (node && (node.emp_job === "부서장" || node.title === "부서장")) {
-		            console.log("부서장 노드 클릭됨:", node.id);
-		            var departmentId = node.emp_dnum || node.pid;
-		            showTeamMembers(node.id, departmentId);
-		        } else {
-		            console.log("클릭된 노드는 부서장이 아닙니다.");
+		        if (node && node.emp_job === "부서장") {
+		            showTeamMembers(node.dept_name);
 		        }
 		    });
 		}
 
-		function showTeamMembers(nodeId, departmentId) {
-		    console.log("Fetching team members for:", nodeId, departmentId);
-		    if (!departmentId) {
-		        console.error("유효하지 않은 부서 ID:", departmentId);
+		function showTeamMembers(deptCode, deptName) {
+		    if (!deptCode) {
+		        console.error("유효하지 않은 부서 코드:", deptCode);
 		        return;
 		    }
 
 		    $.ajax({
 		        url: '${pageContext.request.contextPath}/member/teamMembers',
 		        type: 'GET',
-		        data: { emp_dnum: departmentId },
+		        data: { emp_dnum: deptCode },
 		        success: function(members) {
-		            console.log("Received team members:", members);
 		            if (members && members.length > 0) {
-		                var table = '<table class="table"><thead><tr><th>이름</th><th>직책</th></tr></thead><tbody>';
+		                var table = '<table class="table"><thead><tr>' +
+		                           '<th>이름</th><th>직급</th><th>직책</th></tr></thead><tbody>';
 		                members.forEach(function(member) {
-		                    table += '<tr><td>' + 
-		                        (member.emp_name ? escapeHtml(member.emp_name) : 'N/A') + 
-		                        '</td><td>' + 
-		                        (member.emp_job ? escapeHtml(member.emp_job) : 'N/A') + 
-		                        '</td></tr>';
+		                    table += '<tr>' +
+		                        '<td>' + escapeHtml(member.emp_name || 'N/A') + '</td>' +
+		                        '<td>' + escapeHtml(member.emp_position || 'N/A') + '</td>' +
+		                        '<td>' + escapeHtml(member.emp_job || 'N/A') + '</td>' +
+		                        '</tr>';
 		                });
 		                table += '</tbody></table>';
 		                
 		                swal({
-		                    title: escapeHtml(departmentId) + " 팀원 목록",
+		                    title: escapeHtml(deptName) + " 팀원 목록",
 		                    content: {
 		                        element: "div",
 		                        attributes: {
@@ -1095,14 +1091,11 @@ footer {
 		                    width: '600px'
 		                });
 		            } else {
-		                console.log("No team members found");
 		                swal("알림", "팀원 정보를 찾을 수 없습니다.", "info");
 		            }
 		        },
 		        error: function(xhr, status, error) {
 		            console.error("팀원 정보 가져오기 오류:", error);
-		            console.log("XHR:", xhr);
-		            console.log("Status:", status);
 		            swal("오류", "팀원 목록을 불러오는데 실패했습니다.", "error");
 		        }
 		    });

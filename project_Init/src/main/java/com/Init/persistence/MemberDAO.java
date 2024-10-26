@@ -62,7 +62,7 @@ public interface MemberDAO {
     MemberVO getMemberDetail(String emp_id);
     
     // 조직도
-    List<MemberVO> getAllMembers();
+    List<MemberVO> getAllMembers(String emp_bnum);
     List<MemberVO> getTeamMembers(String emp_dnum);
     List<String> getBranchList();
     

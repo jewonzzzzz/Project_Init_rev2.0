@@ -62,6 +62,7 @@ public interface MemberService {
     List<MemberVO> getTeamMembers(String emp_dnum);
     List<Map<String, Object>> getOrgChartData(String emp_bnum);
     List<String> getBranchList();
+    List<MemberVO> getAllMembers(String emp_bnum);
     
     // 자격증 추가
     List<Map<String, Object>> getAllLicenses();

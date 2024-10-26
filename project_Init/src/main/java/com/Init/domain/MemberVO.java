@@ -40,6 +40,7 @@ public class MemberVO {
 	private int approval;
 	private String reason;
 	private String reason_detail;
+	private String dept_name;
 	
 	
 	// 기본 생성자

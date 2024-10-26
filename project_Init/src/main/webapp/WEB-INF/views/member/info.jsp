@@ -277,12 +277,12 @@
 										<td>${memberVO.emp_tel}</td>
 									</tr>
 									<tr>
-										<th>이메일</th>
-										<td>${memberVO.emp_email}</td>
-										<th>부서</th>
-										<td>${memberVO.emp_dnum}</td>
-										<th>직급/직책</th>
-										<td>${memberVO.emp_position}/ ${memberVO.emp_job}</td>
+									    <th>이메일</th>
+									    <td>${memberVO.emp_email}</td>
+									    <th>부서</th>
+									    <td>${memberVO.dept_name}</td>
+									    <th>직급/직책</th>
+									    <td>${memberVO.emp_position}/ ${memberVO.emp_job}</td>
 									</tr>
 									<tr>
 										<th>근무형태</th>

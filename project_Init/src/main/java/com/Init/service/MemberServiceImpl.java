@@ -286,56 +286,70 @@ public class MemberServiceImpl implements MemberService {
         return mdao.getMemberDetail(emp_id);
     }
     
+    @Override
+    public List<MemberVO> getAllMembers(String emp_bnum) {
+        return mdao.getAllMembers(emp_bnum);
+    }
+    
     // 조직도
     @Override
     public List<Map<String, Object>> getOrgChartData(String emp_bnum) {
-        List<MemberVO> members = mdao.getAllMembers();
+        List<MemberVO> members = mdao.getAllMembers(emp_bnum);
         List<Map<String, Object>> orgChartData = new ArrayList<>();
         
-        // 지정된 지부의 사원만 필터링
-        members = members.stream()
-            .filter(m -> emp_bnum.equals(m.getEmp_bnum()))
-            .collect(Collectors.toList());
-        
-        // 본부장 노드 추가 (최상위 계층)
+        // 본부장 노드 추가
         MemberVO headManager = members.stream()
             .filter(m -> "본부장".equals(m.getEmp_job()))
             .findFirst()
             .orElse(null);
 
         if (headManager != null) {
-            Map<String, Object> headManagerNode = new HashMap<>();
-            headManagerNode.put("id", headManager.getEmp_id());
-            headManagerNode.put("name", headManager.getEmp_name());
-            headManagerNode.put("title", headManager.getEmp_job());
-            headManagerNode.put("pid", null);
-            orgChartData.add(headManagerNode);
+            Map<String, Object> headNode = new HashMap<>();
+            headNode.put("id", headManager.getEmp_id());
+            headNode.put("name", headManager.getEmp_name());
+            headNode.put("position", headManager.getEmp_position());
+            headNode.put("dept_name", headManager.getDept_name());
+            headNode.put("emp_job", headManager.getEmp_job());
+            headNode.put("pid", null);
+            orgChartData.add(headNode);
         }
 
-        // 부서 노드와 부서장 노드 추가
-        String[] departments = {"인사부", "개발부", "영업부", "마케팅부", "재무부"};
-        for (String dept : departments) {
-            Map<String, Object> deptNode = new HashMap<>();
-            deptNode.put("id", dept);
-            deptNode.put("name", dept);
-            deptNode.put("pid", headManager != null ? headManager.getEmp_id() : null);
-            orgChartData.add(deptNode);
+        // 부서장 노드 추가
+        members.stream()
+            .filter(m -> "부서장".equals(m.getEmp_job()))
+            .forEach(deptManager -> {
+                Map<String, Object> deptManagerNode = new HashMap<>();
+                deptManagerNode.put("id", deptManager.getEmp_id());
+                deptManagerNode.put("name", deptManager.getEmp_name());
+                deptManagerNode.put("position", deptManager.getEmp_position());
+                deptManagerNode.put("dept_name", deptManager.getDept_name());
+                deptManagerNode.put("emp_job", deptManager.getEmp_job());
+                deptManagerNode.put("pid", headManager != null ? headManager.getEmp_id() : null);
+                orgChartData.add(deptManagerNode);
+            });
 
-            // 해당 부서의 부서장 찾기
-            MemberVO deptManager = members.stream()
-                .filter(m -> m.getEmp_dnum().equals(dept) && "부서장".equals(m.getEmp_job()))
-                .findFirst()
-                .orElse(null);
-
-            if (deptManager != null) {
-                Map<String, Object> managerNode = new HashMap<>();
-                managerNode.put("id", deptManager.getEmp_id());
-                managerNode.put("name", deptManager.getEmp_name());
-                managerNode.put("title", deptManager.getEmp_job());
-                managerNode.put("pid", dept);
-                orgChartData.add(managerNode);
-            }
-        }
+        // 일반 직원 노드 추가
+        members.stream()
+            .filter(m -> !"본부장".equals(m.getEmp_job()) && !"부서장".equals(m.getEmp_job()))
+            .forEach(employee -> {
+                Map<String, Object> empNode = new HashMap<>();
+                empNode.put("id", employee.getEmp_id());
+                empNode.put("name", employee.getEmp_name());
+                empNode.put("position", employee.getEmp_position());
+                empNode.put("dept_name", employee.getDept_name());
+                empNode.put("emp_job", employee.getEmp_job());
+                
+                // 부서장 찾기
+                String deptManagerId = members.stream()
+                    .filter(m -> "부서장".equals(m.getEmp_job()) 
+                           && m.getDept_name().equals(employee.getDept_name()))
+                    .map(MemberVO::getEmp_id)
+                    .findFirst()
+                    .orElse(null);
+                
+                empNode.put("pid", deptManagerId);
+                orgChartData.add(empNode);
+            });
 
         return orgChartData;
     }

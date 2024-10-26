@@ -214,8 +214,8 @@ public class MemberDAOImpl implements MemberDAO{
     
     // 조직도
     @Override
-    public List<MemberVO> getAllMembers() {
-        return sqlSession.selectList(NAMESPACE + ".getAllMembers");
+    public List<MemberVO> getAllMembers(String emp_bnum) {
+        return sqlSession.selectList(NAMESPACE + ".getAllMembers", emp_bnum);
     }
     
     @Override
