@@ -445,7 +445,7 @@ footer {
 													<td>${member.emp_email}</td>
 													<td>${member.emp_addr}</td>
 													<td>${member.emp_bnum}</td>
-													<td>${member.emp_dnum}</td>
+													<td>${member.dept_name}</td>
 													<td>${member.emp_position}</td>
 													<td>${member.emp_job}</td>
 													<td>${member.emp_salary}</td>
