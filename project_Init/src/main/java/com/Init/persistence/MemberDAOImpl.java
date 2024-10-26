@@ -212,16 +212,6 @@ public class MemberDAOImpl implements MemberDAO{
         return sqlSession.selectOne(NAMESPACE + ".getMemberDetail", emp_id);
     }
     
-    @Override
-    public List<MemberVO> getTeamMembers(String emp_dnum) {
-        return sqlSession.selectList(NAMESPACE + ".getTeamMembers", emp_dnum);
-    }
-    
-    @Override
-    public List<String> getBranchList() {
-        return sqlSession.selectList(NAMESPACE + ".getBranchList");
-    }
-    
     // 필터 부분
     @Override
     public List<String> getFilterOptions(String filterType) {

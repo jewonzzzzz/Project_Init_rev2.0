@@ -430,28 +430,6 @@ public class MemberController implements ServletContextAware {
 		return member;
 	}
 
-	// 회원목록 내 조직도
-	@GetMapping("/teamMembers")
-	@ResponseBody
-	public ResponseEntity<List<MemberVO>> getTeamMembers(@RequestParam String emp_dnum) {
-		logger.info("Fetching team members for department: {}", emp_dnum);
-		try {
-			List<MemberVO> members = mService.getTeamMembers(emp_dnum);
-			logger.info("Found {} team members for department: {}", members.size(), emp_dnum);
-			return ResponseEntity.ok(members);
-		} catch (Exception e) {
-			logger.error("Error fetching team members for department: " + emp_dnum, e);
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-		}
-	}
-
-
-	@GetMapping("/branchList")
-	@ResponseBody
-	public List<String> getBranchList() {
-		return mService.getBranchList();
-	}
-
 	// 필터 부분
 	@GetMapping("/filterOptions")
 	@ResponseBody
@@ -560,8 +538,20 @@ public class MemberController implements ServletContextAware {
 	public ResponseEntity<Map<String, Object>> updateEmployeeInfo(@RequestBody MemberVO vo) {
 	    Map<String, Object> response = new HashMap<>();
 	    try {
-	    	logger.info("Updating employee info: {}", vo);
-	    	boolean result = mService.updateEmployeeInfo(vo);
+	        // 날짜 필드 검증
+	        if ("퇴직".equals(vo.getEmp_status()) && vo.getEmp_quit_date() == null) {
+	            response.put("success", false);
+	            response.put("message", "퇴직 상태인 경우 퇴사일은 필수입니다.");
+	            return ResponseEntity.ok(response);
+	        }
+	        
+	        if ("휴직".equals(vo.getEmp_status()) && vo.getEmp_break_date() == null) {
+	            response.put("success", false);
+	            response.put("message", "휴직 상태인 경우 휴직일은 필수입니다.");
+	            return ResponseEntity.ok(response);
+	        }
+
+	        boolean result = mService.updateEmployeeInfo(vo);
 	        if(result) {
 	            response.put("success", true);
 	            response.put("message", "사원 정보가 성공적으로 업데이트되었습니다.");
@@ -571,8 +561,8 @@ public class MemberController implements ServletContextAware {
 	        }
 	        return ResponseEntity.ok(response);
 	    } catch (Exception e) {
-	    	logger.error("사원 정보 업데이트 중 서버 오류 발생", e);
-	    	response.put("success", false);
+	        logger.error("사원 정보 업데이트 중 서버 오류 발생", e);
+	        response.put("success", false);
 	        response.put("message", "서버 오류: " + e.getMessage());
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 	    }

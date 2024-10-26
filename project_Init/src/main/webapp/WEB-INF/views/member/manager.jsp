@@ -445,7 +445,7 @@ footer {
 													<td>${member.emp_email}</td>
 													<td>${member.emp_addr}</td>
 													<td>${member.emp_bnum}</td>
-													<td>${member.dept_name}</td>
+													<td>${member.emp_dnum}</td>
 													<td>${member.emp_position}</td>
 													<td>${member.emp_job}</td>
 													<td>${member.emp_salary}</td>
@@ -984,24 +984,24 @@ footer {
       }
 
       function validateBirth(birthDate) {
-          if (!birthDate) return false;
-          
-          const today = new Date();
-          const birth = new Date(birthDate);
-          
-          // 날짜가 유효한지 확인
-          if (isNaN(birth.getTime())) return false;
-          
-          const age = today.getFullYear() - birth.getFullYear();
-          const monthDiff = today.getMonth() - birth.getMonth();
-          
-          // 생일이 아직 지나지 않은 경우 나이에서 1을 빼줌
-          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-              age--;
-          }
-          
-          return age >= 19 && age <= 60;
-      }
+    	    if (!birthDate) return false;
+    	    
+    	    const today = new Date();
+    	    const birth = new Date(birthDate);
+    	    
+    	    // 날짜가 유효한지 확인
+    	    if (isNaN(birth.getTime())) return false;
+    	    
+    	    let age = today.getFullYear() - birth.getFullYear();
+    	    const monthDiff = today.getMonth() - birth.getMonth();
+    	    
+    	    // 생일이 아직 지나지 않은 경우 나이에서 1을 빼줌
+    	    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+    	        age--;
+    	    }
+    	    
+    	    return age >= 19 && age <= 60;
+    	}
 
       function validateSalary(salaryStr) {
           // 문자열에서 쉼표 제거 후 숫자로 변환
@@ -1308,30 +1308,31 @@ footer {
       });
 
       function loadDepartments() {
-          $.ajax({
-              url: '${pageContext.request.contextPath}/member/departments',
-              type: 'GET',
-              success: function(departments) {
-                  var reg_select = $('#reg_emp_dnum');
-                  var edit_select = $('#edit_emp_dnum');
-                  
-                  reg_select.empty().append('<option value="">선택하세요</option>');
-                  edit_select.empty().append('<option value="">선택하세요</option>');
-                  
-                  departments.forEach(function(dept) {
-                      reg_select.append($('<option></option>')
-                          .val(dept.dnum)
-                          .text(dept.dname));
-                      edit_select.append($('<option></option>')
-                          .val(dept.dnum)
-                          .text(dept.dname));
-                  });
-              },
-              error: function() {
-                  alert('부서 목록을 불러오는데 실패했습니다.');
-              }
-          });
-      }
+    	    $.ajax({
+    	        url: '${pageContext.request.contextPath}/member/departments',
+    	        type: 'GET',
+    	        success: function(departments) {
+    	            var reg_select = $('#reg_emp_dnum');
+    	            var edit_select = $('#edit_emp_dnum');
+    	            
+    	            reg_select.empty().append('<option value="">선택하세요</option>');
+    	            edit_select.empty().append('<option value="">선택하세요</option>');
+    	            
+    	            departments.forEach(function(dept) {
+    	                reg_select.append($('<option></option>')
+    	                    .val(dept.dnum)  // dnum을 value로 사용
+    	                    .text(dept.dname));  // dname을 표시 텍스트로 사용
+    	                edit_select.append($('<option></option>')
+    	                    .val(dept.dnum)
+    	                    .text(dept.dname));
+    	            });
+    	        },
+    	        error: function() {
+    	            alert('부서 목록을 불러오는데 실패했습니다.');
+    	        }
+    	    });
+    	}
+
       
       // 사원 등록 처리
       function registerEmployee() {
@@ -1371,18 +1372,31 @@ footer {
 
    // 사원수정 함수 수정
    function updateEmployee() {
-    console.log("updateEmployee called");
-    
     if (!validateEditForm()) {
         return;
     }
 
     var formData = {};
     $('#editForm').serializeArray().forEach(function(item) {
-        formData[item.name] = item.value;
+        // 날짜 필드에 대한 특별 처리
+        if (['emp_break_date', 'emp_restart_date', 'emp_quit_date'].includes(item.name)) {
+            formData[item.name] = item.value || null;  // 빈 문자열을 null로 변환
+        } else {
+            formData[item.name] = item.value;
+        }
     });
 
-    console.log("Sending update data:", formData);
+    // 재직 상태가 '퇴직'일 때 퇴사일이 필수
+    if (formData.emp_status === '퇴직' && !formData.emp_quit_date) {
+        alert('퇴직 상태인 경우 퇴사일은 필수입니다.');
+        return;
+    }
+
+    // 재직 상태가 '휴직'일 때 휴직일이 필수
+    if (formData.emp_status === '휴직' && !formData.emp_break_date) {
+        alert('휴직 상태인 경우 휴직일은 필수입니다.');
+        return;
+    }
 
     $.ajax({
         url: '${pageContext.request.contextPath}/member/mupdate',
@@ -1390,41 +1404,47 @@ footer {
         contentType: 'application/json',
         data: JSON.stringify(formData),
         success: function(response) {
-            console.log("First update response:", response);
             if(response.success) {
-                // 100ms 후 두 번째 실행
-                setTimeout(() => {
-                    $.ajax({
-                        url: '${pageContext.request.contextPath}/member/mupdate',
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify(formData),
-                        success: function(response) {
-                            console.log("Second update response:", response);
-                            if(response.success) {
-                                alert('사원 정보가 성공적으로 업데이트되었습니다.');
-                                $('#editModal').modal('hide');
-                                loadMembers(1);
-                            } else {
-                                alert('사원 정보 업데이트에 실패했습니다: ' + response.message);
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error("Second update error:", error);
-                            alert('서버 오류가 발생했습니다.');
-                        }
-                    });
-                }, 100);
+                alert('사원 정보가 성공적으로 업데이트되었습니다.');
+                $('#editModal').modal('hide');
+                loadMembers(1);
             } else {
                 alert('사원 정보 업데이트에 실패했습니다: ' + response.message);
             }
         },
         error: function(xhr, status, error) {
-            console.error("First update error:", error);
+            console.error("Update error:", error);
             alert('서버 오류가 발생했습니다.');
-        }
-    });
-}
+	        }
+	    });
+	}
+	
+	// 날짜 입력 필드 이벤트 핸들러 추가
+    $(document).ready(function() {
+       $('#edit_emp_status').on('change', function() {
+           var status = $(this).val();
+           
+           // 퇴직 상태 선택 시
+           if (status === '퇴직') {
+               $('#edit_emp_quit_date').prop('required', true);
+               if (!$('#edit_emp_quit_date').val()) {
+                   alert('퇴직 상태 선택 시 퇴사일을 입력해주세요.');
+               }
+           } else {
+               $('#edit_emp_quit_date').prop('required', false);
+           }
+           
+           // 휴직 상태 선택 시
+           if (status === '휴직') {
+               $('#edit_emp_break_date').prop('required', true);
+               if (!$('#edit_emp_break_date').val()) {
+                   alert('휴직 상태 선택 시 휴직일을 입력해주세요.');
+               }
+           } else {
+               $('#edit_emp_break_date').prop('required', false);
+	           }
+	       });
+	   });
 
 	    // 전역 변수 추가
 	    var currentState = 'manager'; 
@@ -1459,20 +1479,17 @@ footer {
 		
         function loadMembers(page) {
             $.ajax({
-              url: '${pageContext.request.contextPath}/member/manager',
-              type: 'GET',
-              data: { page: page },
-              success: function(response) {
-                updateTable(response);
-                setTimeout(() => {
+                url: '${pageContext.request.contextPath}/member/manager',
+                type: 'GET',
+                data: { page: page },
+                success: function(response) {
                     updateTable(response);
-                }, 100);
-              },
-              error: function() {
-                alert('사원 목록을 불러오는데 실패했습니다.');
-    	        }
-    	      });
-    	    }
+                },
+                error: function() {
+                    alert('사원 목록을 불러오는데 실패했습니다.');
+                }
+            });
+        }
 	    
         function searchMembers(page) {
             currentState = 'search';
@@ -1506,8 +1523,13 @@ footer {
             
             $('.pagination').html($(response).find('.pagination').html());
             
-            // 페이지네이션 이벤트 다시 바인딩
-            $(document).off('click', '.pagination a').on('click', '.pagination a', function(e) {
+            // 페이지네이션 이벤트 재바인딩
+            bindPaginationEvents();
+        }
+
+        // 페이지네이션 이벤트 바인딩
+        function bindPaginationEvents() {
+            $('.pagination a').off('click').on('click', function(e) {
                 e.preventDefault();
                 var page = $(this).attr('href').split('page=')[1];
                 
@@ -1523,11 +1545,14 @@ footer {
                         break;
                 }
             });
-
-            // 검색어 입력 필드에 포커스
-            $('#keyword').focus();
         }
-      	
+
+        // 페이지 로드 시 초기화
+        $(document).ready(function() {
+            loadDepartments();
+            loadMembers(1);
+        });
+
       	// 필터 관련 스크립트
       	 $(document).ready(function() {
         // 필터 타입 변경 시 필터 값 옵션 업데이트

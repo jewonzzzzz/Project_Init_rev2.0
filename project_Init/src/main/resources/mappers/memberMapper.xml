@@ -162,25 +162,28 @@
 	
 	<!-- 관리자 수정 -->
 	<insert id="updateEmployee" parameterType="MemberVO">
-	    INSERT INTO employee (
-	        emp_id, emp_name, emp_birth, emp_gender, emp_tel, emp_email, 
-	        emp_addr, emp_dnum, emp_position, emp_job, emp_status, emp_bnum, 
-	        emp_work_type, emp_bank_name, emp_account_num, emp_account_name, 
-	        emp_start_date, emp_salary, emp_break_date, emp_restart_date, 
-	        emp_quit_date, emp_pw, emp_profile, reason, reason_detail, approval
-	    )
-	    SELECT 
-	        #{emp_id}, #{emp_name}, #{emp_birth}, #{emp_gender}, #{emp_tel}, #{emp_email}, 
-	        #{emp_addr}, #{emp_dnum}, #{emp_position}, #{emp_job}, #{emp_status}, #{emp_bnum}, 
-	        #{emp_work_type}, #{emp_bank_name}, #{emp_account_num}, #{emp_account_name}, 
-	        #{emp_start_date}, #{emp_salary}, #{emp_break_date}, #{emp_restart_date}, 
-	        #{emp_quit_date}, e.emp_pw, e.emp_profile, #{reason}, #{reason_detail}, 0
-	    FROM employee e
-	    WHERE e.emp_id = #{emp_id}
-	    AND e.approval = (
-	        SELECT MIN(approval) 
-	        FROM employee 
-	        WHERE emp_id = #{emp_id}
+    INSERT INTO employee (
+        emp_id, emp_name, emp_birth, emp_gender, emp_tel, emp_email, 
+        emp_addr, emp_dnum, emp_position, emp_job, emp_status, emp_bnum, 
+        emp_work_type, emp_bank_name, emp_account_num, emp_account_name, 
+        emp_start_date, emp_salary, emp_break_date, emp_restart_date, 
+        emp_quit_date, emp_pw, emp_profile, reason, reason_detail, approval
+    )
+    SELECT 
+        #{emp_id}, #{emp_name}, #{emp_birth}, #{emp_gender}, #{emp_tel}, #{emp_email}, 
+        #{emp_addr}, #{emp_dnum}, #{emp_position}, #{emp_job}, #{emp_status}, #{emp_bnum}, 
+        #{emp_work_type}, #{emp_bank_name}, #{emp_account_num}, #{emp_account_name}, 
+        #{emp_start_date}, #{emp_salary},
+        NULLIF(#{emp_break_date}, ''), 
+        NULLIF(#{emp_restart_date}, ''), 
+        NULLIF(#{emp_quit_date}, ''),
+        e.emp_pw, e.emp_profile, #{reason}, #{reason_detail}, 0
+    FROM employee e
+    WHERE e.emp_id = #{emp_id}
+    AND e.approval = (
+        SELECT MIN(approval) 
+        FROM employee 
+        WHERE emp_id = #{emp_id}
 	    )
 	</insert>
 
@@ -290,9 +293,9 @@
     
     <!-- 부서 목록 조회 (select box용) -->
 	<select id="getDeptInfo" resultType="map">
-	    SELECT dnum, dname 
-	    FROM dept 
-	    ORDER BY dnum
+	    SELECT d.dnum, d.dname 
+	    FROM dept d
+	    ORDER BY d.dnum
 	</select>
     
     <!-- 회원 정보 조회  -->
@@ -386,25 +389,28 @@
 
 	<!-- 필터링된 회원 목록 가져오기 -->
 	<select id="getFilteredMembers" parameterType="map" resultType="MemberVO">
-        SELECT e.*, d.dname as dept_name 
-	    FROM employee e
-	    LEFT JOIN dept d ON e.emp_dnum = d.dnum
-	    <where>
-	        <if test="filterType != null and filterValue != null">
-	            <choose>
-	                <when test="filterType == 'emp_dnum'">
-	                    d.dname = #{filterValue}
-	                </when>
-	                <otherwise>
-	                    e.${filterType} = #{filterValue}
-	                </otherwise>
-	            </choose>
-	        </if>
-	        AND e.approval = 0
-	    </where>
-	    ORDER BY e.emp_id
-	    LIMIT #{offset}, #{pageSize}
-    </select>
+    SELECT e.*, d.dname as dept_name 
+    FROM employee e
+    LEFT JOIN dept d ON e.emp_dnum = d.dnum
+    <where>
+        <if test="filterType != null and filterValue != null">
+            <choose>
+                <when test="filterType == 'emp_dnum'">
+                    d.dname = #{filterValue}
+                </when>
+                <when test="filterType == 'emp_bnum'">
+                    e.emp_bnum = #{filterValue}
+                </when>
+                <otherwise>
+                    e.${filterType} = #{filterValue}
+                </otherwise>
+            </choose>
+        </if>
+        AND e.approval = 0
+    </where>
+    ORDER BY e.emp_id
+    LIMIT #{offset}, #{pageSize}
+	</select>
     
     <!-- 필터링된 회원 수 가져오기 -->
     <select id="getFilteredMembersCount" parameterType="map" resultType="int">

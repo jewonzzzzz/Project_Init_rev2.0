@@ -58,10 +58,6 @@ public interface MemberService {
     int getTotalMembersCount();
     MemberVO getMemberDetail(String emp_id);
     
-    // 조직도
-    List<MemberVO> getTeamMembers(String emp_dnum);
-    List<String> getBranchList();
-    
     // 자격증 추가
     List<Map<String, Object>> getAllLicenses();
     boolean registerLicense(LicenseVO licenseVO);

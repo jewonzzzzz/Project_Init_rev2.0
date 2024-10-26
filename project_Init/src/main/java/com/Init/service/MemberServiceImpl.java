@@ -286,24 +286,6 @@ public class MemberServiceImpl implements MemberService {
         return mdao.getMemberDetail(emp_id);
     }
     
-    // 조직도
-    @Override
-    public List<MemberVO> getTeamMembers(String emp_dnum) {
-        logger.info("Getting team members for department: {}", emp_dnum);
-        List<MemberVO> allMembers = mdao.getTeamMembers(emp_dnum);
-        logger.info("Total members found: {}", allMembers.size());
-        List<MemberVO> filteredMembers = allMembers.stream()
-                         .filter(m -> !"부서장".equals(m.getEmp_job()))
-                         .collect(Collectors.toList());
-        logger.info("Filtered members (excluding 부서장): {}", filteredMembers.size());
-        return filteredMembers;
-    }
-    
-    @Override
-    public List<String> getBranchList() {
-        return mdao.getBranchList();
-    }
-    
     // 필터 부분
     @Override
     public List<String> getFilterOptions(String filterType) {
