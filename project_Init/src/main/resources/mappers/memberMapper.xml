@@ -337,12 +337,22 @@
 	
 	<!-- 조직도 페이지  -->
 	<select id="getAllMemPage" resultType="MemberVO">
-        SELECT * FROM employee ORDER BY emp_bnum, emp_dnum, emp_position
-    </select>
+	    SELECT e.*, d.dname as dept_name 
+	    FROM employee e
+	    LEFT JOIN dept d ON e.emp_dnum = d.dnum
+	    WHERE e.approval = 0
+	    ORDER BY e.emp_bnum, e.emp_dnum, e.emp_position
+	</select>
 
     <select id="getTeamMemPage" parameterType="string" resultType="MemberVO">
-        SELECT * FROM employee WHERE emp_dnum = #{deptId} AND emp_job != '부서장' ORDER BY emp_position
-    </select>
+	    SELECT e.*, d.dname as dept_name
+	    FROM employee e
+	    LEFT JOIN dept d ON e.emp_dnum = d.dnum
+	    WHERE e.emp_dnum = #{deptId} 
+	    AND e.emp_job != '부서장'
+	    AND e.approval = 0
+	    ORDER BY e.emp_position
+	</select>
     
     <!-- 필터 옵션  -->
 	<select id="getFilterOptions" parameterType="string" resultType="string">
