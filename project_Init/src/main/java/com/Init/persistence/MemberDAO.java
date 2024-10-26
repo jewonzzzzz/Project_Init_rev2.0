@@ -61,11 +61,6 @@ public interface MemberDAO {
     int getTotalMembersCount();
     MemberVO getMemberDetail(String emp_id);
     
-    // 조직도
-    List<MemberVO> getAllMembers();
-    List<MemberVO> getTeamMembers(String emp_dnum);
-    List<String> getBranchList();
-    
     // 자격증 추가
     List<Map<String, Object>> getLicenseList();
     void addLicense(LicenseVO licenseVO);
@@ -82,6 +77,9 @@ public interface MemberDAO {
     
     // 비밀번호 수정
     void updatePassword(MemberVO member);
+    
+    // 부서목록
+    List<Map<String, Object>> getDeptInfo();
     
     // 관리자 수정
     int updateEmployee(MemberVO vo);

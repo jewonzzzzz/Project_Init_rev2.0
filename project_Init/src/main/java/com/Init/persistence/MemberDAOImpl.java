@@ -212,22 +212,6 @@ public class MemberDAOImpl implements MemberDAO{
         return sqlSession.selectOne(NAMESPACE + ".getMemberDetail", emp_id);
     }
     
-    // 조직도
-    @Override
-    public List<MemberVO> getAllMembers() {
-        return sqlSession.selectList(NAMESPACE + ".getAllMembers");
-    }
-    
-    @Override
-    public List<MemberVO> getTeamMembers(String emp_dnum) {
-        return sqlSession.selectList(NAMESPACE + ".getTeamMembers", emp_dnum);
-    }
-    
-    @Override
-    public List<String> getBranchList() {
-        return sqlSession.selectList(NAMESPACE + ".getBranchList");
-    }
-    
     // 필터 부분
     @Override
     public List<String> getFilterOptions(String filterType) {
@@ -287,6 +271,12 @@ public class MemberDAOImpl implements MemberDAO{
     public int getNextEmployeeSequence() {
         Integer sequence = sqlSession.selectOne(NAMESPACE + ".getNextEmployeeSequence");
         return (sequence != null) ? sequence : 1;
+    }
+    
+    // 부서목록
+    @Override
+    public List<Map<String, Object>> getDeptInfo() {
+        return sqlSession.selectList(NAMESPACE + ".getDeptInfo");
     }
     
     // 관리자 수정

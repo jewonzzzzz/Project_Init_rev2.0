@@ -34,9 +34,6 @@
       });
     </script>
 
-<!-- OrgChart.js 라이브러리 추가 -->
-<script src="https://balkan.app/js/OrgChart.js"></script>
-
 <!-- CSS Files -->
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/bootstrap.min.css" />
@@ -223,11 +220,6 @@ footer {
 	width: 40%;
 }
 
-#showOrgChart {
-	width: auto;
-	white-space: nowrap;
-}
-
 #filterType, #filterValue, #searchType {
 	width: auto;
 	flex-grow: 1;
@@ -412,11 +404,6 @@ footer {
 									<button type="button" id="searchBtn" class="btn btn-primary">검색</button>
 								</form>
 
-								<!-- 조직도 버튼 -->
-								<button id="showOrgChart" class="btn btn-info">조직도 보기</button>
-							</div>
-
-
 							<!-- 사원 목록 테이블 -->
 							<div class="table-responsive">
 								<table class="table" id="memberTable">
@@ -458,7 +445,7 @@ footer {
 													<td>${member.emp_email}</td>
 													<td>${member.emp_addr}</td>
 													<td>${member.emp_bnum}</td>
-													<td>${member.emp_dnum}</td>
+													<td>${member.dept_name}</td>
 													<td>${member.emp_position}</td>
 													<td>${member.emp_job}</td>
 													<td>${member.emp_salary}</td>
@@ -505,30 +492,7 @@ footer {
 
 								<button id="register" class="btn btn-primary">사원등록</button>
 							</div>
-							<!-- 조직도 모달 -->
-							<div class="modal fade" id="orgChartModal" tabindex="-1"
-								role="dialog" aria-hidden="true">
-								<div class="modal-dialog modal-lg" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title">조직도</h5>
-											<button type="button" class="close" data-dismiss="modal"
-												aria-label="Close">
-												<span aria-hidden="true">&times;</span>
-											</button>
-										</div>
-										<div class="modal-body">
-											<div class="form-group">
-												<label for="branchSelect">지부 선택:</label> <select
-													id="branchSelect" class="form-control">
-													<!-- 옵션들은 JavaScript로 동적으로 추가될 것입니다 -->
-												</select>
-											</div>
-											<div id="orgChart" style="height: 600px;"></div>
-										</div>
-									</div>
-								</div>
-							</div>
+
 							<!-- 사원 등록 모달  -->
 							<div class="modal fade" id="registerModal" tabindex="-1"
 								role="dialog" aria-hidden="true">
@@ -574,16 +538,11 @@ footer {
 													</select>
 												</div>
 												<div class="form-group">
-													<label for="reg_emp_dnum">부서 <span
-														class="text-danger">*</span></label> <select class="form-control"
-														id="reg_emp_dnum" name="emp_dnum" required>
-														<option value="">선택하세요</option>
-														<option value="인사부">인사부</option>
-														<option value="개발부">개발부</option>
-														<option value="영업부">영업부</option>
-														<option value="마케팅부">마케팅부</option>
-														<option value="재무부">재무부</option>
-													</select>
+												    <label for="reg_emp_dnum">부서</label>
+												    <select class="form-control" id="reg_emp_dnum" name="emp_dnum" required>
+												        <option value="">선택하세요</option>
+												        <!-- 동적으로 채워질 부분 -->
+												    </select>
 												</div>
 												<div class="form-group">
 													<label for="reg_emp_position">직급 <span
@@ -706,14 +665,10 @@ footer {
 													</select>
 												</div>
 												<div class="form-group">
-													<label for="edit_emp_dnum">부서</label> <select
-														class="form-control" id="edit_emp_dnum" name="emp_dnum">
-														<option value="인사부">인사부</option>
-														<option value="개발부">개발부</option>
-														<option value="영업부">영업부</option>
-														<option value="마케팅부">마케팅부</option>
-														<option value="재무부">재무부</option>
-													</select>
+												    <label for="edit_emp_dnum">부서</label>
+												    <select class="form-control" id="edit_emp_dnum" name="emp_dnum">
+												        <!-- 동적삽입 -->
+												    </select>
 												</div>
 												<div class="form-group">
 													<label for="edit_emp_position">직급</label> <select
@@ -1029,24 +984,24 @@ footer {
       }
 
       function validateBirth(birthDate) {
-          if (!birthDate) return false;
-          
-          const today = new Date();
-          const birth = new Date(birthDate);
-          
-          // 날짜가 유효한지 확인
-          if (isNaN(birth.getTime())) return false;
-          
-          const age = today.getFullYear() - birth.getFullYear();
-          const monthDiff = today.getMonth() - birth.getMonth();
-          
-          // 생일이 아직 지나지 않은 경우 나이에서 1을 빼줌
-          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-              age--;
-          }
-          
-          return age >= 19 && age <= 60;
-      }
+    	    if (!birthDate) return false;
+    	    
+    	    const today = new Date();
+    	    const birth = new Date(birthDate);
+    	    
+    	    // 날짜가 유효한지 확인
+    	    if (isNaN(birth.getTime())) return false;
+    	    
+    	    let age = today.getFullYear() - birth.getFullYear();
+    	    const monthDiff = today.getMonth() - birth.getMonth();
+    	    
+    	    // 생일이 아직 지나지 않은 경우 나이에서 1을 빼줌
+    	    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+    	        age--;
+    	    }
+    	    
+    	    return age >= 19 && age <= 60;
+    	}
 
       function validateSalary(salaryStr) {
           // 문자열에서 쉼표 제거 후 숫자로 변환
@@ -1344,60 +1299,104 @@ footer {
     	    });
     	});
 
+   // 페이지 로드 시 부서 목록 가져오기
+      $(document).ready(function() {
+          // 부서 목록 로드
+          loadDepartments();
+          
+          // 기존의 ready 함수 내용...
+      });
 
+      function loadDepartments() {
+    	    $.ajax({
+    	        url: '${pageContext.request.contextPath}/member/departments',
+    	        type: 'GET',
+    	        success: function(departments) {
+    	            var reg_select = $('#reg_emp_dnum');
+    	            var edit_select = $('#edit_emp_dnum');
+    	            
+    	            reg_select.empty().append('<option value="">선택하세요</option>');
+    	            edit_select.empty().append('<option value="">선택하세요</option>');
+    	            
+    	            departments.forEach(function(dept) {
+    	                reg_select.append($('<option></option>')
+    	                    .val(dept.dnum)  // dnum을 value로 사용
+    	                    .text(dept.dname));  // dname을 표시 텍스트로 사용
+    	                edit_select.append($('<option></option>')
+    	                    .val(dept.dnum)
+    	                    .text(dept.dname));
+    	            });
+    	        },
+    	        error: function() {
+    	            alert('부서 목록을 불러오는데 실패했습니다.');
+    	        }
+    	    });
+    	}
+
+      
       // 사원 등록 처리
       function registerEmployee() {
-    console.log("registerEmployee function called");
-
-    if (!validateRegisterForm()) {
-        console.log("Register validation failed");
-        return;
-    }
-
-    var formData = {};
-    $('#registerForm').serializeArray().forEach(function(item) {
-        formData[item.name] = item.value;
-    });
-
-    console.log("Sending register data:", formData);
-
-    $.ajax({
-        url: contextPath + '/member/register',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(formData),
-        success: function(response) {
-            console.log("Register response:", response);
-            if (response.success) {
-                alert('사원이 성공적으로 등록되었습니다. 사원번호: ' + response.emp_id);
-                $('#registerModal').modal('hide');
-                loadMembers(1);
-            } else {
-                alert('사원 등록에 실패했습니다: ' + response.message);
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("Register error:", {xhr: xhr, status: status, error: error});
-            alert('서버 오류가 발생했습니다.');
-        }
-    });
-}
+	    if (!validateRegisterForm()) {
+	        return;
+	    }
+	
+	    var formData = {};
+	    $('#registerForm').serializeArray().forEach(function(item) {
+	        formData[item.name] = item.value;
+	    });
+	    
+	    // emp_dnum은 선택된 부서명의 dnum 값으로 설정됨
+	    formData.emp_dnum = $('#reg_emp_dnum').val();
+	
+	    $.ajax({
+	        url: contextPath + '/member/register',
+	        type: 'POST',
+	        contentType: 'application/json',
+	        data: JSON.stringify(formData),
+	        success: function(response) {
+	            if (response.success) {
+	                alert('사원이 성공적으로 등록되었습니다. 사원번호: ' + response.emp_id);
+	                $('#registerModal').modal('hide');
+	                loadMembers(1);
+	            } else {
+	                alert('사원 등록에 실패했습니다: ' + response.message);
+	            }
+	        },
+	        error: function(xhr, status, error) {
+	            console.error("Register error:", error);
+	            alert('서버 오류가 발생했습니다.');
+	        }
+	    });
+	}
 
 
    // 사원수정 함수 수정
    function updateEmployee() {
-    console.log("updateEmployee called");
-    
     if (!validateEditForm()) {
         return;
     }
 
     var formData = {};
     $('#editForm').serializeArray().forEach(function(item) {
-        formData[item.name] = item.value;
+        // 날짜 필드에 대한 특별 처리
+        if (['emp_break_date', 'emp_restart_date', 'emp_quit_date'].includes(item.name)) {
+            formData[item.name] = item.value || null;  // 빈 문자열을 null로 변환
+        } else {
+            formData[item.name] = item.value;
+        }
     });
 
-    console.log("Sending update data:", formData);
+    // 재직 상태가 '퇴직'일 때 퇴사일이 필수
+    if (formData.emp_status === '퇴직' && !formData.emp_quit_date) {
+        alert('퇴직 상태인 경우 퇴사일은 필수입니다.');
+        return;
+    }
+
+    // 재직 상태가 '휴직'일 때 휴직일이 필수
+    if (formData.emp_status === '휴직' && !formData.emp_break_date) {
+        alert('휴직 상태인 경우 휴직일은 필수입니다.');
+        return;
+    }
 
     $.ajax({
         url: '${pageContext.request.contextPath}/member/mupdate',
@@ -1405,41 +1404,47 @@ footer {
         contentType: 'application/json',
         data: JSON.stringify(formData),
         success: function(response) {
-            console.log("First update response:", response);
             if(response.success) {
-                // 100ms 후 두 번째 실행
-                setTimeout(() => {
-                    $.ajax({
-                        url: '${pageContext.request.contextPath}/member/mupdate',
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify(formData),
-                        success: function(response) {
-                            console.log("Second update response:", response);
-                            if(response.success) {
-                                alert('사원 정보가 성공적으로 업데이트되었습니다.');
-                                $('#editModal').modal('hide');
-                                loadMembers(1);
-                            } else {
-                                alert('사원 정보 업데이트에 실패했습니다: ' + response.message);
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error("Second update error:", error);
-                            alert('서버 오류가 발생했습니다.');
-                        }
-                    });
-                }, 100);
+                alert('사원 정보가 성공적으로 업데이트되었습니다.');
+                $('#editModal').modal('hide');
+                loadMembers(1);
             } else {
                 alert('사원 정보 업데이트에 실패했습니다: ' + response.message);
             }
         },
         error: function(xhr, status, error) {
-            console.error("First update error:", error);
+            console.error("Update error:", error);
             alert('서버 오류가 발생했습니다.');
-        }
-    });
-}
+	        }
+	    });
+	}
+	
+	// 날짜 입력 필드 이벤트 핸들러 추가
+    $(document).ready(function() {
+       $('#edit_emp_status').on('change', function() {
+           var status = $(this).val();
+           
+           // 퇴직 상태 선택 시
+           if (status === '퇴직') {
+               $('#edit_emp_quit_date').prop('required', true);
+               if (!$('#edit_emp_quit_date').val()) {
+                   alert('퇴직 상태 선택 시 퇴사일을 입력해주세요.');
+               }
+           } else {
+               $('#edit_emp_quit_date').prop('required', false);
+           }
+           
+           // 휴직 상태 선택 시
+           if (status === '휴직') {
+               $('#edit_emp_break_date').prop('required', true);
+               if (!$('#edit_emp_break_date').val()) {
+                   alert('휴직 상태 선택 시 휴직일을 입력해주세요.');
+               }
+           } else {
+               $('#edit_emp_break_date').prop('required', false);
+	           }
+	       });
+	   });
 
 	    // 전역 변수 추가
 	    var currentState = 'manager'; 
@@ -1448,131 +1453,106 @@ footer {
 		var currentFilterType = '';
 		var currentFilterValue = '';
       
-        // 검색기능
+	    // 검색 기능
         $(document).ready(function() {
-        	
-        // 페이지 로드 시 사원 목록 불러오기
-        loadMembers(1);
+            // 페이지 로드 시 사원 목록 불러오기
+            loadMembers(1);
+            
+            // 검색 버튼 클릭 이벤트
+            $(document).on('click', '#searchBtn', function() {
+                searchMembers(1);
+            });
 
-        // 검색 버튼 클릭 이벤트
-        $('#searchBtn').click(function() {
-		    currentSearchType = $('#searchType').val();
-		    currentKeyword = $('#keyword').val();
-		    searchMembers(1);
-		});
+            // 엔터 키 이벤트
+            $(document).on('keypress', '#keyword', function(e) {
+                if (e.keyCode === 13) {  // 엔터키의 keyCode는 13
+                    e.preventDefault();
+                    searchMembers(1);
+                }
+            });
 
-        // 엔터 키 이벤트
-        $('#keyword').keypress(function(e) {
-          if (e.which == 13) {
-            e.preventDefault();
-            searchMembers(1);
-	        }
-	      });
-	    });
-
+            // 검색 타입 변경 시 검색어 필드 초기화
+            $(document).on('change', '#searchType', function() {
+                $('#keyword').val('').focus();
+            });
+        });
+		
         function loadMembers(page) {
-        $.ajax({
-          url: '${pageContext.request.contextPath}/member/manager',
-          type: 'GET',
-          data: { page: page },
-          success: function(response) {
-            updateTable(response);
-            setTimeout(() => {
-                updateTable(response);
-            }, 100);
-            },
-          error: function() {
-            alert('사원 목록을 불러오는데 실패했습니다.');
-	        }
-	      });
-	    }
-
+            $.ajax({
+                url: '${pageContext.request.contextPath}/member/manager',
+                type: 'GET',
+                data: { page: page },
+                success: function(response) {
+                    updateTable(response);
+                },
+                error: function() {
+                    alert('사원 목록을 불러오는데 실패했습니다.');
+                }
+            });
+        }
+	    
         function searchMembers(page) {
-    	    currentState = 'search';
-    	    var searchType = currentSearchType || $('#searchType').val();
-    	    var keyword = currentKeyword || $('#keyword').val();
-    	    var pageType = $('#searchForm input[name="pageType"]').val();
-    	    currentSearchType = searchType;
-    	    currentKeyword = keyword;
-    	    
-    	    $.ajax({
-    	        url: '${pageContext.request.contextPath}/member/search',
-    	        type: 'GET',
-    	        data: { 
-    	            searchType: searchType,
-    	            keyword: keyword,
-    	            pageType: pageType,
-    	            page: page
-    	        },
-    	        success: function(response) {
-    	            updateTable(response);
-    	        },
-    	        error: function() {
-    	            alert('검색에 실패했습니다.');
-    	        }
-    	    });
-    	}
-	  
-       	function updateTable(response) {
-    	    $('#memberTable tbody').empty();
-    	    var members = $(response).find('#memberTable tbody tr');
-    	    $('#memberTable tbody').append(members);
-    	    
-    	    $('.pagination').html($(response).find('.pagination').html());
-    	    
-    	    // 페이지네이션 이벤트 다시 바인딩
-    	    $('.pagination a').click(function(e) {
-    	        e.preventDefault();
-    	        var page = $(this).attr('href').split('page=')[1];
-    	        
-    	        switch(currentState) {
-    	            case 'manager':
-    	                loadMembers(page);
-    	                break;
-    	            case 'search':
-    	                searchMembers(page);
-    	                break;
-    	            case 'filter':
-    	                applyFilter(page);
-    	                break;
-    	        }
-    	    });
-    	}
-      	
-        // 조직도 관련 스크립트
-	    $(document).ready(function() {
-		   loadBranchList();
-		
-		    $('#showOrgChart').click(function() {
-		        $('#orgChartModal').modal('show');
-		        var selectedBranch = $('#branchSelect').val();
-		        if (selectedBranch) {
-		            loadOrgChart(selectedBranch);
-		        }
-		    });
-		
-		    $('#branchSelect').change(function() {
-		        var selectedBranch = $(this).val();
-		        loadOrgChart(selectedBranch);
-		    });
-		    
-		    $('#orgChartModal .close').click(function() {
-		        $('#orgChartModal').modal('hide');
-		    });
-		    
-		    $('.close').on('click', function() {
-		        $('#detailModal').modal('hide');
-		    });
+            currentState = 'search';
+            var searchType = $('#searchType').val();
+            var keyword = $('#keyword').val();
+            var pageType = $('#searchForm input[name="pageType"]').val();
+            
+            $.ajax({
+                url: '${pageContext.request.contextPath}/member/search',
+                type: 'GET',
+                data: { 
+                    searchType: searchType,
+                    keyword: keyword,
+                    pageType: pageType,
+                    page: page
+                },
+                success: function(response) {
+                    updateTable(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Search error:", error);
+                    alert('검색에 실패했습니다.');
+                }
+            });
+        }
 
-		    // 모달 외부 클릭으로 닫기
-		    $('#orgChartModal').click(function(event) {
-		        if (event.target == this) {
-		            $(this).modal('hide');
-		        }
-		    });
-		    
-		});
-      
+        function updateTable(response) {
+            $('#memberTable tbody').empty();
+            var members = $(response).find('#memberTable tbody tr');
+            $('#memberTable tbody').append(members);
+            
+            $('.pagination').html($(response).find('.pagination').html());
+            
+            // 페이지네이션 이벤트 재바인딩
+            bindPaginationEvents();
+        }
+
+        // 페이지네이션 이벤트 바인딩
+        function bindPaginationEvents() {
+            $('.pagination a').off('click').on('click', function(e) {
+                e.preventDefault();
+                var page = $(this).attr('href').split('page=')[1];
+                
+                switch(currentState) {
+                    case 'manager':
+                        loadMembers(page);
+                        break;
+                    case 'search':
+                        searchMembers(page);
+                        break;
+                    case 'filter':
+                        applyFilter(page);
+                        break;
+                }
+            });
+        }
+
+        // 페이지 로드 시 초기화
+        $(document).ready(function() {
+            loadDepartments();
+            loadMembers(1);
+        });
+
       	// 필터 관련 스크립트
       	 $(document).ready(function() {
         // 필터 타입 변경 시 필터 값 옵션 업데이트
@@ -1585,6 +1565,7 @@ footer {
         $('#applyFilter').click(function() {
 	    currentFilterType = $('#filterType').val();
 	    currentFilterValue = $('#filterValue').val();
+	    var pageType = $('input[name="pageType"]').val();
 	    applyFilter(1);
 		});
 
@@ -1615,122 +1596,6 @@ footer {
             });
         }
 		
-		function loadBranchList() {
-		    $.ajax({
-		        url: '${pageContext.request.contextPath}/member/branchList',
-		        type: 'GET',
-		        success: function(branches) {
-		            var select = $('#branchSelect');
-		            select.empty();
-		            $.each(branches, function(i, branch) {
-		                select.append($('<option></option>').val(branch).text(branch));
-		            });
-		            // 부산지부를 기본값으로 설정
-		            select.val('부산지부');
-		            loadOrgChart('부산지부');
-		        },
-		        error: function() {
-		            alert('지부 목록을 불러오는데 실패했습니다.');
-		        }
-		    });
-		}
-		
-		function loadOrgChart(branchName) {
-		    $.ajax({
-		        url: '${pageContext.request.contextPath}/member/orgChart',
-		        type: 'GET',
-		        data: { emp_bnum: branchName },
-		        success: function(data) {
-		            drawOrgChart(data);
-		        },
-		        error: function() {
-		            alert('조직도 데이터를 불러오는데 실패했습니다.');
-		        }
-		    });
-		}
-		
-		function drawOrgChart(data) {
-		    console.log("Drawing org chart with data:", data);
-		    var chart = new OrgChart(document.getElementById("orgChart"), {
-		        template: "ula",
-		        enableDragDrop: true,
-		        nodeBinding: {
-		            field_0: "name",
-		            field_1: "title"
-		        },
-		        nodes: data.map(node => ({
-		            id: node.id,
-		            pid: node.pid,
-		            name: node.name,
-		            title: node.title,
-		            emp_job: node.emp_job,
-		            emp_dnum: node.emp_dnum
-		        })),
-		        nodeMouseClick: OrgChart.action.none,
-		    });
-
-		    chart.on('click', function(sender, args) {
-		        var node = chart.get(args.node.id);
-		        console.log("Node clicked:", node);
-		        
-		        if (node && (node.emp_job === "부서장" || node.title === "부서장")) {
-		            console.log("부서장 노드 클릭됨:", node.id);
-		            var departmentId = node.emp_dnum || node.pid;
-		            showTeamMembers(node.id, departmentId);
-		        } else {
-		            console.log("클릭된 노드는 부서장이 아닙니다.");
-		        }
-		    });
-		}
-
-		function showTeamMembers(nodeId, departmentId) {
-		    console.log("Fetching team members for:", nodeId, departmentId);
-		    if (!departmentId) {
-		        console.error("유효하지 않은 부서 ID:", departmentId);
-		        return;
-		    }
-
-		    $.ajax({
-		        url: '${pageContext.request.contextPath}/member/teamMembers',
-		        type: 'GET',
-		        data: { emp_dnum: departmentId },
-		        success: function(members) {
-		            console.log("Received team members:", members);
-		            if (members && members.length > 0) {
-		                var table = '<table class="table"><thead><tr><th>이름</th><th>직책</th></tr></thead><tbody>';
-		                members.forEach(function(member) {
-		                    table += '<tr><td>' + 
-		                        (member.emp_name ? escapeHtml(member.emp_name) : 'N/A') + 
-		                        '</td><td>' + 
-		                        (member.emp_job ? escapeHtml(member.emp_job) : 'N/A') + 
-		                        '</td></tr>';
-		                });
-		                table += '</tbody></table>';
-		                
-		                swal({
-		                    title: escapeHtml(departmentId) + " 팀원 목록",
-		                    content: {
-		                        element: "div",
-		                        attributes: {
-		                            innerHTML: table
-		                        }
-		                    },
-		                    width: '600px'
-		                });
-		            } else {
-		                console.log("No team members found");
-		                swal("알림", "팀원 정보를 찾을 수 없습니다.", "info");
-		            }
-		        },
-		        error: function(xhr, status, error) {
-		            console.error("팀원 정보 가져오기 오류:", error);
-		            console.log("XHR:", xhr);
-		            console.log("Status:", status);
-		            swal("오류", "팀원 목록을 불러오는데 실패했습니다.", "error");
-		        }
-		    });
-		}
-
 		function escapeHtml(unsafe) {
 		    return unsafe
 		         .replace(/&/g, "&amp;")

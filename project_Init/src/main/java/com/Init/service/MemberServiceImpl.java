@@ -286,77 +286,6 @@ public class MemberServiceImpl implements MemberService {
         return mdao.getMemberDetail(emp_id);
     }
     
-    // 조직도
-    @Override
-    public List<Map<String, Object>> getOrgChartData(String emp_bnum) {
-        List<MemberVO> members = mdao.getAllMembers();
-        List<Map<String, Object>> orgChartData = new ArrayList<>();
-        
-        // 지정된 지부의 사원만 필터링
-        members = members.stream()
-            .filter(m -> emp_bnum.equals(m.getEmp_bnum()))
-            .collect(Collectors.toList());
-        
-        // 본부장 노드 추가 (최상위 계층)
-        MemberVO headManager = members.stream()
-            .filter(m -> "본부장".equals(m.getEmp_job()))
-            .findFirst()
-            .orElse(null);
-
-        if (headManager != null) {
-            Map<String, Object> headManagerNode = new HashMap<>();
-            headManagerNode.put("id", headManager.getEmp_id());
-            headManagerNode.put("name", headManager.getEmp_name());
-            headManagerNode.put("title", headManager.getEmp_job());
-            headManagerNode.put("pid", null);
-            orgChartData.add(headManagerNode);
-        }
-
-        // 부서 노드와 부서장 노드 추가
-        String[] departments = {"인사부", "개발부", "영업부", "마케팅부", "재무부"};
-        for (String dept : departments) {
-            Map<String, Object> deptNode = new HashMap<>();
-            deptNode.put("id", dept);
-            deptNode.put("name", dept);
-            deptNode.put("pid", headManager != null ? headManager.getEmp_id() : null);
-            orgChartData.add(deptNode);
-
-            // 해당 부서의 부서장 찾기
-            MemberVO deptManager = members.stream()
-                .filter(m -> m.getEmp_dnum().equals(dept) && "부서장".equals(m.getEmp_job()))
-                .findFirst()
-                .orElse(null);
-
-            if (deptManager != null) {
-                Map<String, Object> managerNode = new HashMap<>();
-                managerNode.put("id", deptManager.getEmp_id());
-                managerNode.put("name", deptManager.getEmp_name());
-                managerNode.put("title", deptManager.getEmp_job());
-                managerNode.put("pid", dept);
-                orgChartData.add(managerNode);
-            }
-        }
-
-        return orgChartData;
-    }
-    
-    @Override
-    public List<MemberVO> getTeamMembers(String emp_dnum) {
-        logger.info("Getting team members for department: {}", emp_dnum);
-        List<MemberVO> allMembers = mdao.getTeamMembers(emp_dnum);
-        logger.info("Total members found: {}", allMembers.size());
-        List<MemberVO> filteredMembers = allMembers.stream()
-                         .filter(m -> !"부서장".equals(m.getEmp_job()))
-                         .collect(Collectors.toList());
-        logger.info("Filtered members (excluding 부서장): {}", filteredMembers.size());
-        return filteredMembers;
-    }
-    
-    @Override
-    public List<String> getBranchList() {
-        return mdao.getBranchList();
-    }
-    
     // 필터 부분
     @Override
     public List<String> getFilterOptions(String filterType) {
@@ -398,6 +327,12 @@ public class MemberServiceImpl implements MemberService {
             return true;
         }
         return false;
+    }
+    
+    // 부서목록
+    @Override
+    public List<Map<String, Object>> getDepartmentList() {
+    	return mdao.getDeptInfo();
     }
     
     // 사원 등록

@@ -34,8 +34,6 @@
       });
     </script>
 
-<!-- OrgChart.js 라이브러리 추가 -->
-<script src="https://balkan.app/js/OrgChart.js"></script>
 
 <!-- CSS Files -->
 <link rel="stylesheet"
@@ -48,267 +46,7 @@
 
 
 <style>
-K
-table {
-	width: 100%;
-	border-collapse: collapse;
-	margin-bottom: 10px;
-}
 
-th, td {
-	border: 1px solid #ddd;
-	padding: 6px;
-	text-align: left;
-}
-
-.btn-info {
-	padding: 4px 8px;
-	font-size: 12px;
-}
-
-.modal-dialog {
-	max-width: 800px;
-}
-
-.pagination ul {
-	list-style: none;
-	display: flex;
-	justify-content: center;
-	padding: 0;
-}
-
-.pagination ul li {
-	margin: 0 5px;
-}
-
-.pagination ul li a {
-	display: block;
-	padding: 5px 10px;
-	background-color: #f1f1f1;
-	border-radius: 3px;
-	text-decoration: none;
-	color: #333;
-}
-
-.pagination ul li.active a {
-	background-color: #007bff;
-	color: white;
-}
-
-.pagination ul li.disabled a {
-	pointer-events: none;
-	background-color: #ddd;
-}
-
-.img-fluid {
-	max-width: 100%;
-	height: auto;
-}
-
-.rounded-circle {
-	border-radius: 50%;
-}
-
-.table-bordered th {
-	width: 20%;
-}
-
-.table-bordered th, .table-bordered td {
-	padding: 10px;
-	vertical-align: middle;
-}
-
-.table-bordered th {
-	background-color: #f2f2f2;
-	width: 30%;
-}
-
-.btn {
-	padding: 0.375rem 0.75rem;
-}
-
-#keyword {
-	width: auto;
-	flex-grow: 2;
-}
-
-html, body {
-	height: 100%;
-	margin: 0;
-}
-
-body {
-	display: flex;
-	flex-direction: column;
-}
-
-.main-panel {
-	flex: 1 0 auto;
-	display: flex;
-	flex-direction: column;
-}
-
-.container {
-	flex: 1 0 auto;
-}
-
-.page-inner {
-	flex: 1 0 auto;
-	display: flex;
-	flex-direction: column;
-}
-
-#memberTable {
-	flex: 1 0 auto;
-	overflow-y: auto;
-}
-
-footer {
-	flex-shrink: 0;
-}
-
-.table-responsive {
-	overflow-x: auto;
-	max-width: 100%;
-}
-
-#infoDetail {
-	width: max-content;
-	min-width: 100%;
-}
-
-#infoDetail th, #infoDetail td {
-	white-space: nowrap;
-	padding: 8px;
-}
-
-.controls-container {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-#filterForm, #searchForm {
-	display: flex;
-	align-items: center;
-}
-
-#filterForm select, #searchForm select, #searchForm input, .btn {
-	margin-right: 5px;
-	height: 38px; /* 높이 통일 */
-}
-
-#filterForm {
-	width: 40%;
-}
-
-#searchForm {
-	width: 40%;
-}
-
-#showOrgChart {
-	width: auto;
-	white-space: nowrap;
-}
-
-#filterType, #filterValue, #searchType {
-	width: auto;
-	flex-grow: 1;
-}
-
-#keyword {
-	width: auto;
-	flex-grow: 2;
-}
-
-.card {
-	border-radius: 8px;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-	background: #fff;
-	margin-bottom: 30px;
-}
-
-.card-header {
-	background-color: #f8f9fa;
-	border-bottom: 1px solid #ebedf2;
-	padding: 1.5rem;
-}
-
-.card-title {
-	margin-bottom: 0;
-	color: #1a2035;
-	font-size: 1.25rem;
-}
-
-.card-body {
-	padding: 1.5rem;
-}
-
-.controls-container {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	gap: 1rem;
-	flex-wrap: wrap;
-	margin-bottom: 1.5rem;
-}
-
-.form-inline {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-}
-
-.table {
-	margin-bottom: 0;
-}
-
-.table th {
-	background-color: #f8f9fa;
-	border-top: none;
-}
-
-.pagination {
-	margin-top: 1.5rem;
-	justify-content: center;
-}
-
-.pagination ul {
-	list-style: none;
-	display: flex;
-	gap: 0.5rem;
-	margin: 0;
-	padding: 0;
-}
-
-.pagination li a {
-	padding: 0.5rem 1rem;
-	border-radius: 4px;
-	background-color: #f8f9fa;
-	color: #1a2035;
-	text-decoration: none;
-	transition: all 0.3s ease;
-}
-
-.pagination li.active a {
-	background-color: #0055FF;
-	color: #fff;
-}
-
-.pagination li.disabled a {
-	background-color: #ebedf2;
-	color: #6c757d;
-	cursor: not-allowed;
-}
-
-중복요소는 제거해줘
-
-
-중복을 제거한 정리된 CSS입니다:
-
-css
-
-Copy /* 기본 레이아웃 */ 
 html, body {
 	height: 100%;
 	margin: 0;
@@ -444,11 +182,6 @@ footer {
 	font-size: 12px;
 }
 
-#showOrgChart {
-	width: auto;
-	white-space: nowrap;
-}
-
 /* 이미지 스타일 */
 .img-fluid {
 	max-width: 100%;
@@ -556,8 +289,6 @@ footer {
 									<button type="button" id="searchBtn" class="btn btn-primary">검색</button>
 								</form>
 
-								<!-- 조직도 버튼 추가 -->
-								<button id="showOrgChart" class="btn btn-info">조직도 보기</button>
 							</div>
 
 						</div>
@@ -583,7 +314,7 @@ footer {
 												<td>${member.emp_id}</td>
 												<td>${member.emp_name}</td>
 												<td>${member.emp_position}</td>
-												<td>${member.emp_dnum}</td>
+												<td>${member.dept_name}</td>
 												<td>
 													<button class="btn btn-info btn-sm"
 														onclick="showDetail('${member.emp_id}')">상세보기</button>
@@ -609,31 +340,6 @@ footer {
 										<a href="?page=${currentPage + 1}">다음 &raquo;</a>
 									</li>
 								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<!-- 조직도 모달 -->
-				<div class="modal fade" id="orgChartModal" tabindex="-1"
-					role="dialog" aria-hidden="true">
-					<div class="modal-dialog modal-lg" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">조직도</h5>
-								<button type="button" class="close" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<div class="form-group">
-									<label for="branchSelect">지부 선택:</label> <select
-										id="branchSelect" class="form-control">
-										<!-- 옵션들은 JavaScript로 동적으로 추가될 것입니다 -->
-									</select>
-								</div>
-								<div id="orgChart" style="height: 600px;"></div>
 							</div>
 						</div>
 					</div>
@@ -678,7 +384,7 @@ footer {
 												</tr>
 												<tr>
 													<th>부서</th>
-													<td id="emp_dnum"></td>
+													<td id="dept_name"></td>
 													<th>근무지</th>
 													<td id="emp_bnum"></td>
 												</tr>
@@ -804,7 +510,7 @@ footer {
     	                $('#emp_name').text(member.emp_name);
     	                $('#emp_position').text(member.emp_position);
     	                $('#emp_job').text(member.emp_job);
-    	                $('#emp_dnum').text(member.emp_dnum);
+    	                $('#dept_name').text(member.dept_name);
     	                $('#emp_bnum').text(member.emp_bnum);
     	                $('#emp_email').text(member.emp_email);
     	                $('#emp_tel').text(member.emp_tel);
@@ -847,6 +553,11 @@ footer {
 	        }
 	      });
 	    });
+        
+        // 검색 타입 변경 시 검색어 필드 초기화 및 포커스
+        $('#searchType').change(function() {
+            $('#keyword').val('').focus();
+        });
 
         function loadMembers(page) {
         $.ajax({
@@ -864,30 +575,31 @@ footer {
 	        }
 	      });
 	    }
-
+        
         function searchMembers(page) {
-    	    currentState = 'search';
-    	    var searchType = currentSearchType || $('#searchType').val();
-    	    var keyword = currentKeyword || $('#keyword').val();
-    	    currentSearchType = searchType;
-    	    currentKeyword = keyword;
+            currentState = 'search';
+            var searchType = $('#searchType').val();
+            var keyword = $('#keyword').val();
+            var pageType = $('#searchForm input[name="pageType"]').val();
     	    
-    	    $.ajax({
-    	        url: '${pageContext.request.contextPath}/member/search',
-    	        type: 'GET',
-    	        data: { 
-    	            searchType: searchType,
-    	            keyword: keyword,
-    	            page: page
-    	        },
-    	        success: function(response) {
-    	            updateTable(response);
-    	        },
-    	        error: function() {
-    	            alert('검색에 실패했습니다.');
-    	        }
-    	    });
-    	}
+            $.ajax({
+                url: '${pageContext.request.contextPath}/member/search',
+                type: 'GET',
+                data: { 
+                    searchType: searchType,
+                    keyword: keyword,
+                    pageType: pageType,
+                    page: page
+                },
+                success: function(response) {
+                    updateTable(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Search error:", error);
+                    alert('검색에 실패했습니다.');
+                }
+            });
+        }
 	  
        	function updateTable(response) {
     	    $('#memberTable tbody').empty();
@@ -915,40 +627,6 @@ footer {
     	    });
     	}
       	
-        // 조직도 관련 스크립트
-	    $(document).ready(function() {
-		   loadBranchList();
-		
-		    $('#showOrgChart').click(function() {
-		        $('#orgChartModal').modal('show');
-		        var selectedBranch = $('#branchSelect').val();
-		        if (selectedBranch) {
-		            loadOrgChart(selectedBranch);
-		        }
-		    });
-		
-		    $('#branchSelect').change(function() {
-		        var selectedBranch = $(this).val();
-		        loadOrgChart(selectedBranch);
-		    });
-		    
-		    $('#orgChartModal .close').click(function() {
-		        $('#orgChartModal').modal('hide');
-		    });
-		    
-		    $('.close').on('click', function() {
-		        $('#detailModal').modal('hide');
-		    });
-
-		    // 모달 외부 클릭으로 닫기
-		    $('#orgChartModal').click(function(event) {
-		        if (event.target == this) {
-		            $(this).modal('hide');
-		        }
-		    });
-		    
-		});
-      
       	// 필터 관련 스크립트
       	 $(document).ready(function() {
         // 필터 타입 변경 시 필터 값 옵션 업데이트
@@ -992,122 +670,6 @@ footer {
             });
         }
 		
-		function loadBranchList() {
-		    $.ajax({
-		        url: '${pageContext.request.contextPath}/member/branchList',
-		        type: 'GET',
-		        success: function(branches) {
-		            var select = $('#branchSelect');
-		            select.empty();
-		            $.each(branches, function(i, branch) {
-		                select.append($('<option></option>').val(branch).text(branch));
-		            });
-		            // 부산지부를 기본값으로 설정
-		            select.val('부산지부');
-		            loadOrgChart('부산지부');
-		        },
-		        error: function() {
-		            alert('지부 목록을 불러오는데 실패했습니다.');
-		        }
-		    });
-		}
-		
-		function loadOrgChart(branchName) {
-		    $.ajax({
-		        url: '${pageContext.request.contextPath}/member/orgChart',
-		        type: 'GET',
-		        data: { emp_bnum: branchName },
-		        success: function(data) {
-		            drawOrgChart(data);
-		        },
-		        error: function() {
-		            alert('조직도 데이터를 불러오는데 실패했습니다.');
-		        }
-		    });
-		}
-		
-		function drawOrgChart(data) {
-		    console.log("Drawing org chart with data:", data);
-		    var chart = new OrgChart(document.getElementById("orgChart"), {
-		        template: "ula",
-		        enableDragDrop: true,
-		        nodeBinding: {
-		            field_0: "name",
-		            field_1: "title"
-		        },
-		        nodes: data.map(node => ({
-		            id: node.id,
-		            pid: node.pid,
-		            name: node.name,
-		            title: node.title,
-		            emp_job: node.emp_job,
-		            emp_dnum: node.emp_dnum
-		        })),
-		        nodeMouseClick: OrgChart.action.none,
-		    });
-
-		    chart.on('click', function(sender, args) {
-		        var node = chart.get(args.node.id);
-		        console.log("Node clicked:", node);
-		        
-		        if (node && (node.emp_job === "부서장" || node.title === "부서장")) {
-		            console.log("부서장 노드 클릭됨:", node.id);
-		            var departmentId = node.emp_dnum || node.pid;
-		            showTeamMembers(node.id, departmentId);
-		        } else {
-		            console.log("클릭된 노드는 부서장이 아닙니다.");
-		        }
-		    });
-		}
-
-		function showTeamMembers(nodeId, departmentId) {
-		    console.log("Fetching team members for:", nodeId, departmentId);
-		    if (!departmentId) {
-		        console.error("유효하지 않은 부서 ID:", departmentId);
-		        return;
-		    }
-
-		    $.ajax({
-		        url: '${pageContext.request.contextPath}/member/teamMembers',
-		        type: 'GET',
-		        data: { emp_dnum: departmentId },
-		        success: function(members) {
-		            console.log("Received team members:", members);
-		            if (members && members.length > 0) {
-		                var table = '<table class="table"><thead><tr><th>이름</th><th>직책</th></tr></thead><tbody>';
-		                members.forEach(function(member) {
-		                    table += '<tr><td>' + 
-		                        (member.emp_name ? escapeHtml(member.emp_name) : 'N/A') + 
-		                        '</td><td>' + 
-		                        (member.emp_job ? escapeHtml(member.emp_job) : 'N/A') + 
-		                        '</td></tr>';
-		                });
-		                table += '</tbody></table>';
-		                
-		                swal({
-		                    title: escapeHtml(departmentId) + " 팀원 목록",
-		                    content: {
-		                        element: "div",
-		                        attributes: {
-		                            innerHTML: table
-		                        }
-		                    },
-		                    width: '600px'
-		                });
-		            } else {
-		                console.log("No team members found");
-		                swal("알림", "팀원 정보를 찾을 수 없습니다.", "info");
-		            }
-		        },
-		        error: function(xhr, status, error) {
-		            console.error("팀원 정보 가져오기 오류:", error);
-		            console.log("XHR:", xhr);
-		            console.log("Status:", status);
-		            swal("오류", "팀원 목록을 불러오는데 실패했습니다.", "error");
-		        }
-		    });
-		}
-
 		function escapeHtml(unsafe) {
 		    return unsafe
 		         .replace(/&/g, "&amp;")
@@ -1156,21 +718,7 @@ footer {
 	    loadMembers(1);
 		}
 
-        // 페이지 로드 함수
-        function loadMembers(page) {
-	    currentState = 'list';
-	    $.ajax({
-	        url: '${pageContext.request.contextPath}/member/list',
-	        type: 'GET',
-	        data: { page: page },
-	        success: function(response) {
-	            updateTable(response);
-	        },
-	        error: function() {
-	            alert('사원 목록을 불러오는데 실패했습니다.');
-		        }
-		    });
-		}
+        
 
       
     </script>

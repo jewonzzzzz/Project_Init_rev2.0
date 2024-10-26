@@ -112,10 +112,11 @@
   	
   	<!-- 회원정보 조회 -->
 	<select id="getMember" resultType="MemberVO">
-	    SELECT * 
-	    FROM employee 
-	    WHERE emp_id = #{emp_id} 
-	    AND approval = 0
+	    SELECT e.*, d.dname as dept_name 
+	    FROM employee e
+	    LEFT JOIN dept d ON e.emp_dnum = d.dnum 
+	    WHERE e.emp_id = #{emp_id} 
+	    AND e.approval = 0
 	</select>
   	
 	<!-- 2. 새로운 데이터 삽입 -->
@@ -161,25 +162,28 @@
 	
 	<!-- 관리자 수정 -->
 	<insert id="updateEmployee" parameterType="MemberVO">
-	    INSERT INTO employee (
-	        emp_id, emp_name, emp_birth, emp_gender, emp_tel, emp_email, 
-	        emp_addr, emp_dnum, emp_position, emp_job, emp_status, emp_bnum, 
-	        emp_work_type, emp_bank_name, emp_account_num, emp_account_name, 
-	        emp_start_date, emp_salary, emp_break_date, emp_restart_date, 
-	        emp_quit_date, emp_pw, emp_profile, reason, reason_detail, approval
-	    )
-	    SELECT 
-	        #{emp_id}, #{emp_name}, #{emp_birth}, #{emp_gender}, #{emp_tel}, #{emp_email}, 
-	        #{emp_addr}, #{emp_dnum}, #{emp_position}, #{emp_job}, #{emp_status}, #{emp_bnum}, 
-	        #{emp_work_type}, #{emp_bank_name}, #{emp_account_num}, #{emp_account_name}, 
-	        #{emp_start_date}, #{emp_salary}, #{emp_break_date}, #{emp_restart_date}, 
-	        #{emp_quit_date}, e.emp_pw, e.emp_profile, #{reason}, #{reason_detail}, 0
-	    FROM employee e
-	    WHERE e.emp_id = #{emp_id}
-	    AND e.approval = (
-	        SELECT MIN(approval) 
-	        FROM employee 
-	        WHERE emp_id = #{emp_id}
+    INSERT INTO employee (
+        emp_id, emp_name, emp_birth, emp_gender, emp_tel, emp_email, 
+        emp_addr, emp_dnum, emp_position, emp_job, emp_status, emp_bnum, 
+        emp_work_type, emp_bank_name, emp_account_num, emp_account_name, 
+        emp_start_date, emp_salary, emp_break_date, emp_restart_date, 
+        emp_quit_date, emp_pw, emp_profile, reason, reason_detail, approval
+    )
+    SELECT 
+        #{emp_id}, #{emp_name}, #{emp_birth}, #{emp_gender}, #{emp_tel}, #{emp_email}, 
+        #{emp_addr}, #{emp_dnum}, #{emp_position}, #{emp_job}, #{emp_status}, #{emp_bnum}, 
+        #{emp_work_type}, #{emp_bank_name}, #{emp_account_num}, #{emp_account_name}, 
+        #{emp_start_date}, #{emp_salary},
+        NULLIF(#{emp_break_date}, ''), 
+        NULLIF(#{emp_restart_date}, ''), 
+        NULLIF(#{emp_quit_date}, ''),
+        e.emp_pw, e.emp_profile, #{reason}, #{reason_detail}, 0
+    FROM employee e
+    WHERE e.emp_id = #{emp_id}
+    AND e.approval = (
+        SELECT MIN(approval) 
+        FROM employee 
+        WHERE emp_id = #{emp_id}
 	    )
 	</insert>
 
@@ -287,12 +291,20 @@
 	    AND approval = 0
 	</update>
     
+    <!-- 부서 목록 조회 (select box용) -->
+	<select id="getDeptInfo" resultType="map">
+	    SELECT d.dnum, d.dname 
+	    FROM dept d
+	    ORDER BY d.dnum
+	</select>
+    
     <!-- 회원 정보 조회  -->
 	<select id="getPaginatedMembers" parameterType="map" resultType="MemberVO">
-	    SELECT * 
-	    FROM employee
-	    WHERE approval = 0
-	    ORDER BY emp_id
+	    SELECT e.*, d.dname as dept_name 
+	    FROM employee e
+	    LEFT JOIN dept d ON e.emp_dnum = d.dnum
+	    WHERE e.approval = 0
+	    ORDER BY e.emp_id
 	    LIMIT #{offset}, #{pageSize}
 	</select>
     
@@ -302,68 +314,113 @@
     </select>
 
 	<select id="getMemberDetail" resultType="MemberVO" parameterType="String">
-	    SELECT * FROM employee 
-	    WHERE emp_id = #{emp_id}
-	    AND approval = 0
+	    SELECT e.*, d.dname as dept_name
+	    FROM employee e
+	    LEFT JOIN dept d ON e.emp_dnum = d.dnum
+	    WHERE e.emp_id = #{emp_id}
+	    AND e.approval = 0
 	</select>
     
     <!-- 조직도 -->
-    <select id="getAllMembers" resultType="MemberVO">
-        SELECT * FROM employee ORDER BY emp_dnum, emp_position
-    </select>
-    
 	<select id="getBranchList" resultType="String">
    		SELECT DISTINCT emp_bnum FROM employee ORDER BY emp_bnum
 	</select>
 	
 	<select id="getTeamMembers" resultType="MemberVO">
-	    SELECT * FROM employee 
-	    WHERE emp_dnum = #{emp_dnum}
-	    AND approval = 0
-	    ORDER BY emp_position
+	    SELECT e.*, d.dname as dept_name
+	    FROM employee e
+	    LEFT JOIN dept d ON e.emp_dnum = d.dnum
+	    WHERE e.emp_dnum = #{emp_dnum}
+	    AND e.approval = 0
+	    ORDER BY e.emp_position
 	</select>
 	
 	<!-- 조직도 페이지  -->
 	<select id="getAllMemPage" resultType="MemberVO">
-        SELECT * FROM employee ORDER BY emp_bnum, emp_dnum, emp_position
-    </select>
+	    SELECT e.*, d.dname as dept_name 
+	    FROM employee e
+	    LEFT JOIN dept d ON e.emp_dnum = d.dnum
+	    WHERE e.approval = 0
+	    ORDER BY e.emp_bnum, e.emp_dnum, e.emp_position
+	</select>
 
     <select id="getTeamMemPage" parameterType="string" resultType="MemberVO">
-        SELECT * FROM employee WHERE emp_dnum = #{deptId} AND emp_job != '부서장' ORDER BY emp_position
-    </select>
+	    SELECT e.*, d.dname as dept_name
+	    FROM employee e
+	    LEFT JOIN dept d ON e.emp_dnum = d.dnum
+	    WHERE e.emp_dnum = #{deptId} 
+	    AND e.emp_job != '부서장'
+	    AND e.approval = 0
+	    ORDER BY e.emp_position
+	</select>
     
-    <select id="getFilterOptions" parameterType="string" resultType="string">
-    SELECT DISTINCT 
+    <!-- 필터 옵션  -->
+	<select id="getFilterOptions" parameterType="string" resultType="string">
     <choose>
-        <when test="_parameter == 'emp_dnum'">emp_dnum</when>
-        <when test="_parameter == 'emp_bnum'">emp_bnum</when>
-        <when test="_parameter == 'emp_position'">emp_position</when>
-        <when test="_parameter == 'emp_job'">emp_job</when>
-        <when test="_parameter == 'emp_status'">emp_status</when>
-    </choose>
-    FROM employee
-    ORDER BY 
-    <choose>
-        <when test="_parameter == 'emp_dnum'">emp_dnum</when>
-        <when test="_parameter == 'emp_bnum'">emp_bnum</when>
-        <when test="_parameter == 'emp_position'">emp_position</when>
-        <when test="_parameter == 'emp_job'">emp_job</when>
-        <when test="_parameter == 'emp_status'">emp_status</when>
-    </choose>
+        <when test="_parameter == 'emp_dnum'">
+            SELECT DISTINCT d.dname
+            FROM employee e
+            LEFT JOIN dept d ON e.emp_dnum = d.dnum
+            WHERE e.approval = 0
+            ORDER BY d.dname
+	        </when>
+	        <when test="_parameter == 'emp_bnum'">
+	            SELECT DISTINCT emp_bnum
+	            FROM employee
+	            WHERE approval = 0
+	            ORDER BY emp_bnum
+	        </when>
+	        <when test="_parameter == 'emp_position'">
+	            SELECT DISTINCT emp_position
+	            FROM employee
+	            WHERE approval = 0
+	            ORDER BY emp_position
+	        </when>
+	        <when test="_parameter == 'emp_job'">
+	            SELECT DISTINCT emp_job
+	            FROM employee
+	            WHERE approval = 0
+	            ORDER BY emp_job
+	        </when>
+	        <when test="_parameter == 'emp_status'">
+	            SELECT DISTINCT emp_status
+	            FROM employee
+	            WHERE approval = 0
+	            ORDER BY emp_status
+	        </when>
+	        <otherwise>
+	            SELECT DISTINCT emp_id
+	            FROM employee
+	            WHERE approval = 0
+	            ORDER BY emp_id
+	        </otherwise>
+	    </choose>
 	</select>
 
 	<!-- 필터링된 회원 목록 가져오기 -->
 	<select id="getFilteredMembers" parameterType="map" resultType="MemberVO">
-        SELECT * FROM employee
-        <where>
-            <if test="filterType != null and filterValue != null">
-                ${filterType} = #{filterValue}
-            </if>
-        AND approval = 0
-        </where>
-        ORDER BY emp_id
-        LIMIT #{offset}, #{pageSize}
-    </select>
+    SELECT e.*, d.dname as dept_name 
+    FROM employee e
+    LEFT JOIN dept d ON e.emp_dnum = d.dnum
+    <where>
+        <if test="filterType != null and filterValue != null">
+            <choose>
+                <when test="filterType == 'emp_dnum'">
+                    d.dname = #{filterValue}
+                </when>
+                <when test="filterType == 'emp_bnum'">
+                    e.emp_bnum = #{filterValue}
+                </when>
+                <otherwise>
+                    e.${filterType} = #{filterValue}
+                </otherwise>
+            </choose>
+        </if>
+        AND e.approval = 0
+    </where>
+    ORDER BY e.emp_id
+    LIMIT #{offset}, #{pageSize}
+	</select>
     
     <!-- 필터링된 회원 수 가져오기 -->
     <select id="getFilteredMembersCount" parameterType="map" resultType="int">
@@ -376,54 +433,59 @@
     </select>
     
     <!-- 검색기능 -->
-    <select id="searchMembers" parameterType="map" resultType="MemberVO">
-        SELECT * FROM employee
-        <where>
-            <choose>
-                <when test="searchType == 'emp_id'">
-                    emp_id LIKE CONCAT('%', #{keyword}, '%')
-                </when>
-                <when test="searchType == 'emp_name'">
-                    emp_name LIKE CONCAT('%', #{keyword}, '%')
-                </when>
-                <when test="searchType == 'emp_dnum'">
-                    emp_dnum LIKE CONCAT('%', #{keyword}, '%')
-                </when>
-                <when test="searchType == 'emp_position'">
-                    emp_position LIKE CONCAT('%', #{keyword}, '%')
-                </when>
-                <when test="searchType == 'emp_job'">
-                    emp_job LIKE CONCAT('%', #{keyword}, '%')
-                </when>
-            </choose>
-        AND approval = 0
-        </where>
-        ORDER BY emp_id
-        LIMIT #{offset}, #{pageSize}
-    </select>
+	<select id="searchMembers" parameterType="map" resultType="MemberVO">
+	    SELECT e.*, d.dname as dept_name 
+	    FROM employee e
+	    LEFT JOIN dept d ON e.emp_dnum = d.dnum
+	    <where>
+	        <choose>
+	            <when test="searchType == 'emp_id'">
+	                e.emp_id LIKE CONCAT('%', #{keyword}, '%')
+	            </when>
+	            <when test="searchType == 'emp_name'">
+	                e.emp_name LIKE CONCAT('%', #{keyword}, '%')
+	            </when>
+	            <when test="searchType == 'emp_dnum'">
+	                d.dname LIKE CONCAT('%', #{keyword}, '%')
+	            </when>
+	            <when test="searchType == 'emp_position'">
+	                e.emp_position LIKE CONCAT('%', #{keyword}, '%')
+	            </when>
+	            <when test="searchType == 'emp_job'">
+	                e.emp_job LIKE CONCAT('%', #{keyword}, '%')
+	            </when>
+	        </choose>
+	        AND e.approval = 0
+	    </where>
+	    ORDER BY e.emp_id
+	    LIMIT #{offset}, #{pageSize}
+	</select>
     
-    <select id="getSearchMembersCount" parameterType="map" resultType="int">
-        SELECT COUNT(*) FROM employee
-        <where>
-            <choose>
-                <when test="searchType == 'emp_id'">
-                    emp_id LIKE CONCAT('%', #{keyword}, '%')
-                </when>
-                <when test="searchType == 'emp_name'">
-                    emp_name LIKE CONCAT('%', #{keyword}, '%')
-                </when>
-                <when test="searchType == 'emp_dnum'">
-                    emp_dnum LIKE CONCAT('%', #{keyword}, '%')
-                </when>
-                <when test="searchType == 'emp_position'">
-                    emp_position LIKE CONCAT('%', #{keyword}, '%')
-                </when>
-                <when test="searchType == 'emp_job'">
-                    emp_job LIKE CONCAT('%', #{keyword}, '%')
-                </when>
-            </choose>
-        AND approval = 0
-        </where>
-    </select>
+    <!-- 검색된 회원수  -->
+	<select id="getSearchMembersCount" parameterType="map" resultType="int">
+	    SELECT COUNT(*) 
+	    FROM employee e
+	    LEFT JOIN dept d ON e.emp_dnum = d.dnum
+	    <where>
+	        <choose>
+	            <when test="searchType == 'emp_id'">
+	                e.emp_id LIKE CONCAT('%', #{keyword}, '%')
+	            </when>
+	            <when test="searchType == 'emp_name'">
+	                e.emp_name LIKE CONCAT('%', #{keyword}, '%')
+	            </when>
+	            <when test="searchType == 'emp_dnum'">
+	                d.dname LIKE CONCAT('%', #{keyword}, '%')
+	            </when>
+	            <when test="searchType == 'emp_position'">
+	                e.emp_position LIKE CONCAT('%', #{keyword}, '%')
+	            </when>
+	            <when test="searchType == 'emp_job'">
+	                e.emp_job LIKE CONCAT('%', #{keyword}, '%')
+	            </when>
+	        </choose>
+	        AND e.approval = 0
+	    </where>
+	</select>
 
 </mapper>

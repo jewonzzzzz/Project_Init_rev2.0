@@ -232,7 +232,7 @@ textarea.form-control {
 										<tr>
 											<th>부서</th>
 											<td><input type="text" class="form-control"
-												id="emp_dnum" name="emp_dnum" value="${memberVO.emp_dnum}"
+												id="dept_name" name="dept_name" value="${memberVO.dept_name}"
 												readonly></td>
 										</tr>
 										<tr>

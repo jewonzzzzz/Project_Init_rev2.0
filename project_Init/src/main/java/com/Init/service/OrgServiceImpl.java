@@ -17,7 +17,7 @@ import com.Init.domain.MemberVO;
 
 @Service
 public class OrgServiceImpl implements OrgService {
-	private static final Logger logger = LoggerFactory.getLogger(OrgServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(OrgServiceImpl.class);
 
     @Autowired
     private OrgDAO orgDAO;
@@ -39,7 +39,7 @@ public class OrgServiceImpl implements OrgService {
 
         // 본부별로 그룹화
         Map<String, List<MemberVO>> branchGroups = allMembers.stream()
-            .filter(m -> m.getEmp_bnum() != null) // null 본부 필터링
+            .filter(m -> m.getEmp_bnum() != null)
             .collect(Collectors.groupingBy(MemberVO::getEmp_bnum));
 
         for (Map.Entry<String, List<MemberVO>> entry : branchGroups.entrySet()) {
@@ -70,10 +70,10 @@ public class OrgServiceImpl implements OrgService {
         branchNode.put("title", branchName);
         branchNode.put("children", new ArrayList<>());
 
-        // 부서별로 그룹화
+        // 부서별로 그룹화 (dept_name 사용)
         Map<String, List<MemberVO>> deptGroups = branchMembers.stream()
-            .filter(m -> !"본부장".equals(m.getEmp_job()) && m.getEmp_dnum() != null) // null 부서 필터링
-            .collect(Collectors.groupingBy(MemberVO::getEmp_dnum));
+            .filter(m -> !"본부장".equals(m.getEmp_job()) && m.getDept_name() != null)
+            .collect(Collectors.groupingBy(MemberVO::getDept_name)); // dept_name으로 그룹화
 
         for (Map.Entry<String, List<MemberVO>> entry : deptGroups.entrySet()) {
             Map<String, Object> deptNode = createDepartmentNode(entry.getKey(), entry.getValue());
@@ -100,20 +100,8 @@ public class OrgServiceImpl implements OrgService {
             .orElse(null);
 
         deptNode.put("name", deptManager != null ? deptManager.getEmp_name() : "미정");
-        deptNode.put("title", deptName);
+        deptNode.put("title", deptName); // dept_name 사용
         deptNode.put("children", new ArrayList<>());
-
-        // 팀원 추가 (필요한 경우 주석 해제)
-        /*
-        for (MemberVO member : deptMembers) {
-            if (!"부서장".equals(member.getEmp_job())) {
-                Map<String, Object> memberNode = new HashMap<>();
-                memberNode.put("name", member.getEmp_name() != null ? member.getEmp_name() : "미정");
-                memberNode.put("title", member.getEmp_position() != null ? member.getEmp_position() : "미정");
-                ((List<Map<String, Object>>) deptNode.get("children")).add(memberNode);
-            }
-        }
-        */
 
         return deptNode;
     }
