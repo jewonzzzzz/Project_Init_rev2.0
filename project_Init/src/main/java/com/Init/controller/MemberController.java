@@ -32,6 +32,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 //http://localhost:8088/member/login
+//http://localhost:8088/main/home
 
 @Controller
 @RequestMapping("/member")
@@ -55,7 +56,7 @@ public class MemberController implements ServletContextAware {
 	        model.addAttribute("needInfoUpdate", true);
 	    }
 	    
-	    return "member/main";
+	    return "main/home";
 	}
 
 	@GetMapping("/login")
@@ -71,7 +72,7 @@ public class MemberController implements ServletContextAware {
 	        return "redirect:/member/login";
 	    }
 	    session.setAttribute("emp_id", resultVO.getEmp_id());
-	    return "redirect:/member/main";
+	    return "redirect:/main/home";
 	}
 	// 퇴직신청 - GET
 		@GetMapping("/quit")
@@ -86,6 +87,36 @@ public class MemberController implements ServletContextAware {
 		    model.addAttribute("memberVO", memberVO);
 		    
 		    return "member/quit";  
+		}
+	
+		// 카카오 로그인
+		@PostMapping("/kakaoLogin")
+		@ResponseBody
+		public Map<String, Object> kakaoLogin(@RequestBody Map<String, String> kakaoUserInfo, HttpSession session) {
+		    Map<String, Object> response = new HashMap<>();
+		    logger.debug("Received Kakao user info: {}", kakaoUserInfo);
+		    
+		    try {
+		        String email = kakaoUserInfo.get("emp_email");
+		        
+		        // 이메일로 사원 정보 조회
+		        MemberVO member = mService.findMemberByEmail(email);
+		        
+		        if (member != null) {
+		            // 세션에 로그인 정보 저장
+		            session.setAttribute("emp_id", member.getEmp_id());
+		            response.put("success", true);
+		        } else {
+		            response.put("success", false);
+		            response.put("message", "등록되지 않은 이메일입니다. 관리자에게 문의하세요.");
+		        }
+		    } catch (Exception e) {
+		        logger.error("Kakao login error", e);
+		        response.put("success", false);
+		        response.put("message", "로그인 처리 중 오류가 발생했습니다.");
+		    }
+		    
+		    return response;
 		}
 		
 	// 비밀번호 찾기
@@ -145,7 +176,7 @@ public class MemberController implements ServletContextAware {
 	@GetMapping("/logout")
 	public String logoutMemberGET(HttpSession session) {
 		session.invalidate();
-		return "redirect:/member/main";
+		return "redirect:/member/login";
 	}
 
 	@GetMapping("/info")
