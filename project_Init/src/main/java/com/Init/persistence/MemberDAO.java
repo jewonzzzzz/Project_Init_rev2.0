@@ -62,7 +62,6 @@ public interface MemberDAO {
     MemberVO getMemberDetail(String emp_id);
     
     // 조직도
-    List<MemberVO> getAllMembers(String emp_bnum);
     List<MemberVO> getTeamMembers(String emp_dnum);
     List<String> getBranchList();
     
@@ -82,6 +81,9 @@ public interface MemberDAO {
     
     // 비밀번호 수정
     void updatePassword(MemberVO member);
+    
+    // 부서목록
+    List<Map<String, Object>> getDeptInfo();
     
     // 관리자 수정
     int updateEmployee(MemberVO vo);

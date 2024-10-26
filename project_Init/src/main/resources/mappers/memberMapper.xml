@@ -288,6 +288,13 @@
 	    AND approval = 0
 	</update>
     
+    <!-- 부서 목록 조회 (select box용) -->
+	<select id="getDeptInfo" resultType="map">
+	    SELECT dnum, dname 
+	    FROM dept 
+	    ORDER BY dnum
+	</select>
+    
     <!-- 회원 정보 조회  -->
 	<select id="getPaginatedMembers" parameterType="map" resultType="MemberVO">
 	    SELECT e.*, d.dname as dept_name 
@@ -312,21 +319,6 @@
 	</select>
     
     <!-- 조직도 -->
-    <select id="getAllMembers" resultType="MemberVO">
-	    SELECT e.*, d.dname as dept_name
-	    FROM employee e
-	    LEFT JOIN dept d ON e.emp_dnum = d.dnum
-	    WHERE e.emp_bnum = #{emp_bnum}
-	    AND e.approval = 0
-	    ORDER BY 
-	        CASE 
-	            WHEN e.emp_job = '본부장' THEN 1
-	            WHEN e.emp_job = '부서장' THEN 2
-	            ELSE 3 
-	        END,
-	        e.emp_dnum
-	</select>
-    
 	<select id="getBranchList" resultType="String">
    		SELECT DISTINCT emp_bnum FROM employee ORDER BY emp_bnum
 	</select>

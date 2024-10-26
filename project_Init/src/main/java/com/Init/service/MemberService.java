@@ -60,9 +60,7 @@ public interface MemberService {
     
     // 조직도
     List<MemberVO> getTeamMembers(String emp_dnum);
-    List<Map<String, Object>> getOrgChartData(String emp_bnum);
     List<String> getBranchList();
-    List<MemberVO> getAllMembers(String emp_bnum);
     
     // 자격증 추가
     List<Map<String, Object>> getAllLicenses();
@@ -80,6 +78,9 @@ public interface MemberService {
     
     // 비밀번호 수정
     boolean updatePassword(String emp_id, String currentPassword, String newPassword) throws Exception;
+    
+    // 부서목록
+    List<Map<String, Object>> getDepartmentList();
     
     // 관리자정보 수정
     boolean updateEmployeeInfo(MemberVO vo);

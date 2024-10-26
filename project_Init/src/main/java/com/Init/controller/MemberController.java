@@ -445,61 +445,6 @@ public class MemberController implements ServletContextAware {
 		}
 	}
 
-	@GetMapping("/orgChart")
-	@ResponseBody
-	public List<Map<String, Object>> getOrgChartData(@RequestParam String emp_bnum) {
-	    List<MemberVO> members = mService.getAllMembers(emp_bnum);  
-	    List<Map<String, Object>> orgChartData = new ArrayList<>();
-	    
-	    // 본부장 노드 추가
-	    MemberVO headManager = members.stream()
-	        .filter(m -> "본부장".equals(m.getEmp_job()))
-	        .findFirst()
-	        .orElse(null);
-
-	    if (headManager != null) {
-	        Map<String, Object> headNode = new HashMap<>();
-	        headNode.put("id", headManager.getEmp_id());
-	        headNode.put("name", headManager.getEmp_name());
-	        headNode.put("position", headManager.getEmp_position());
-	        headNode.put("dept", headManager.getDept_name());
-	        headNode.put("emp_job", headManager.getEmp_job());
-	        headNode.put("pid", null);
-	        orgChartData.add(headNode);
-	    }
-
-	    // 부서별 노드 추가
-	    for (MemberVO member : members) {
-	        if (!"본부장".equals(member.getEmp_job())) {
-	            Map<String, Object> node = new HashMap<>();
-	            node.put("id", member.getEmp_id());
-	            node.put("name", member.getEmp_name());
-	            node.put("position", member.getEmp_position());
-	            node.put("dept", member.getDept_name());
-	            node.put("emp_job", member.getEmp_job());
-	            
-	            // 부서장인 경우 본부장 밑에, 아닌 경우 부서장 밑에 배치
-	            if ("부서장".equals(member.getEmp_job())) {
-	                node.put("pid", headManager != null ? headManager.getEmp_id() : null);
-	            } else {
-	                // 해당 부서의 부서장 찾기
-	                String deptManagerId = members.stream()
-	                    .filter(m -> "부서장".equals(m.getEmp_job()) 
-	                           && m.getDept_name().equals(member.getDept_name()))
-	                    .map(MemberVO::getEmp_id)
-	                    .findFirst()
-	                    .orElse(null);
-	                node.put("pid", deptManagerId);
-	            }
-	            orgChartData.add(node);
-	        }
-	    }
-	    
-	    // 디버깅을 위한 로그 추가
-	    logger.debug("Org chart data created: {}", orgChartData);
-	    
-	    return orgChartData;
-	}
 
 	@GetMapping("/branchList")
 	@ResponseBody
@@ -570,6 +515,12 @@ public class MemberController implements ServletContextAware {
             return "member/list";
         }
     }
+	
+	@GetMapping("/departments")
+	@ResponseBody
+	public List<Map<String, Object>> getDepartments() {
+	    return mService.getDepartmentList();
+	}
 	
 	// 사원 등록
 	@PostMapping("/register")
