@@ -3,8 +3,10 @@
     font-size: 16px; /* 폰트 크기를 크게 설정 */
     border-radius: 5px; /* 모서리를 둥글게 설정 (선택 사항) */
     margin-left:  60px;
+   
     margin-bottom: 90px;
     margin-top: 50px;
+   color: white; /* 폰트 컬러를 검정색으로 설정 */
 }
 .card-title{
 	font-size:20px;
@@ -17,7 +19,7 @@
 }
   table {
         width: 100%; /* 테이블 너비를 100%로 설정 */
-    }
+/*     } */
 
  .btn-primary {
         color: white; /* 텍스트 색깔을 하얀색으로 설정 */

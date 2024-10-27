@@ -284,9 +284,9 @@
                         <div class="form-group">
                         <label for="modalLeaveStatusInput">상태</label>
                         <select class="form-control" id="modalLeaveStatusInput" name="status">
-                            <option value="1">승인</option>
-                            <option value="0">진행중</option>
-                            <option value="-1">반려</option>
+                            <option value="1">과거이력</option>
+                            <option value="0">현황</option>
+                            <option value="-1">결재 진행 중</option>
                         </select>
                     </div>
                      
@@ -332,13 +332,11 @@ $(document).ready(function() {
     function getLeaveStatusDisplay(status) {
         switch (status) {
             case 0:
-                return '진행중';
-            case 1:
-                return '승인';
+                return '현황';         
             case -1:
-                return '반려';
+                return '결재 진행 중';
             default:
-                return '없음'; // null 또는 다른 값의 경우
+                return '과거이력'; // null 또는 다른 값의 경우
         }
     }
     
