@@ -133,7 +133,6 @@
 		return_time = #{return_time},
 		status = #{status},
 		overtime = #{overtime},
-		new_WorkingOutside_time = #{new_WorkingOutside_time}, <!-- 변수명 일관성 유지 -->
 		working_time = #{working_time},
 		night_work_time = #{night_work_time},
 		special_working_time = #{special_working_time},
@@ -224,9 +223,7 @@
 		emp_id = #{emp_id},
 		check_in = #{check_in},
 		check_out = #{check_out},
-		new_check_in = #{new_check_in},
-		new_check_out = #{new_check_out},
-		new_WorkingOutside_time = #{new_WorkingOutside_time},
+		workform_status = #{workform_status},
 		created_at = #{created_at},
 		modified_reason = #{modified_reason},
 		status = #{status}

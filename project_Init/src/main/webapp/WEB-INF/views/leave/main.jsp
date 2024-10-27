@@ -151,7 +151,7 @@
                     <div class="form-group">
                         <label for="usedLeave">사용 연차:</label>
                         <input type="number" id="usedLeave" name="used_annual_leave" class="form-control" 
-                               placeholder="사용할 연차 일수를 입력하세요." required>
+                               placeholder="사용할 연차 일수를 입력하세요." readonly required>
                     </div>
                     <div class="form-group">
                         <label for="totalLeave">총 연차:</label>
