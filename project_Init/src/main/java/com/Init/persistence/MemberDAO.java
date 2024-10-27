@@ -16,8 +16,8 @@ import com.Init.domain.VerificationCode;
 public interface MemberDAO {
 
 	// 로그인
-	public MemberVO loginMember(String emp_id);
 	public MemberVO loginMember(MemberVO vo);
+	public MemberVO loginMember(String emp_id); // 암호화 때문에 아이디로만 조회
 	
 	// 카카오 로그인
 	MemberVO findByEmail(String emp_email);
