@@ -62,6 +62,8 @@ int countAttendance(String emp_id, String date);
 	public void applyBusinessTrip(AttendanceVO attendanceVO);
 
 	public AttendanceVO getEmployee(String emp_id);
+
+	public void insertSignInfo(AttendanceVO avo);
     
 	
 	

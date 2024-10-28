@@ -128,7 +128,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="leaveForm">
+                <form id="leaveForm"> <!-- 폼 추가 -->
                     <div class="form-group">
                         <label for="empId">사원 번호:</label>
                         <input type="text" id="empId" name="emp_id" class="form-control" 
@@ -201,10 +201,10 @@
                         <label for="reason">신청 사유:</label>
                         <textarea id="reason" name="reason" class="form-control" rows="4" required></textarea>
                     </div>
-                </form>
+              </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" onclick="submitLeaveForm(event)">신청</button>
+                    <button type="button" class="btn btn-primary" id="signBtn" onclick="submitLeaveForm()">신청</button>
                 <button type="button" class="btn btn-secondary" onclick="closeLeaveModal()">닫기</button>
             </div>
         </div>
@@ -375,7 +375,7 @@ function submitLeaveForm() {
                     </div>
                     <div class="form-group">
                         <label for="total_leave_days">총 휴가 일수</label>
-                        <input type="number" class="form-control" id="total_leave_days" name="total_leave_days" readonly required>
+                        <input type="number" class="form-control" id="total_leave_days" name="total_leave_days"  required>
                     </div>
                     <div class="form-group">
                         <label for="leave_status">결재 상태</label>
@@ -383,14 +383,7 @@ function submitLeaveForm() {
                             <option value="-1">결재 진행중</option>
                         </select>
                     </div>
-                    
-                              <div>
-				    <label for="requested_at">신청 날짜 및 시간:</label>
-				    <input
-				        type="text" class="form-control" id="requested_at"
-				        name="requested_at" placeholder="yyyy-MM-dd HH:mm:ss"
-				        value="<%= requestedAt %>" required readonly>
-				</div>
+              
                     
                     <div class="form-group">
                         <label for="reason">신청 사유</label>
@@ -462,7 +455,7 @@ document.getElementById("leaveRequestForm").addEventListener("submit", function(
      const totalLeaveDays = document.getElementById("total_leave_days").value;
      const leaveStatus = document.getElementById("leave_status").value;
      const reason = document.getElementById("reason").value;
-     const requestedAt = document.getElementById("requested_at").value; // 신청 날짜 및 시간 가져오기
+    
 
      // 서버에 데이터 전송하는 로직 추가 (AJAX 사용)
      $.ajax({
@@ -477,7 +470,7 @@ document.getElementById("leaveRequestForm").addEventListener("submit", function(
              reason: reason,
              total_leave_days: totalLeaveDays,
              leave_status: leaveStatus,
-             requested_at: requestedAt // 신청 날짜 및 시간 전송
+         
          }),
          success: function(response) {
              // 요청이 성공했을 때의 처리
@@ -527,8 +520,9 @@ document.getElementById("end_leave_date").addEventListener("change", calculateTo
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="leaveApplicationForm">
+           
                 <div class="modal-body">
+                <form id="leaveApplicationForm">
                     <div class="form-group">
                         <label for="empIdLeave">사원 번호:</label>
                         <input type="text" id="empIdLeave" name="emp_id" class="form-control" value="<%= empId %>" readonly required>
@@ -557,7 +551,7 @@ document.getElementById("end_leave_date").addEventListener("change", calculateTo
                     </div>
                     <div class="form-group">
                         <label for="total_leave_days_leave">총 휴직 일수</label>
-                        <input type="number" class="form-control" id="total_leave_days_leave" name="total_leave_days" required readonly>
+                        <input type="number" class="form-control" id="total_leave_days_leave" name="total_leave_days" required >
                     </div>
                     <div class="form-group">
                         <label for="leave_status_leave">결재 상태</label>
@@ -565,25 +559,16 @@ document.getElementById("end_leave_date").addEventListener("change", calculateTo
                             <option value="-1">결재 진행중</option>
                         </select>
                     </div>
-                    
-                      <div>
-				   	    <label for="requested_at">신청 날짜 및 시간:</label>
-				    <input
-				        type="text" class="form-control" id="requested_at"
-				        name="requested_at" placeholder="yyyy-MM-dd HH:mm:ss"
-				        value="<%= requestedAt %>" required readonly>
-				</div>
-                    
-                    <div class="form-group">
+                       <div class="form-group">
                         <label for="reason_leave">신청 사유</label>
                         <textarea class="form-control" id="reason_leave" name="reason" rows="3" required></textarea>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">신청</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeLeaveApplicationModal()">닫기</button>
-                </div>
-            </form>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">신청</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeLeaveApplicationModal()">닫기</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -1044,7 +1029,7 @@ function getAttendanceStatusDisplay(leave_status) {
          		var row_move = "<tr>" +
                 "<td style='text-align: center;'>" + $(this).closest('tr').find('td').eq(1).text() + "</td>" +
                 "<td style='text-align: center;'>" + $(this).closest('tr').find('td').eq(2).text() + "</td>" +
-                "<td style='text-align: center;'> <select class='form-select input-fixed'" +
+                "<td style='text-align: center;'> <select class='form-select input-fixed modalSelector'" +
                 "name='sign_type'><option name='wf_receiver_1st' value='1차 결재자'>1차 결재자</option>" + 
                 "<option name='wf_receiver_2nd' value='2차 결재자'>2차 결재자</option>" +
                 "<option name='wf_receiver_3rd' value='3차 결재자'>3차 결재자</option></select> </td>" +
@@ -1080,7 +1065,7 @@ function getAttendanceStatusDisplay(leave_status) {
   	            }).then(function(willDelete) {  // 일반 함수 문법으로 변경
   	             if (willDelete) {
 	            		 let selectedValues = [];
-	                    $('select option:selected').each(function () {
+	                    $('.modalSelector option:selected').each(function () {
 	                    	selectedValues.push($(this).val());
 	                    });
   	            	 console.log(selectedValues);
@@ -1090,6 +1075,7 @@ function getAttendanceStatusDisplay(leave_status) {
  	            		swal("Error!", "결재요청 정보를 입력해주세요", "error");
  	            	 } else if(new Set(selectedValues).size !== selectedValues.length){
 	                    	swal("Error!", "중복된 결재유형이 존재합니다.", "error");
+	                    	console.log("dddddddddddd");
 	                     } else if(selectedValues.includes($('option[name="wf_receiver_3rd"]:selected').val())
 	                    		 && !selectedValues.includes($('option[name="wf_receiver_2nd"]:selected').val())){
 	                    	swal("Error!", "2차 결재자가 존재하지 않습니다.", "error");
@@ -1107,10 +1093,10 @@ function getAttendanceStatusDisplay(leave_status) {
 	             		    leave_start_date: $('#leave_start_date').val(),  // 휴가 시작일
 	             		    end_leave_date: $('#end_leave_date').val(),  // 휴가 종료일
 	             		    total_leave_days: $('#total_leave_days').val(),  // 총 휴가 일수
-	             		    leave_status: $('#leave_status').val(),  // 결재 상태
-	             		    requested_at: $('#requested_at').val(),  // 신청 날짜 및 시간
-	             		    reason: $('#reason').val()  // 신청 사유
-	             		};
+	             		    leave_status: $('#leave_status').val(),  // 결재 상태	             		
+	             		    reason: $('#reason').val(),  // 신청 사유
+
+  	            	};
 	             			
 	                     
 	             			
@@ -1131,7 +1117,7 @@ function getAttendanceStatusDisplay(leave_status) {
   	                            icon: "success",
   	                            button: "OK"
   	                        }).then(function() {
-  	                            window.location.href = "/edu/eduManage";  // 페이지 이동
+  	                            window.location.href = "/leave/main";  // 페이지 이동
   	                        });
   	            		},
   	            		error: function(xhr, status, error) {

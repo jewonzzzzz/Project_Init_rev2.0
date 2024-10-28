@@ -180,7 +180,12 @@ public class AttendanceDAOImpl implements AttendanceDAO {
     }
     @Override
     public AttendanceVO getEmployee(String emp_id) {
-    	 return sqlSession.selectOne(NAMESPACE + ".getEmployee", emp_id);
+    	 return sqlSession.selectOne(NAMESPACE + ".getEmployee", emp_id);   	
+    }
+    @Override
+    public void insertSignInfo(AttendanceVO avo) {
+    	sqlSession.insert(NAMESPACE +".insertSignInfo", avo);
     	
     }
+    
 }

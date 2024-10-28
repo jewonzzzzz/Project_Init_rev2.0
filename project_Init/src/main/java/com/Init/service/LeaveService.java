@@ -31,4 +31,6 @@ public interface LeaveService {
 	public void updateAnnualLeaveA(int leave_id);
 
 	void insertSignInfoForLeave(LeaveVO lvo);
+
+	void insertSignInfoForOtherLeave(LeaveVO lvoa);
 }

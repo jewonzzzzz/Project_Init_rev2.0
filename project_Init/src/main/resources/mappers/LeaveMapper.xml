@@ -152,21 +152,21 @@
 		#{used_annual_leave},
 		remaining_annual_leave =
 		#{remaining_annual_leave}
-		WHERE emp_id = #{emp_id};
+		WHERE emp_id = #{emp_id}
 	</update>
 	<!-- 휴가 쿼리 -->
 
 	<insert id="insertLeaveRequestA"
 		parameterType="com.Init.domain.LeaveVO">
-		INSERT INTO leave_management (emp_id, leave_type,
-		leave_start_date,
-		end_leave_date, reason, total_leave_days,
-		leave_status,requested_at)
-		VALUES (#{emp_id}, #{leave_type},
-		#{leave_start_date},
-		#{end_leave_date},
-		#{reason}, #{total_leave_days},
-		#{leave_status},#{requested_at});
+		INSERT INTO leave_management (emp_id, leave_type, 
+		leave_start_date, 
+		end_leave_date, reason, total_leave_days, 
+		leave_status,requested_at) 
+		VALUES (#{emp_id}, #{leave_type}, 
+		#{leave_start_date}, 
+		#{end_leave_date}, 
+		#{reason}, #{total_leave_days}, 
+		#{leave_status}, now())
 	</insert>
 
 	<!--나의 휴가 현황 -->
@@ -255,27 +255,42 @@
 	        adjustmentDate = NULL
 	    WHERE leave_id = #{leave_id};
 	</update>
-	<insert id="insertSignInfoForLeave" parameterType="com.Init.domain.LeaveVO">
-	INSERT INTO leave_management (
-	        emp_id,
-	        leave_type,
-	        leave_start_date,
-	        end_leave_date,
-	        total_leave_days,
-	        leave_status,
-	        requested_at,
-	        reason     
-	    ) VALUES (
-	        #{emp_id},
-	        #{leave_type},
-	        #{leave_start_date,jdbcType=DATE},
-	        #{end_leave_date,jdbcType=DATE},
-	        #{total_leave_days},
-	        #{leave_status},
-	        #{requested_at},
-	        #{reason}       
-	    );
+	
+	
+	<insert id="insertAnnualLeaveA" parameterType="com.Init.domain.LeaveVO">
+		INSERT INTO leave_management (
+		emp_id,
+		leave_type,
+		annual_leave_start_date,
+		end_annual_leave,
+		used_annual_leave,
+		total_annual_leave,
+		remaining_annual_leave,
+		lgrant,
+		expiry,
+		adjustment,
+		leave_status,
+		reason,
+		requested_at
+		) VALUES (
+		#{emp_id},
+		#{leave_type},
+		#{annual_leave_start_date},
+		#{end_annual_leave},
+		#{used_annual_leave},
+		#{total_annual_leave},
+		#{remaining_annual_leave},
+		#{lgrant},
+		#{expiry},
+		#{adjustment},
+		#{leave_status},
+		#{reason},
+		now()
+
+		)
 	</insert>
+	
+	
 	
 	
 </mapper>

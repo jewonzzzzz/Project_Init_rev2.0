@@ -29,7 +29,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.Init.domain.AttendanceVO;
+import com.Init.domain.LeaveVO;
+import com.Init.domain.WorkflowVO;
 import com.Init.service.AttendanceService;
+import com.Init.service.SalaryService;
 
 @Controller
 @RequestMapping(value = "/Attendance/*")
@@ -37,6 +40,8 @@ public class AttendanceController {
 
 	@Autowired
 	private AttendanceService attendanceService;
+	@Autowired
+	private SalaryService sService;
 
 	private static final Logger logger = LoggerFactory.getLogger(AttendanceController.class);
 
@@ -361,7 +366,58 @@ public class AttendanceController {
 		}
 	}
 	
-	
+	//휴가결재
+	@PostMapping(value = "insertSignInfo")
+	@ResponseBody
+	public void insertSignInfo(@RequestBody Map<String, String> signData) {
+		logger.debug("signData :"+signData.toString());
+		String emp_id = signData.get("emp_id");
+		
+		// wf_code 설정
+        LocalDate today = LocalDate.now();
+        int year = today.getYear();
+        String wf_code = "wf" +year+"00001";
+        
+        // 올해 첫 워크플로우번호가 있는지 확인하기
+        String checkWfCode = sService.checkWfCode(wf_code);
+        
+        if(checkWfCode != null) {
+        	//있으면 edu_id를 가장 최근 id에서 +1
+        	String getWfCode = sService.getWfCode();
+        	wf_code = "wf"+(Integer.parseInt(getWfCode.substring(2))+1);
+        }
+		
+		WorkflowVO vo = new WorkflowVO();
+		vo.setWf_code(wf_code);
+		vo.setWf_type("휴가");
+		vo.setWf_sender(signData.get("wf_sender"));
+		vo.setWf_receiver_1st(signData.get("wf_receiver_1st"));
+		vo.setWf_receiver_2nd(signData.get("wf_receiver_2nd"));
+		vo.setWf_receiver_3rd(signData.get("wf_receiver_3rd"));
+		vo.setWf_target(emp_id);
+		vo.setWf_title(signData.get("wf_title"));
+		vo.setWf_content(signData.get("wf_content"));
+		
+		//결재정보를 워크플로우 디비에 저장
+		//sService.insertSalarySignInfoToWorkFlow(vo);
+		
+		
+		//휴가테이블에 작성될 정보(insert, status : -1)
+		AttendanceVO avo = new AttendanceVO();
+			
+		    avo.setEmp_id(signData.get("emp_id"));  // 사원 ID 설정
+	        avo.setWorkform_status(signData.get("workform_status"));  // 신청 종류 설정
+	        avo.setOvertime(Integer.parseInt(signData.get("overtime")));  // 초과 시간 설정
+	        avo.setNight_work_time(Integer.parseInt(signData.get("night_work_time")));  // 야간 시간 설정
+	        avo.setSpecial_working_time(Integer.parseInt(signData.get("special_working_time")));  // 특근 시간 설정
+	        avo.setStatus(Integer.parseInt(signData.get("status")));  // 상태 설정
+	        avo.setModified_reason(signData.get("modified_reason"));  // 신청 이유 설정
+
+		
+			attendanceService.insertSignInfo(avo);
+		
+		
+	}
 	
 
 }

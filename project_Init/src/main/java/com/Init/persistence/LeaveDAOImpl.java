@@ -143,5 +143,11 @@ public class LeaveDAOImpl implements LeaveDAO {
 	    	sqlSession.insert(NAMESPACE+".insertLeaveRequestA",lvo);
 	    	
 	    }
+	    @Override
+	    public void insertSignInfoForOtherLeave(LeaveVO lvoa) {
+	    	sqlSession.insert(NAMESPACE+".insertAnnualLeaveA");
+	    	
+	    }
+	    
 	    
 }

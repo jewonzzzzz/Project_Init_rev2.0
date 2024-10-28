@@ -18,12 +18,15 @@
 	<insert id="recordCheckIn" parameterType="String">
 
 
-		INSERT INTO attendance_ch (emp_id, check_in)
+		INSERT INTO
+		attendance_ch (emp_id, check_in)
 		SELECT #{emp_id}, NOW()
-		WHERE NOT EXISTS (
+		WHERE NOT
+		EXISTS (
 		SELECT 1 FROM attendance_ch
 		WHERE emp_id = #{emp_id}
-		AND DATE(check_in) = CURDATE()
+		AND
+		DATE(check_in) = CURDATE()
 		)
 
 	</insert>
@@ -34,15 +37,18 @@
 		SET check_out = NOW()
 		WHERE emp_id = #{emp_id}
 		AND check_in = (
-		SELECT check_in
+		SELECT
+		check_in
 		FROM (
 		SELECT check_in
 		FROM attendance_ch
-		WHERE emp_id = #{emp_id}
+		WHERE emp_id =
+		#{emp_id}
 		AND check_in IS NOT NULL
 		ORDER BY check_in DESC
 		LIMIT 1
-		) AS latest
+		) AS
+		latest
 		)
 		LIMIT 1;
 	</update>
@@ -71,13 +77,13 @@
 
 	<!-- 근무 시간 계산 및 업데이트 -->
 	<update id="calculateAndUpdateWorkingTime"
-        parameterType="String">
+		parameterType="String">
 		UPDATE attendance_ch
-			SET 
-			    working_time = TIMESTAMPDIFF(MINUTE, check_in, check_out) / 60.0 
-			WHERE emp_id = #{emp_id}
-			AND check_out IS NOT NULL;  -- 퇴근 시간이 존재하는 경우만 업데이트
-		</update>
+		SET
+		working_time = TIMESTAMPDIFF(MINUTE, check_in, check_out) / 60.0
+		WHERE emp_id = #{emp_id}
+		AND check_out IS NOT NULL; -- 퇴근 시간이 존재하는 경우만 업데이트
+	</update>
 
 	<select id="getWorkingTime" resultType="double">
 		SELECT working_time
@@ -95,24 +101,26 @@
 		SELECT a.*, e.emp_id
 		FROM attendance_ch a
 		JOIN employee e ON
-		a.emp_id = e.emp_id
+		a.emp_id =
+		e.emp_id
 		WHERE a.emp_id = #{emp_id}
 		<if test="date != null">
-            AND DATE(check_in) = #{date} <!-- check_in이 날짜에 해당하는 데이터만 가져옵니다. -->
-        </if>
+			AND DATE(check_in) = #{date} <!-- check_in이 날짜에 해당하는 데이터만 가져옵니다. -->
+		</if>
 		ORDER BY check_in DESC
 		LIMIT #{size} OFFSET #{offset}
 	</select>
-	
-	<select id="countAttendance" parameterType="map" resultType="int">
-           SELECT COUNT(*)
-		    FROM attendance_ch
-		    WHERE emp_id = #{emp_id}
-		    <if test="date != null and date != ''">
-		        AND DATE(check_in) = #{date}
-		    </if>
-    </select>
-	
+
+	<select id="countAttendance" parameterType="map"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM attendance_ch
+		WHERE emp_id = #{emp_id}
+		<if test="date != null and date != ''">
+			AND DATE(check_in) = #{date}
+		</if>
+	</select>
+
 
 	<select id="getTotalCheckTimeCount" parameterType="string"
 		resultType="int">
@@ -129,23 +137,29 @@
 		emp_id = #{emp_id},
 		check_in = #{check_in},
 		check_out = #{check_out},
-		WorkingOutside_time = #{WorkingOutside_time},  <!-- 변수명 일관성 유지 -->
+		WorkingOutside_time = #{WorkingOutside_time},  <!-- 
+			변수명 일관성 유지 -->
 		return_time = #{return_time},
 		status = #{status},
-		overtime = #{overtime},
+		overtime =
+		#{overtime},
 		working_time = #{working_time},
-		night_work_time = #{night_work_time},
+		night_work_time =
+		#{night_work_time},
 		special_working_time = #{special_working_time},
 		modified_reason = #{modified_reason},
 		created_at =#{created_at},
 		modified_time = #{modified_time},
 		businessDate = #{businessDate},
 		business_endDate = #{business_endDate},
-		educationDate = #{educationDate},
+		educationDate =
+		#{educationDate},
 		education_endDate = #{educationDate},
-		modified_person = #{modified_person},
+		modified_person
+		= #{modified_person},
 		workform_status = #{workform_status}
-		WHERE attendance_id = #{attendance_id}
+		WHERE
+		attendance_id = #{attendance_id}
 	</update>
 
 	<delete id="deleteAttendance" parameterType="int">
@@ -164,50 +178,50 @@
 		LIMIT 7
 	</select>
 
-	<update id="updateOvertime" 
-        parameterType="com.Init.domain.AttendanceVO">
-		   UPDATE attendance_ch
+	<update id="updateOvertime"
+		parameterType="com.Init.domain.AttendanceVO">
+		UPDATE attendance_ch
 		SET
-		    emp_id = #{emp_id},
-		    workform_status = #{workform_status},
-		    created_at = #{created_at},
-		    overtime = #{overtime},
-		    night_work_time = #{night_work_time},
-		    special_working_time = #{special_working_time},
-		    status = #{status},
-		    modified_reason = #{modified_reason}
+		emp_id = #{emp_id},
+		workform_status = #{workform_status},
+		created_at = #{created_at},
+		overtime = #{overtime},
+		night_work_time = #{night_work_time},
+		special_working_time = #{special_working_time},
+		status = #{status},
+		modified_reason = #{modified_reason}
 		WHERE
-		    attendance_id = #{attendance_id};
-</update>
+		attendance_id = #{attendance_id};
+	</update>
 
 	<!-- 외출 시간 업데이트 쿼리 -->
 	<update id="updateWorkingOutsideTime"
 		parameterType="com.Init.domain.AttendanceVO">
-		   UPDATE attendance_ch
-		    SET workingOutside_time = #{WorkingOutside_time}
-		    WHERE emp_id = #{emp_id} 
-		      AND attendance_id = (
-		          SELECT MAX(attendance_id) 
-		          FROM (SELECT attendance_id 
-		                FROM attendance_ch 
-		                WHERE emp_id = #{emp_id} 
-		                AND check_in IS NOT NULL) AS temp
-      )
+		UPDATE attendance_ch
+		SET workingOutside_time = #{WorkingOutside_time}
+		WHERE emp_id = #{emp_id}
+		AND attendance_id = (
+		SELECT MAX(attendance_id)
+		FROM (SELECT attendance_id
+		FROM attendance_ch
+		WHERE emp_id = #{emp_id}
+		AND check_in IS NOT NULL) AS temp
+		)
 	</update>
 
 	<!-- 복귀 시간 업데이트 쿼리 -->
 	<update id="updateReturnTime"
 		parameterType="com.Init.domain.AttendanceVO">
-		 UPDATE attendance_ch
-    SET return_time = #{return_time}
-    WHERE emp_id = #{emp_id} 
-      AND attendance_id = (
-          SELECT MAX(attendance_id) 
-          FROM (SELECT attendance_id 
-                FROM attendance_ch 
-                WHERE emp_id = #{emp_id} 
-                AND check_in IS NOT NULL) AS temp
-      )
+		UPDATE attendance_ch
+		SET return_time = #{return_time}
+		WHERE emp_id = #{emp_id}
+		AND attendance_id = (
+		SELECT MAX(attendance_id)
+		FROM (SELECT attendance_id
+		FROM attendance_ch
+		WHERE emp_id = #{emp_id}
+		AND check_in IS NOT NULL) AS temp
+		)
 	</update>
 
 	<select id="getAttendanceByEmpId" parameterType="String"
@@ -221,36 +235,64 @@
 		UPDATE attendance_ch
 		SET
 		emp_id = #{emp_id},
-		check_in = #{check_in},
+		check_in =
+		#{check_in},
 		check_out = #{check_out},
-		workform_status = #{workform_status},
+		workform_status =
+		#{workform_status},
 		created_at = #{created_at},
-		modified_reason = #{modified_reason},
+		modified_reason =
+		#{modified_reason},
 		status = #{status}
-		WHERE attendance_id = #{attendance_id}
+		WHERE attendance_id =
+		#{attendance_id}
 	</update>
 
 	<insert id="insertBusinessTrip"
 		parameterType="com.Init.domain.AttendanceVO">
-		INSERT INTO attendance_ch (emp_id, created_at, businessDate,
-		business_endDate, educationDate, education_endDate, workform_status,
+		INSERT INTO attendance_ch (emp_id, created_at,
+		businessDate,
+		business_endDate, educationDate, education_endDate,
+		workform_status,
 		modified_reason, status)
-		VALUES (#{emp_id}, #{created_at},#{businessDate}, #{business_endDate},
-		#{educationDate}, #{education_endDate}, #{workform_status},
-		#{modified_reason}, #{status})
+		VALUES (#{emp_id},
+		#{created_at},#{businessDate}, #{business_endDate},
+		#{educationDate},
+		#{education_endDate}, #{workform_status},
+		#{modified_reason},
+		#{status})
 
 	</insert>
 
 	<select id="getEmployee" parameterType="String"
 		resultType="com.Init.domain.AttendanceVO">
 		SELECT emp_job, emp_position, emp_name, emp_profile
-		FROM employee
+		FROM
+		employee
 		WHERE emp_id = #{emp_id}
 	</select>
 
+	<insert id="insertSignInfo" parameterType="com.Init.domain.AttendanceVO">
+		INSERT INTO attendance_ch (
+		emp_id,
+		workform_status,
+		created_at,
+		overtime,
+		night_work_time,
+		special_working_time,
+		status,
+		modified_reason
+		) VALUES (
+		#{emp_id},
+		#{workform_status},
+		#now(),
+		#{overtime},
+		#{night_work_time},
+		#{special_working_time},
+		#{status},
+		#{modified_reason}
+		);
+	</insert>
 
-	
-    
-    
 
 </mapper>
