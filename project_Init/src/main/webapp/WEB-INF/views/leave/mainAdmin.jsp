@@ -209,8 +209,6 @@
         </div>
     </div>
 </div>
-
-	
  
     <!-- 성공 메시지 -->
     <div id="successMessage" class="alert alert-success" style="display:none;">수정이 완료되었습니다.</div>
@@ -241,10 +239,7 @@
                             <option value="병가휴직">병가휴직</option>
                             <option value="기타사유">기타사유</option>
                         </select>
-                    </div>
-                    
-                    
-                    
+                    </div>                         
 						                  <div class="form-group">
 						    <label for="modalLeaveStartDateInput">휴가 시작일</label>
 						    <input type="date" id="modalLeaveStartDateInput" class="form-control">
@@ -252,8 +247,7 @@
 						<div class="form-group">
 						    <label for="modalEndLeaveDateInput">휴가 종료일</label>
 						    <input type="date" id="modalEndLeaveDateInput" class="form-control">
-						</div>
-				
+						</div>				
 						<div class="form-group">
 						    <label for="modalTotalLeaveDaysInput">휴가일</label>
 						    <input type="number" id="modalTotalLeaveDaysInput" class="form-control">
@@ -278,9 +272,7 @@
 						<div class="form-group">
 						    <label for="modalRemainingAnnualLeaveInput">잔여 연차 일수</label>
 						    <input type="number" id="modalRemainingAnnualLeaveInput" class="form-control">
-						</div>
-						
-                    
+						</div>						                
                         <div class="form-group">
                         <label for="modalLeaveStatusInput">상태</label>
                         <select class="form-control" id="modalLeaveStatusInput" name="status">
@@ -288,20 +280,15 @@
                             <option value="0">현황</option>
                             <option value="-1">결재 진행 중</option>
                         </select>
-                    </div>
-                     
+                    </div>                   
                      <div class="form-group">
 							  <label for="modalRequestedAtInput">신청 일자</label>
 							  <input type="date" class="form-control" id="modalRequestedAtInput" placeholder="yyyy-MM-dd" required>
-							</div>
-                    
-                    
+							</div>          
                     <div class="form-group">
                         <label for="modalReasonInput">신청 사유</label>
                         <input type="text" id="modalReasonInput" class="form-control">
-                    </div>
-                                   
-                    
+                    </div>                                        
                 </div>
                 <div class="modal-footer">
                     
@@ -411,11 +398,8 @@ $("#checkLeavesButton").click(function() {
         $("#modalLeaveId").val($(this).data('id'));
         $("#modalLeaveTypeInput").val($(this).data('leave-type'));
         $("#modalLeaveStartDateInput").val($(this).data('leave-start-date'));
-        $("#modalEndLeaveDateInput").val($(this).data('end-leave-date'));
-        
-       
+        $("#modalEndLeaveDateInput").val($(this).data('end-leave-date'));             
         $("#modalTotalLeaveDaysInput").val($(this).data('total-leave-days')); // 총 휴가일수
-
         $("#modalRequestedAtInput").val($(this).data('requested-at'));
         $("#modalAnnualLeaveStartDateInput").val($(this).data('annual-leave-start-date'));
         $("#modalEndAnnualLeaveInput").val($(this).data('end-annual-leave'));

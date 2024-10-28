@@ -117,8 +117,8 @@ body {
 
 								<%
 									// 현재 날짜와 시간을 yyyy-MM-dd HH:mm:ss 형식으로 포맷
-								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-								String createdAt = sdf.format(new Date());
+									SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+									String createdAt = sdf.format(new Date());
 								%>
 
 								<button class="btn1 btn-primary" data-toggle="modal"
@@ -239,16 +239,11 @@ function validateForm() {
 
     // 필수 입력 확인
     if (!attendanceId) {
-        alert("Attendance ID를 입력해 주세요.");
+        alert("근태 ID를 입력해 주세요.");
         return false;
     }
 
-    // 날짜 입력 여부 확인
-    if (!createdAt) {
-        alert("날짜를 입력해 주세요.");
-        return false;
-    }
-
+   
     // 초과시간, 야간시간, 특근시간 중 하나라도 입력해야 함
     if (!overtime && !nightWorkTime && !specialWorkingTime) {
         alert("초과시간, 야간시간, 또는 특근시간 중 하나를 입력해 주세요.");
@@ -478,7 +473,7 @@ function displayAttendanceInfo(data) {
 															type="text" class="form-control" id="employee_name"
 															value="${emp_name}" readonly>
 													</div>
-														<div class="form-group">
+													<div class="form-group">
 														<label for="workformStatus">신청 종류</label> <select
 															class="form-control" id="workformStatusA"
 															name="workform_status" required>
@@ -526,7 +521,7 @@ function displayAttendanceInfo(data) {
 									</div>
 								</div>
 
-<script>
+								<script>
 
 
 
@@ -556,6 +551,8 @@ function submitAttendanceForm2() {
         alert("근태 번호를 입력해주세요.");
         return; 
     }
+
+    
     
     if (!currentCheckIn) {
         alert("출근 시간을 입력해주세요.");
@@ -566,6 +563,20 @@ function submitAttendanceForm2() {
         alert("퇴근 시간을 입력해주세요.");
         return; 
     }
+
+    if (new Date(currentCheckIn) >= new Date(currentCheckOut)) {
+        alert("출근 시간은 퇴근 시간보다 이전이어야 합니다.");
+        return; 
+    }
+
+ 
+
+    if (!reasonForModification) {
+        alert("수정 이유를 입력해주세요.");
+        return; 
+    }
+
+  
 
     // 기본값 설정 (필요한 경우)
     const formData = {
@@ -804,10 +815,11 @@ function submitBusinessTrip() {
 									<div class="flex justify-center mb-6">
 										<div
 											class="w-40 h-40 bg-gray-200 rounded-md flex items-center justify-center">
-											<span class="text-gray-500"> 
-											       <img src="${pageContext.request.contextPath}/resources/assets/img/profile.jpg" alt="프로필 이미지" />
-											 </span>
-											 
+											<span class="text-gray-500"> <img
+												src="${pageContext.request.contextPath}/resources/assets/img/profile.jpg"
+												alt="프로필 이미지" />
+											</span>
+
 										</div>
 									</div>
 									<div class="space-y-4">
@@ -872,7 +884,7 @@ function submitBusinessTrip() {
 
 										<%
 											// 세션에서 emp_id와 attendance_id를 가져옵니다. 
-										String attendanceId = (String) session.getAttribute("attendance_id");
+											String attendanceId = (String) session.getAttribute("attendance_id");
 										%>
 
 
