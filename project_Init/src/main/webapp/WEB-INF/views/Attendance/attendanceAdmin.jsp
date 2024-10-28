@@ -622,7 +622,7 @@
         // 10초 뒤에 해당 URL로 이동
         redirectTimeout = setTimeout(function() {
             // 지정된 주소로 리다이렉트
-            window.location.href = "http://localhost:8088/Attendance/attendanceMain?emp_id=" + empId;
+            window.location.href = "http://c6d2406t2.itwillbs.com/Attendance/attendanceMain?emp_id=" + empId;
         }, 10000); // 10000ms = 10초
     }
 

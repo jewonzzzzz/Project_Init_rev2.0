@@ -804,21 +804,24 @@ function submitBusinessTrip() {
 									<div class="flex justify-center mb-6">
 										<div
 											class="w-40 h-40 bg-gray-200 rounded-md flex items-center justify-center">
-											<span class="text-gray-500">${sessionScope.emp_profile}</span>
+											<span class="text-gray-500"> 
+											       <img src="${pageContext.request.contextPath}/resources/assets/img/profile.jpg" alt="프로필 이미지" />
+											 </span>
+											 
 										</div>
 									</div>
 									<div class="space-y-4">
 										<div class="flex justify-between">
-											<span class="font-semibold">사원번호 :</span> <span>${sessionScope.emp_id}</span>
+											<span class="font-semibold">사원번호 :</span> <span>${emp_id}</span>
 										</div>
 										<div class="flex justify-between">
-											<span class="font-semibold">직책 :</span> <span>${sessionScope.emp_job}</span>
+											<span class="font-semibold">직책 :</span> <span>${emp_job}</span>
 										</div>
 										<div class="flex justify-between">
-											<span class="font-semibold">직위:</span> <span>${sessionScope.emp_position}</span>
+											<span class="font-semibold">직위:</span> <span>${emp_position}</span>
 										</div>
 										<div class="flex justify-between">
-											<span class="font-semibold">이름:</span> <span>${sessionScope.emp_name}</span>
+											<span class="font-semibold">이름:</span> <span>${emp_name}</span>
 										</div>
 										<div class="flex justify-between">
 											<span class="font-semibold">출근 시간:</span> <span
