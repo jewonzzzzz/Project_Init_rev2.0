@@ -377,6 +377,7 @@ public class MemberController implements ServletContextAware {
 		try {
 			String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 			String uploadDir = servletContext.getRealPath("/profiles");
+			logger.debug("uploadDir : "+uploadDir);
 			File uploadPath = new File(uploadDir);
 			if (!uploadPath.exists()) {
 				uploadPath.mkdirs();
