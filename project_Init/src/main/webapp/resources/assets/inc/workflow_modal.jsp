@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <script src="${pageContext.request.contextPath }/resources/assets/js/workflow_infobox.js"></script>
 
 <!-- workflow_modal modal start-->
@@ -11,7 +12,7 @@
 					<div class="col-md-12">
 						<div class="card" style="margin:0;">
 							<div class="card-header" style="display:flex;" >
-								<div class="card-title" style="flex:99;">READ WORKFLOW</div>
+								<div class="card-title" style="flex:99;">워크플로우 상세보기</div>
 								<div style="flex:1;">
 									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 								</div>
@@ -20,34 +21,25 @@
 							<div class="card-body">
 								<form id="workflow_response_submit" action="/project/wfresponse" method="POST">
 									<div class="row">
-										<div class="col-md-6 col-lg-2" style="border-bottom: 1px solid rgba(0,0,0,0.1);">
-											<div class="form-group">
-								                <label class="control-label"> NUM </label>
-								                <p id="wf_code" class="form-control-static"></p>
-								                <input type="hidden" id="wf_code_hidden" name="wf_code"/>
-						                    </div>
-					                    </div>
-					                    <div class="col-md-6 col-lg-2" style="border-bottom: 1px solid rgba(0,0,0,0.1);">
-											<div class="form-group">
-								                <label class="control-label"> TYPE </label>
+					                    <div class="col-md-6 col-lg-2" style="border-bottom: 1px solid rgba(0,0,0,0.1); display:flex; flex-direction: column; justify-content: center; align-content: center;">
+								                <label class="control-label"> 유형 </label>
 								                <p id="wf_type" class="form-control-static"></p>
-						                    </div>
 					                    </div>
-					                    <div class="col-md-6 col-lg-2" style="border-bottom: 1px solid rgba(0,0,0,0.1);">
-											<div class="form-group">
-								                <label class="control-label"> PROGRESS </label>
+					                    <div class="col-md-6 col-lg-2" style="border-bottom: 1px solid rgba(0,0,0,0.1); display:flex; flex-direction: column; justify-content: center; align-content: center;">
+								                <label class="control-label"> 상태 </label>
+								                <p id="wf_status" class="form-control-static"></p>
+					                    </div>
+					                     <div class="col-md-6 col-lg-2" style="border-bottom: 1px solid rgba(0,0,0,0.1); display:flex; flex-direction: column; justify-content: center; align-content: center;">
+								                <label class="control-label"> 상세 </label>
 								                <p id="wf_progress" class="form-control-static"></p>
-						                    </div>
 					                    </div>
-					                    <div class="col-md-6 col-lg-2" style="border-bottom: 1px solid rgba(0,0,0,0.1);">
-											<div class="form-group">
-								                <label class="control-label"> DATE </label>
+					                    <div class="col-md-6 col-lg-2" style="border-bottom: 1px solid rgba(0,0,0,0.1); display:flex; flex-direction: column; justify-content: center; align-content: center;">
+								                <label class="control-label"> 생성일 </label>
 								                <p id="wf_create_date" class="form-control-static"></p>
-						                    </div>
 					                    </div>
 					                     <div class="col-md-6 col-lg-2" style="border-bottom: 1px solid rgba(0,0,0,0.1);">
-											<div class="form-group" >
-								                <label class="control-label"> SENDER </label>
+											<div class="form-group" style="text-align: center;">
+								                <label class="control-label"> 발신자 </label>
 								                <a id="a_sender" class="member_info" data-emp_id="">
 									                <div class="form-group" style="height:80px; display: flex;">
 								                    	<div style="display: flex; ">
@@ -70,7 +62,7 @@
 					                    </div>
 					                    <div class="col-md-6 col-lg-2" style="border-bottom: 1px solid rgba(0,0,0,0.1);">
 											<div class="form-group">
-								                <label class="control-label"> RECEIVER </label>
+								                <label class="control-label"> 수신자 </label>
 								                <a id="a_receiver" class="member_info" data-emp_id="">
 								            		<div class="form-group" style="height:80px; display: flex;">
 								                    	<div style="display: flex; ">
@@ -95,7 +87,7 @@
 									<div class="row">
 										 <div class="col-md-6 col-lg-8">
 											<div class="form-group">
-								                <label class="control-label"> TITLE </label>
+								                <label class="control-label"> 제목 </label>
 								                <p id="wf_title" class="form-control-static"></p>
 						                    </div>
 						                    <div class="form-group">
@@ -103,7 +95,7 @@
 							                        <span 
 								                        class="input-group-text" 
 								                        style="writing-mode: vertical-lr; text-orientation: upright;">
-							                       		CONTENT
+							                       		본문
 							                        </span>
 							                        <textarea
 							                        id="wf_content"
@@ -115,16 +107,16 @@
 						                         </div>
 					                        </div>
 						                    <div class="form-group">
-								                <label class="control-label"> FILE </label>
+								                <label class="control-label"> 첨부파일 </label>
 								                <p id="wf_file" class="form-control-static"></p>
 						                    </div>
 					                    </div>
 					                    <div class="col-md-6 col-lg-4" style="display: flex; flex-direction:column;">
 					                    	<div id="receivers" style="display:flex; flex-direction:column; flex:0.5; justify-content: center;">
-						                    	 <!-- 1차승인자 start -->
+						                    	 <!-- 1ì°¨ì¹ì¸ì start -->
 							                     <div class="form-group" style="height:100px; display: flex; flex-direction:column; ">
 							                     	<div style="flex:0.2;">
-							                     		FIRST RECEIVER
+							                     		1차 승인자
 							                     	</div>
 							                     	<a id="a_receiver_1st" class="member_info" data-emp_id="">
 								                    	<div style="flex:0.8; display: flex; color: rgba(0, 0, 0, 0.7);">
@@ -149,7 +141,7 @@
 								                     	</div>
 								                     </a>
 							                     </div>
-							                     <!-- 1차승인자 end -->
+							                     <!-- 1ì°¨ì¹ì¸ì end -->
 							                 </div>
 							                 <div style="flex:0.5;">
 							                     <div class="form-group">
@@ -157,7 +149,7 @@
 							                         <textarea class="form-control" id="wf_comment" rows="5" name="wf_comment"></textarea>
 						                         </div>
 						                         <div class="form-group" id="select_result">
-													 <label class="form-label">RESULT</label>
+													 <label class="form-label">승인 결과</label>
 													 <div class="selectgroup w-100">
 													 	<label class="selectgroup-item" id="approval">
 															<input
@@ -198,11 +190,11 @@
 												 <div class="form-group" id="submit_button">
 							                         <div class="input-group">
 								                         <button
-								                         class="btn btn-black btn-border"
+								                         class="custom_button"
 								                         type="submit"
 								                         style="width:100%;"
 								                         >
-								                         SUBMIT
+								               			   제출
 								                         </button>
 							                         </div>
 						                         </div>

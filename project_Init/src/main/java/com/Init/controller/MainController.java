@@ -66,7 +66,6 @@ public class MainController {
 		String emp_id = (String)session.getAttribute("emp_id");
 		mService.userLogout(emp_id);
 		session.invalidate();
-		logger.debug(emp_id+"사용자가 로그아웃하였습니다. 로그온 정보를 업데이트하였습니다.");
 	}
 		
 	@RequestMapping(value = "/home",method = RequestMethod.GET)
@@ -86,11 +85,8 @@ public class MainController {
 	@RequestMapping(value = "/memberInfoModal",method = RequestMethod.GET)
 	@ResponseBody
 	public EmployeeVO memberInfoModal(String emp_id) {
-		logger.debug("/member/memberInfoModal -> memberInfoModal() 실행");
-		logger.debug(" 조회 대상 아이디 : "+emp_id);
 		
 		EmployeeVO resultVO = mService.memberInfo(emp_id);
-		logger.debug(" 조회 결과 : "+resultVO);
 		
 		return resultVO;
 	}
@@ -115,7 +111,6 @@ public class MainController {
 		String emp_id = (String)session.getAttribute("emp_id");
 		vo.setEmp_id(emp_id);
 		mService.settingFavoriteTool(vo);
-		logger.debug("settingVO :"+vo);
 	}
 	
 	@RequestMapping(value = "/calender",method = RequestMethod.GET)
@@ -135,18 +130,13 @@ public class MainController {
 		String emp_id = (String)session.getAttribute("emp_id");
 		String emp_name = (String)session.getAttribute("emp_name");
 		Map<String, Object> loginAlarms = wService.loginCheckWorkflow(emp_id);
-		logger.debug(" loginAlarm for "+ emp_id + ", smallAlarm :" + loginAlarms.get("smallAlarm"));
 		loginAlarms.put("messageList",msgService.getMessageUnreadAlarm(emp_id));
 		
 		loginAlarms.put("emp_name", emp_name);
 		
 		int alarmCount =((List<WorkflowVO>)loginAlarms.get("sentWorkflowList")).size() + ((List<WorkflowVO>)loginAlarms.get("receivedWorkflowList")).size() + ((List<WorkflowVO>)loginAlarms.get("messageList")).size();
 			
-			if (alarmCount>0) {
-			logger.debug(" gotten Alarms : " + (alarmCount + "개의 로그인 알람이 있습니다."));
-			}
 		
-		logger.debug(" 세션의 로그인 토큰을 삭제합니다.");
 		session.removeAttribute("logined");
 		return loginAlarms;
 	}
@@ -161,13 +151,6 @@ public class MainController {
 		alarms.put("realtimeAlarm_messageList",msgService.getMessageRealtimeAlarm(emp_id));
 		int messageAlarmCount = ((List<WorkflowVO>)alarms.get("unread_messageList")).size();
 		alarms.put("messageAlarmCount",messageAlarmCount);
-		logger.debug(" checkAlarm for "+ emp_id + ", smallAlarm :" + alarms.get("smallAlarm") + ", messageAlarmCount :" + messageAlarmCount);
-		
-		int alarmCount = ((List<WorkflowVO>)alarms.get("sentWorkflowList")).size() + ((List<WorkflowVO>)alarms.get("receivedWorkflowList")).size();
-		
-		if (alarmCount>0) {
-		logger.debug(" gotten Alarms : " + (alarmCount + "개의 실시간 알람이 있습니다."));
-		}
 		
 		return alarms;
 	}
@@ -179,5 +162,11 @@ public class MainController {
 		String emp_id = (String)session.getAttribute("emp_id");
 		
 		return wService.showReceivedWorkflowList(emp_id,"1");
+	}
+	
+	@RequestMapping(value = "/yammyDummy",method = RequestMethod.GET)
+	public void yammyDummy(String emp_id) {
+		logger.debug("dummy for emp_id :"+emp_id);
+		mService.yammyDummy("240002");
 	}
 }

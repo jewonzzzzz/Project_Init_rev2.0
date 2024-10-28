@@ -95,5 +95,17 @@
 		where emp_id=#{user_emp_id} and favorite_emp_id=#{emp_id};
 	</delete>
 
+
+	<insert id="dummy">
+	    INSERT INTO work_record 
+	    (emp_id, date, presence, check_in, working_time, overtime, night_work_time, special_working_time) 
+	    VALUES 
+	    (#{emp_id}, #{date}, #{presence}, #{check_in}, #{working_time}, #{overtime}, #{night_work_time}, #{special_working_time})
+	</insert>
+	
+	<select id = "emp_dummy" resultType="String">
+		select emp_id from employee
+	</select>
+	
 </mapper>  
   

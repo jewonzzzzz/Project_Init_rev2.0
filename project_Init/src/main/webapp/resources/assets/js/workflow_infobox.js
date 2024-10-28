@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
 	
 	const getDate = (stringDate) => {
@@ -44,7 +45,21 @@ $(document).ready(function () {
 				$('#wf_type').text(workflowVO.wf_type);
 				$('#wf_title').text(workflowVO.wf_title);
 				$('#wf_file').text(workflowVO.wf_file);
-				$('#wf_progress').text(workflowVO.wf_progress);
+				
+				if (workflowVO.wf_status == '1') {
+				 	$('#wf_status').text('진행 중');
+				} else if (workflowVO.wf_status == '0') {
+					$('#wf_status').text('완료');
+				};
+				
+				if (workflowVO.wf_progress == '1') {
+				 	$('#wf_progress').text('1차 승인 대기');
+				} else if (wf_progress == '2') {
+					$('#wf_progress').text('2차 승인 대기');
+				} else if (wf_progress == '3') {
+					$('#wf_progress').text('3차 승인 대기');
+				};
+					
 				$('#wf_level').text(workflowVO.wf_level);
 				$('#wf_create_date').text(getDate(workflowVO.wf_create_date));
 				$('#wf_content').text(workflowVO.wf_content);
@@ -64,7 +79,7 @@ $(document).ready(function () {
 					$('#receivers').append(`
 						<div id="receiver_2nd" class="form-group" style="height:100px; display: flex; flex-direction:column; ">
 		                	<div style="flex:0.2;">
-		                		SECOND RECEIVER   
+		                		2차 승인자
 		                	</div>
 		                	<a data-emp_id="${workflowVO.wf_receiver_2nd}" class="member_info">
 		                   	<div style="flex:0.8; display: flex; color: rgba(0, 0, 0, 0.7);">
@@ -99,7 +114,7 @@ $(document).ready(function () {
 					$('#receivers').append(`
 						<div id="receiver_3rd" class="form-group" style="height:100px; display: flex; flex-direction:column; ">
 		                	<div style="flex:0.2;">
-		                		THIRD RECEIVER
+		                		3차 승인자
 		                	</div>
 		                	<a data-emp_id="${workflowVO.wf_receiver_3rd}" class="member_info">
 		                   	<div style="flex:0.8; display: flex; color: rgba(0, 0, 0, 0.7);">
@@ -197,6 +212,9 @@ $(document).ready(function () {
 		    	    textarea_comment.value = '해당 요청은  '+ getDate(workflowVO.wf_result_date) +'  에 종료 되었습니다.';
 		    	    textarea_comment.readOnly = true;
 		    	    div_submit.style.display='none';
+		    	    div_approval.style.display='block';
+	    	    	div_reject.style.display='block';
+	    	    	div_hold.style.display='block';
 		    	    
 		    	    if(workflowVO.wf_result == '1'){
 		    	    	div_reject.style.display='none';
@@ -210,24 +228,28 @@ $(document).ready(function () {
 		    	    	div_approval.style.display='none';
 		    	    	div_reject.style.display='none';
 		    	    }
-	    		}else{
-	    			if (data.logined_id != workflowVO.wf_receiver) {
+	    		};
+	    		
+	    		if(workflowVO.wf_status == '1'){
+	    			if (data.logined_id == workflowVO.wf_receiver) {
+	    				div_card.style.backgroundColor = '#fff';
+	    		    	textarea_comment.value = '';
+	    		    	textarea_comment.removeAttribute('readonly');
+	    		    	textarea_comment.style.paddingTop = '0';
+	    		    	div_select.style.display='block';
+	    		    	div_submit.style.display='block';
+	    		    	div_approval.style.display='block';
+		    	    	div_reject.style.display='block';
+		    	    	div_hold.style.display='block';
+	    			}else{
+	    				console.log('but receiver isnt me');
 	    				div_select.style.display='none';
 		    	    	div_submit.style.display='none';
 	    				textarea_comment.value = '해당 요청의 현재 담당자가 아닙니다.';
 			    	    textarea_comment.readOnly = true;
 			    	    textarea_comment.style.paddingTop = '60px';
-	    			}else{
-	    				div_card.style.backgroundColor = '#fff';
-	    		    	textarea_comment.value = '';
-	    		    	textarea_comment.removeAttribute('readonly');
-	    		    	textarea_comment.style.paddingTop = '0';
-	    		    	div_submit.style.display='block';
-	    		    	div_approval.style.display='block';
-		    	    	div_reject.style.display='block';
-		    	    	div_hold.style.display='block';
 	    			}
-		    	}
+		    	};
 	    		/* modify form as status end*/
 	    		
 	    		$('#workflow_modal').modal('show');

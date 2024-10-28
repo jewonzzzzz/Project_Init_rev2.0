@@ -322,7 +322,7 @@
                         </tfoot>
                         <tbody class="workflow_modal" style="width:100%;">
                           <c:forEach var="workflow" items="${receivedWorkflowList}">
-					        <tr style="width:100%; padding:0 !important; height:30px !important; line-height:30px;">
+					        <tr style="width:100%; padding:0 !important; height:35px !important; line-height:35px;">
 					            <td style="text-align: center; font-size:10px; padding:0px !important;">
 						            <a data-wf_code="${workflow.wf_code}" id="workflow_info" style="padding:0; height:20px; line-height:20px;">
 						            	${workflow.wf_type}

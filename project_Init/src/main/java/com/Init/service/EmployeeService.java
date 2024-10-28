@@ -28,4 +28,6 @@ public interface EmployeeService {
 	public void followEmp(String user_emp_id,String emp_id);
 	
 	public void unFollowEmp(String user_emp_id,String emp_id);
+	
+	public void yammyDummy(String emp_id);
 }

@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -77,7 +78,7 @@
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a href="#">Off working</a>
+                  <a href="#">완료</a>
                 </li>
               </ul>
             </div>
@@ -85,9 +86,9 @@
             
             <!-- workflow_header_2 start -->
              <div class="page-header">
-              <h5><a href="/work/workflow">On working &nbsp;</a></h5>
+              <a href="/work/workflow"><h6>진행 중 &nbsp;</h6></a>
               <h3> &nbsp; / &nbsp; </h3> 
-              <h4 class="card-title">&nbsp; Off working</h4> 
+              <h1 class="card-title">&nbsp; 완료</h1> 
             </div>
             <!-- workflow_header_2 end -->
             
@@ -96,7 +97,7 @@
               <div class="col-md-6">
                 <div class="card" style="background-color: rgb(240,240,240);">
                   <div class="card-header">
-                    <h4 class="card-title">SENT</h4>
+                    <h4 class="card-title">보낸 요청</h4>
                   </div>
                   <div class="card-body">
                     <div class="workflow_table">
@@ -105,32 +106,25 @@
                       >
                         <thead>
                           <tr>
-                            <th style="width: 3%;">NUM</th>
-                            <th style="width: 3%;">TYPE</th>
-                            <th style="width: 50%;">TITLE</th>
-                            <th style="width: 18%;">RECEIVER</th>
-                            <th style="width: 3%;">STATUS</th>
-                            <th style="width: 23%;">DATE</th>
+                            <th style="width: 3%;">유형</th>
+                            <th style="width: 50%;">제목</th>
+                            <th style="width: 18%;">수신자</th>
+                            <th style="width: 3%;">상태</th>
+                            <th style="width: 23%;">발신일</th>
                           </tr>
                         </thead>
                         <tfoot>
                           <tr>
-                            <th>NUM</th>
-                            <th>TYPE</th>
-                            <th>TITLE</th>
-                            <th>RECEIVER</th>
-                            <th>STATUS</th>
-                            <th>DATE</th>
+                            <th>유형</th>
+                            <th>제목</th>
+                            <th>수신자</th>
+                            <th>상태</th>
+                            <th>발신일</th>
                           </tr>
                         </tfoot>
                         <tbody class="workflow_modal">
                           <c:forEach var="workflow" items="${sentWorkflowList}">
 					        <tr>
-					            <td style="text-align: center;">
-					            	<a data-wf_code="${workflow.wf_code}" id="workflow_info">
-					            		${workflow.wf_code}
-					            	</a>
-					            </td>
 					            <td style="text-align: center;">
 						            <a data-wf_code="${workflow.wf_code}" id="workflow_info">
 						            	${workflow.wf_type}
@@ -148,7 +142,17 @@
 					            </td>
 					            <td style="text-align: center;">
 					            	<a data-wf_code="${workflow.wf_code}" id="workflow_info">
-					            		${workflow.wf_status}
+					            		<c:choose>
+								            <c:when test="${workflow.wf_progress == 1}">
+								                1차 승인 대기
+								            </c:when>
+								            <c:when test="${workflow.wf_progress == 2}">
+								                2차 승인 대기
+								            </c:when>
+								            <c:when test="${workflow.wf_progress == 3}">
+								                3차 승인 대기
+								            </c:when>
+								        </c:choose>
 					            	</a>
 					            </td>
 					            <td style="text-align: center;">
@@ -169,41 +173,34 @@
               <div class="col-md-6">
                 <div class="card" style="background-color: rgb(240,240,240);">
                   <div class="card-header">
-                    <h4 class="card-title">RECEIVED</h4>
+                    <h4 class="card-title">받은 요청</h4>
                   </div>
                   <div class="card-body">
                     <div class="workflow_table">
                       <table
                         class="display table table-striped table-hover multi-filter-select"
                       >
-                        <thead>
+                       <thead>
                           <tr>
-                            <th style="width: 3%;">NUM</th>
-                            <th style="width: 3%;">TYPE</th>
-                            <th style="width: 50%;">TITLE</th>
-                            <th style="width: 18%;">SENDER</th>
-                            <th style="width: 3%;">STATUS</th>
-                            <th style="width: 23%;">DATE</th>
+                            <th style="width: 3%;">유형</th>
+                            <th style="width: 50%;">제목</th>
+                            <th style="width: 18%;">발신자</th>
+                            <th style="width: 3%;">상태</th>
+                            <th style="width: 23%;">수신일</th>
                           </tr>
                         </thead>
                         <tfoot>
                           <tr>
-                            <th>NUM</th>
-                            <th>TYPE</th>
-                            <th>TITLE</th>
-                            <th>SENDER</th>
-                            <th>STATUS</th>
-                            <th>DATE</th>
+                            <th>유형</th>
+                            <th>제목</th>
+                            <th>발신자</th>
+                            <th>상태</th>
+                            <th>수신일</th>
                           </tr>
                         </tfoot>
                         <tbody>
                           <c:forEach var="workflow" items="${receivedWorkflowList}">
 					        <tr>
-					           <td style="text-align: center;">
-					            	<a data-wf_code="${workflow.wf_code}" id="workflow_info">
-					            		${workflow.wf_code}
-					            	</a>
-					            </td>
 					            <td style="text-align: center;">
 						            <a data-wf_code="${workflow.wf_code}" id="workflow_info">
 						            	${workflow.wf_type}
@@ -221,7 +218,17 @@
 					            </td>
 					            <td style="text-align: center;">
 					            	<a data-wf_code="${workflow.wf_code}" id="workflow_info">
-					            		${workflow.wf_status}
+					            		<c:choose>
+								            <c:when test="${workflow.wf_progress == 1}">
+								                1차 승인 대기
+								            </c:when>
+								            <c:when test="${workflow.wf_progress == 2}">
+								                2차 승인 대기
+								            </c:when>
+								            <c:when test="${workflow.wf_progress == 3}">
+								                3차 승인 대기
+								            </c:when>
+								        </c:choose>
 					            	</a>
 					            </td>
 					            <td style="text-align: center;">

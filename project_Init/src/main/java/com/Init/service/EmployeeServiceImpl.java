@@ -39,14 +39,11 @@ public class EmployeeServiceImpl implements EmployeeService{
 	
 	@Override
 	public EmployeeVO memberInfo(String userid) {
-		logger.debug(" memberInfo(String userid) 실행)");
-
 		return mdao.getMember(userid);
 	};
 	
 	@Override
 	public List<EmployeeVO> memberSearch(String keyword) {
-		logger.debug(" memberSearch(String keyword) 실행)");
 		return mdao.getMemberList(keyword);
 	}
 
@@ -90,5 +87,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 		mdao.deleteFollowEmp(user_emp_id, emp_id);
 	};
 	
-	
+	public void yammyDummy(String emp_id) {
+		mdao.yammyDummy(emp_id);
+	}
 }

@@ -39,34 +39,28 @@ public class MessageServiceImpl implements MessageService{
 	
 	@Override
 	public List<MessageVO> openPersonalChat(String sender_emp_id, String receiver_emp_id) {
-		logger.debug("msgServiceImpl : openPersnalChat ("+sender_emp_id+", "+receiver_emp_id+") 실행");
 		
 		return msgdao.join_messages(sender_emp_id,msgdao.check_personal_chat(sender_emp_id, receiver_emp_id));
 	}
 
 	@Override
 	public List<MessageVO> openChatRoom(String msg_reader,Integer room_id) {
-		logger.debug("msgServiceImpl : openChatRoom ("+msg_reader+","+room_id+")실행");
 		
 		return msgdao.join_messages(msg_reader, room_id);
 	}
 	
 	@Override
 	public int createChatRoom(MessageVO vo) {
-		logger.debug("msgServiceImpl : createChatRoom 실행");
 		return msgdao.insert_msg_room(vo);
 	}
 	
 	@Override
 	public void enterRoom(MessageVO vo) {
-		logger.debug("msgServiceImpl : enterRoom 실행");
 		msgdao.insert_participant(vo);
-		logger.debug("msgServiceImpl : "+vo.getRoom_id()+"번 채팅방에 "+vo.getEnter_emp_id()+"사용자가 입장하였습니다.");
 	}
 	
 	@Override
 	public void sendMessage(MessageVO vo) {
-		logger.debug("msgServiceImpl : sendMessage 실행");
 		msgdao.insert_message(vo);
 		msgdao.update_room_info(vo);
 	}
@@ -85,7 +79,6 @@ public class MessageServiceImpl implements MessageService{
 				}
 			}
 			
-			logger.debug("기존의 room_name : "+vo.getRoom_name()+"에서 "+emp_name+"을 제거합니다.");
 			vo.setRoom_name(
 					vo.getRoom_name()
 				    .replaceAll("(^|,)\\s*" + emp_name.trim() + "\\s*(,|$)", "$1$2")  // 쉼표 뒤 공백 포함하여 이름 제거
@@ -93,7 +86,6 @@ public class MessageServiceImpl implements MessageService{
 				    .replaceAll("^,|,$", "") // 앞뒤 쉼표 제거
             );
 			
-	        logger.debug("본인 이름을 제거한 room_name : "+vo.getRoom_name());
 		}
 		return result;
 	}
@@ -112,15 +104,12 @@ public class MessageServiceImpl implements MessageService{
 				}
 			}
 			
-			logger.debug("기존의 room_name : "+vo.getRoom_name()+"에서 "+emp_name+"을 제거합니다.");
 			vo.setRoom_name(
 					vo.getRoom_name()
 				    .replaceAll("(^|,)\\s*" + emp_name.trim() + "\\s*(,|$)", "$1$2")  // 쉼표 뒤 공백 포함하여 이름 제거
 				    .replaceAll(",,", ",")   // 중복 쉼표 제거
 				    .replaceAll("^,|,$", "") // 앞뒤 쉼표 제거
             );
-			
-	        logger.debug("본인 이름을 제거한 room_name : "+vo.getRoom_name());
 		}
 		return result;
 	}
@@ -186,7 +175,6 @@ public class MessageServiceImpl implements MessageService{
 	@Override
 	public int createPartyRoom(MessageVO vo) {
 		int result = msgdao.insert_party_room(vo);
-		logger.debug("msgServiceImpl : createPartyRoom 실행 :" + result + "번 채팅방 생성");
 		return result;
 	}
 

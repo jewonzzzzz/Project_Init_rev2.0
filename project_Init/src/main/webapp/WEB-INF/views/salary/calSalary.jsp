@@ -113,6 +113,8 @@
                     </table>
                   </div>
                 </div>
+                
+                
                 <div style="display: flex; justify-content: flex-end; gap:5px;">
                    	<a href="/salary/calSalaryStep1"><button class="btn btn-primary">신규생성</button></a>
                    	
@@ -136,8 +138,8 @@
                    		<button type="submit" class="btn btn-success" id="excelBtn" disabled>이체자료 내려받기</button>
                    	</form>
                	</div>
-              </div>
-            </div>
+              </div> <!-- col md -->
+            </div> <!-- row -->
             
             <%@ include file="../inc/signModal.jsp" %> <!-- 결재요청용 모달 -->
             

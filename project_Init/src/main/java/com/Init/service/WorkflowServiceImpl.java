@@ -40,7 +40,6 @@ public class WorkflowServiceImpl implements WorkflowService{
 
 	@Override
 	public List<WorkflowVO> showSentWorkflowList(String userid,String status) {
-		logger.debug("WorkflowServiceImpl : showSentWorkflowList(String userid,String status) 실행");
 		List<WorkflowVO> workflowList = wdao.getSentWorkflowList(userid,status);
 		
 		return workflowList;
@@ -48,7 +47,6 @@ public class WorkflowServiceImpl implements WorkflowService{
 	
 	@Override
 	public List<WorkflowVO> showReceivedWorkflowList(String userid,String status) {
-		logger.debug("WorkflowServiceImpl : showReceivedWorkflowList(String userid,String status) 실행");
 		List<WorkflowVO> workflowList = wdao.getReceivedWorkflowList(userid,status);
 		
 		return workflowList;
@@ -56,7 +54,6 @@ public class WorkflowServiceImpl implements WorkflowService{
 
 	@Override
 	public WorkflowVO showWorkflow(String wf_code) {
-		logger.debug("WorkflowServiceImpl : showWorkflow(String wf_code) 실행");
 		WorkflowVO result = wdao.getWorkflow(wf_code);
 		
 		return result;
@@ -64,7 +61,6 @@ public class WorkflowServiceImpl implements WorkflowService{
 
 	@Override
 	public int responseWorkflow(WorkflowVO vo) {
-		logger.debug("WorkflowServiceImpl : responseWorkflow(WorkflowVO vo) 실행");
 		
 		return wdao.updateWorkflow(vo);
 	}
