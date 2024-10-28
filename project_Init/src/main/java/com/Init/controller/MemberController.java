@@ -61,6 +61,16 @@ public class MemberController implements ServletContextAware {
 		        return "redirect:/member/login";
 		    }
 		    
+		    // 생년월일을 평문 비밀번호로 변환
+		    String birthDate = resultVO.getEmp_birth().toString().replaceAll("-", "");
+		    
+		    // 입력된 비밀번호를 평문 생년월일과 비교
+		    if (vo.getEmp_pw().equals(birthDate)) {
+		        session.setAttribute("emp_id", resultVO.getEmp_id());
+		        rttr.addFlashAttribute("needPasswordChange", true);
+		        return "redirect:/member/firstPass?emp_id=" + resultVO.getEmp_id();  // firstPass.jsp로 이동
+		    }
+		    
 		    // 필수 정보가 하나라도 비어있는지 확인
 		    if (resultVO.getEmp_tel() == null || 
 		        resultVO.getEmp_email() == null || 
@@ -72,6 +82,13 @@ public class MemberController implements ServletContextAware {
 		    
 		    session.setAttribute("emp_id", resultVO.getEmp_id());
 		    return "redirect:/main/home";
+		}
+
+		// firstPass 페이지를 위한 GET 매핑 추가
+		@GetMapping("/firstPass")
+		public String showFirstPassForm(@RequestParam String emp_id, Model model) {
+		    model.addAttribute("emp_id", emp_id);
+		    return "member/firstPass";  // firstPass.jsp로 이동
 		}
 		
 		// 퇴직신청 - GET
