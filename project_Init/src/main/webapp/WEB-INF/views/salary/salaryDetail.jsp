@@ -129,7 +129,7 @@
                         </thead>
                         <tbody>
                         	<tr>
-								<td>${calSalaryFinalInfo.emp_id }</td>                        	
+								<td class="employee_id">${calSalaryFinalInfo.emp_id }</td>                        	
 								<td>${calSalaryFinalInfo.emp_name }</td>                        	
 								<td>${calSalaryFinalInfo.emp_position }</td>                        	
 								<td>${calSalaryFinalInfo.emp_job }</td>                        	
@@ -269,7 +269,7 @@
         function addCommasToNumber(num) {
             return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
-        const filteredTds = $('td').not('.year');
+        const filteredTds = $('td').not('.year, .employee_id');
         
         filteredTds.each(function() {
             // 현재 <td>의 텍스트 가져오기

@@ -217,7 +217,7 @@
                   </div>
                   <div class="card-body">
                     <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-                      <table class="table table-bordered" id="calSalaryTable">
+                      <table id="basic-datatables" class="table table-bordered" id="calSalaryTable">
                         <thead>
                           <tr>
                             <th>사번</th>
@@ -350,21 +350,35 @@
             // 대상인원 출력
             $('#sumMember').text($('#calSalaryTable tbody tr').length);
             
+         	 //테이블 세팅
+            let dataTable = $("#basic-datatables").DataTable({
+            	pageLength: 6,
+            	drawCallback: function() { //가운대 정렬
+        			$('#basic-datatables th, #basic-datatables td').css({
+        	            'text-align': 'center',
+        	            'vertical-align': 'middle'
+        	        });
+        			addCommasToNumbersInTable();
+        		}
+            });
+            
             function addCommasToNumber(num) {
                 return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             }
-            const filteredTds = $('td').not('.year');
             
-            filteredTds.each(function() {
-                // 현재 <td>의 텍스트 가져오기
-                const currentText = $(this).text();
-                
-                // 숫자인 경우에만 쉼표 추가
-                if ($.isNumeric(currentText)) {
-                    const formattedNumber = addCommasToNumber(currentText);
-                    $(this).text(formattedNumber);  // 쉼표가 추가된 값으로 텍스트 업데이트
-                }
-            });
+            function addCommasToNumbersInTable() {
+                const filteredTds = $('td').not('.year, .employee_id');
+
+                filteredTds.each(function() {
+                    const currentText = $(this).text();
+
+                    // 숫자인 경우에만 쉼표 추가
+                    if ($.isNumeric(currentText)) {
+                        const formattedNumber = addCommasToNumber(currentText);
+                        $(this).text(formattedNumber);  // 쉼표가 추가된 값으로 텍스트 업데이트
+                    }
+                });
+            }
             
         });
     </script>

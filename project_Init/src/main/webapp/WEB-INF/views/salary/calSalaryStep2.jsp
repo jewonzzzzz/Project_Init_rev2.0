@@ -208,6 +208,7 @@
                           <th style='text-align: center;' >이름</th>
                           <th style='text-align: center;' >직급</th>
                           <th style='text-align: center;' >직무</th>
+                          <th style='text-align: center;' >근무형태</th>
                           <th style='text-align: center;' >소정근로시간</th>
                           <th style='text-align: center;' >추가근로시간</th>
                           <th style='text-align: center;' >야간근로시간</th>
@@ -392,23 +393,28 @@
             		data: JSON.stringify(AllMemberInfos),
             		contentType: 'application/json',
             		success: function(response) {
-                        // 성공적으로 데이터를 받아온 경우.
-            			swal("Success!", "전체 직원정보 업로드 완료", "success");
-                        $('#resultTable tbody').empty();
-                        response.forEach(function(data){
-                        	var row = "<tr>" +
-                            "<td style='text-align: center;'><input class='checkItem' type='checkbox' name='checkItem' data-id='"+ data.emp_id +"' </td>" +
-                            "<td style='text-align: center;'>" + data.emp_id + "</td>" +
-                            "<td style='text-align: center;'>" + data.emp_name + "</td>" +
-                            "<td style='text-align: center;'>" + data.emp_position + "</td>" +
-                            "<td style='text-align: center;'>" + data.emp_job + "</td>" +
-                            "<td style='text-align: center;'>" + data.working_time + "</td>" +
-                            "<td style='text-align: center;'>" + data.overtime + "</td>" +
-                            "<td style='text-align: center;'>" + data.night_work_time + "</td>" +
-                            "<td style='text-align: center;'>" + data.special_working_time + "</td>" +
-                            "</tr>";
-                            $('#resultTable tbody').append(row);
-                        });
+            			if(response.length > 0){
+            				// 성공적으로 데이터를 받아온 경우.
+                			swal("Success!", "전체 직원정보 업로드 완료", "success");
+                            $('#resultTable tbody').empty();
+                            response.forEach(function(data){
+                            	var row = "<tr>" +
+                                "<td style='text-align: center;'><input class='checkItem' type='checkbox' name='checkItem' data-id='"+ data.emp_id +"' </td>" +
+                                "<td style='text-align: center;'>" + data.emp_id + "</td>" +
+                                "<td style='text-align: center;'>" + data.emp_name + "</td>" +
+                                "<td style='text-align: center;'>" + data.emp_position + "</td>" +
+                                "<td style='text-align: center;'>" + data.emp_job + "</td>" +
+                                "<td style='text-align: center;'>" + data.emp_work_type + "</td>" +
+                                "<td style='text-align: center;'>" + data.working_time + "</td>" +
+                                "<td style='text-align: center;'>" + data.overtime + "</td>" +
+                                "<td style='text-align: center;'>" + data.night_work_time + "</td>" +
+                                "<td style='text-align: center;'>" + data.special_working_time + "</td>" +
+                                "</tr>";
+                                $('#resultTable tbody').append(row);
+                            });
+            			} else {
+            				swal("정보없음!", "직원정보가 존재하지 않습니다.", "warning");
+            			}
                     },
                     error: function(xhr, status, error) {
                         // 오류가 발생한 경우
@@ -436,9 +442,9 @@
             	$('#modalNextContent').hide();    
          	});
          	
-         	// 사번/이름 검색해서 직원정보 가져오기
-            $("#selectBtn").click(function () {
-            	$.ajax({
+         	// 검색해서 직원정보 가져오는 핸들러
+         	function handleInquiry(){
+         		$.ajax({
             		url:'/salary/getMemberInfoForModal',
             		type: 'POST',
             		data: $('input[name="employeeInfo"]').val(),
@@ -472,58 +478,72 @@
                         swal("Error!", "사번 또는 이름을 입력해주세요", "error");
                     }
             	});
+         	}
+         	
+         	// 사번/이름 검색해서 직원정보 가져오기
+            $("#selectBtn").click(function () {
+            	handleInquiry();
             });
+         	
+         	// 조회란에 작성 후 엔터 시 조회하기
+        	 $('input[name="employeeInfo"]').on('keypress', function (e) {
+               if (e.which === 13) { // Enter 키인지 확인
+               	handleInquiry(); 
+               }
+          	 });
             
             // 모달테이블에서 선택된 직원정보 본 테이블로 옮기기(해당 연월 근무이력 포함)
-            $('#regBtn').click(function(){
-            	var modalInfos = {
-            			emp_id:$('input[type="radio"]:checked').data('id'),
-            			year:$('input[name="year"]').val(),
-            			month:$('input[name="month"]').val(),
-            	};
-            	$.ajax({
-            		url:'/salary/transModalToTable',
-            		type: 'POST',
-            		data: JSON.stringify(modalInfos),
-            		contentType: 'application/json',
-            		success: function(response) {
-            			// 중복여부 확인
-            			var checkedDataId = $('input[type="radio"]:checked').data('id');
-            				console.log("Checked ID: " + checkedDataId);
-            			var existingIds = [];
-            		    	$('#resultTable input[type="checkbox"]').each(function() {
-            		       	 	existingIds.push($(this).data('id'));  // 각 체크박스의 id 값을 배열에 추가
-            		    });
-            		    console.log("existingIds: " + checkedDataId);
-            		    if (existingIds.includes(checkedDataId)) {
-            		        swal("Warning!", "이미 등록된 정보가 있습니다.", "warning");
-            		    } else {
-                			response.forEach(function(data){
-                            	var row = "<tr>" +
-                                "<td style='text-align: center;'><input class='checkItem' type='checkbox' name='checkItem' data-id='"+ data.emp_id +"' </td>" +
-                                "<td style='text-align: center;'>" + data.emp_id + "</td>" +
-                                "<td style='text-align: center;'>" + data.emp_name + "</td>" +
-                                "<td style='text-align: center;'>" + data.emp_position + "</td>" +
-                                "<td style='text-align: center;'>" + data.emp_job + "</td>" +
-                                "<td style='text-align: center;'>" + data.working_time + "</td>" +
-                                "<td style='text-align: center;'>" + data.overtime + "</td>" +
-                                "<td style='text-align: center;'>" + data.night_work_time + "</td>" +
-                                "<td style='text-align: center;'>" + data.special_working_time + "</td>" +
-                                "</tr>";
-                                $('#resultTable tbody').append(row);
-                            });
-                			swal("Success!", "정상적으로 등록하였습니다", "success");
-                			$('#modalInputText').val('');
-                			$('#modalContent').show();     
-                        	$('#modalNextContent').hide();    
-            		    }
-            		},
-            		error: function(xhr, status, error) {
-                        swal("Error!", "정보를 가져오는데 실패하였습니다.", "error");
-                    }
-            	});
-            });
-        });
+        	 $('#regBtn').click(function(){
+             	var modalInfos = {
+             			emp_id:$('input[type="radio"]:checked').data('id'),
+             			year:$('input[name="year"]').val(),
+             			month:$('input[name="month"]').val(),
+             	};
+             	$.ajax({
+             		url:'/salary/transModalToTable',
+             		type: 'POST',
+             		data: JSON.stringify(modalInfos),
+             		contentType: 'application/json',
+             		success: function(response) {
+             			// 중복여부 확인
+             			var checkedDataId = $('input[type="radio"]:checked').data('id');
+             				console.log("Checked ID: " + checkedDataId);
+             			var existingIds = [];
+             		    	$('#resultTable input[type="checkbox"]').each(function() {
+             		       	 	existingIds.push($(this).data('id'));  // 각 체크박스의 id 값을 배열에 추가
+             		    });
+             		    console.log("existingIds: " + existingIds);
+             		    if (existingIds.includes(checkedDataId)) {
+             		        swal("Warning!", "이미 등록된 정보가 있습니다.", "warning");
+             		    } else {
+             		    	swal("Success!", "정상적으로 등록하였습니다", "success");
+                 			response.forEach(function(data){
+                             	var row = "<tr>" +
+                                 "<td style='text-align: center;'><input class='checkItem' type='checkbox' name='checkItem' data-id='"+ data.emp_id +"' </td>" +
+                                 "<td style='text-align: center;'>" + data.emp_id + "</td>" +
+                                 "<td style='text-align: center;'>" + data.emp_name + "</td>" +
+                                 "<td style='text-align: center;'>" + data.emp_position + "</td>" +
+                                 "<td style='text-align: center;'>" + data.emp_job + "</td>" +
+                                 "<td style='text-align: center;'>" + data.emp_work_type + "</td>" +
+                                 "<td style='text-align: center;'>" + data.working_time + "</td>" +
+                                 "<td style='text-align: center;'>" + data.overtime + "</td>" +
+                                 "<td style='text-align: center;'>" + data.night_work_time + "</td>" +
+                                 "<td style='text-align: center;'>" + data.special_working_time + "</td>" +
+                                 "</tr>";
+                                 $('#resultTable tbody').append(row);
+                             });
+             		    }
+             		},
+             		error: function(xhr, status, error) {
+                         swal("Error!", "정보를 가져오는데 실패하였습니다.", "error");
+                     }
+             	});
+             });
+            
+            
+            
+            
+        }); //ready
     </script>
 	
 	

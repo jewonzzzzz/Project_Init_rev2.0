@@ -96,6 +96,7 @@ public class SalaryController {
 	@PostMapping(value = "/salaryPositionJobInfo")
 	public String salaryRankDutyInfoPost(SalaryPositionJobVO vo ,Model model) {
 		logger.debug("salaryRankDutyInfoPost(SalaryPositionJobVO vo ,Model model) 실행");
+		logger.debug("SalaryBasicInfoVO" + vo.toString());
 		
 		sService.updatesalaryPositionJobInfo(vo); //수정
 		SalaryPositionJobVO result = sService.getSalaryPositionJobInfo(); //조회
@@ -189,6 +190,8 @@ public class SalaryController {
 		MemberInfoForSalaryVO vo = new MemberInfoForSalaryVO();
 		vo.setEmp_id(data.get("emp_id"));
 		vo.setCheck_in(check_in);
+		
+		logger.debug(vo.toString());
 		
 		return sService.getMemberInfoForSalary(vo);
 	}
