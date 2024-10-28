@@ -148,7 +148,7 @@
             			dataTable.clear();
             			response.forEach(function(data){
             				dataTable.row.add([
-                            data.emp_id,
+            				'<span class="employee_id">' + data.emp_id + '</span>',
                             data.sal_type,
                             '<span class="year">' + data.year + '</span>',
                             data.month,
