@@ -66,7 +66,6 @@ public class MessageController {
 	@RequestMapping(value = "/getMessages",method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String,Object> getMessages(HttpSession session, @RequestParam(required = false) Integer room_id, @RequestParam(required = false) String receiver_emp_id ) {
-		logger.debug("/member/getMessages -> getMessages("+room_id+","+receiver_emp_id+") 실행");
 		String emp_id = (String)session.getAttribute("emp_id");
 		String emp_name = (String)session.getAttribute("emp_name");
 		
@@ -75,7 +74,6 @@ public class MessageController {
 		
 		/* 개인톡으로 접근 */
 		if(room_id == null) {
-			logger.debug(emp_id + " 사용자가 " + receiver_emp_id +" 사용자와의 개인 채팅방에 접속하였습니다.");
 			data.put("personal_receiver_memberVO", mService.memberInfo(receiver_emp_id));
 			
 			List<MessageVO> messageList = msgService.openPersonalChat(emp_id, receiver_emp_id);
@@ -88,9 +86,6 @@ public class MessageController {
 			}
 			data.put("messageList", messageList);
 		}else {
-			logger.debug(emp_id + " 사용자가 " + room_id +" 번 채팅방에 접속하였습니다.");
-			
-			
 			List<MessageVO> messageList = msgService.openChatRoom(emp_id, room_id);
 			if (!messageList.isEmpty() && messageList.get(0) != null) {
 				messageList.get(0).setRoom_name(
@@ -107,7 +102,6 @@ public class MessageController {
 	@RequestMapping(value = "/sendMessage",method = RequestMethod.POST)
 	@ResponseBody
 	public Integer sendMessage(HttpSession session, MessageVO vo) {
-		logger.debug("/member/sendMessage -> sendMessage() 실행 :"+vo);
 		String emp_id = (String)session.getAttribute("emp_id");
 		String emp_name = (String)session.getAttribute("emp_name");
 		vo.setPersonal_sender_emp_id(emp_id);
@@ -117,8 +111,6 @@ public class MessageController {
 		
 		if(room_id==0) {
 			room_id = msgService.createChatRoom(vo);
-			logger.debug("새로운 채팅방을 생성합니다."+ room_id +" 번 채팅방이 생성되었습니다.");
-			logger.debug("생성된 채팅방은 다음 데이터를 기반으로 합니다. :"+ vo);
 			vo.setRoom_id(room_id);
 			vo.setEnter_emp_id(vo.getPersonal_receiver_emp_id());
 			msgService.enterRoom(vo);
@@ -126,8 +118,6 @@ public class MessageController {
 			msgService.enterRoom(vo);
 		}
 		
-		logger.debug(room_id+"번 채팅방에 "+emp_id+" 사용자가 채팅을 입력하였습니다.");
-		logger.debug("채팅 입력값 :"+vo);
 		msgService.sendMessage(vo);
 		
 		return vo.getRoom_id();
@@ -137,7 +127,6 @@ public class MessageController {
 	@ResponseBody
 	public List<MessageVO> searchToMessage(HttpSession session,String keyword) {
 		String emp_id = (String)session.getAttribute("emp_id");
-		logger.debug(" /member/msgSearch -> searchToMessage("+emp_id+","+keyword+"); 실행");
 		
 		List<MessageVO> roomList = msgService.searchRoom(emp_id,keyword);
 		return roomList;
@@ -146,9 +135,7 @@ public class MessageController {
 	@RequestMapping(value = "/invite",method = RequestMethod.GET)
 	@ResponseBody
 	public int inviteToRoom(HttpSession session,String emp_id, int room_id) {
-		logger.debug(" /member/invite -> invite("+emp_id+","+room_id+"); 실행");
 		int currentPeopleCount = msgService.countParticipant(room_id);
-		logger.debug(" /member/invite -> "+room_id+"번 채팅방의 현재 참가자 수 :"+currentPeopleCount);
 		
 		String inviter_emp_id = (String)session.getAttribute("emp_id");
 		String inviter_emp_name = (String)session.getAttribute("emp_name");
@@ -167,7 +154,6 @@ public class MessageController {
 		}
 		
 		if(currentPeopleCount>2) {
-			logger.debug(" 단톡방 초대 실행 ");
 			MessageVO vo = new MessageVO();
 			vo.setInviter_emp_id(inviter_emp_id);
 			vo.setInviter_emp_name(inviter_emp_name);
@@ -175,24 +161,17 @@ public class MessageController {
 			vo.setEnter_emp_id(emp_id);
 			vo.setEnter_emp_name(mService.memberInfo(emp_id).getEmp_name());
 			vo.setMsg_content(inviter_emp_name+"님이 "+vo.getEnter_emp_name()+"님을 초대하였습니다.");
-			logger.debug(inviter_emp_name+"님이 기존의 "+room_id+"번 단체 대화방에 "+vo.getEnter_emp_name()+"님을 초대하였습니다.");
-			logger.debug("System Message : "+inviter_emp_name+"님이 "+vo.getEnter_emp_name()+"님을 초대하였습니다.");
 			msgService.systemMessage(vo);
-			logger.debug("System Message : "+vo.getEnter_emp_name()+"님이 대화방에 입장하셨습니다.");
 			vo.setMsg_content(vo.getEnter_emp_name()+"님이 대화방에 입장하셨습니다.");
 			msgService.systemMessage(vo);
 			msgService.enterRoom(vo);
 			msgService.changeRoomName(vo);
 			return room_id;
 		}else {
-			logger.debug(" 개인톡 -> 단체톡 생성 및 이동 실행 ");
-			
 			StringBuilder prev_room_name = new StringBuilder();
 			List<String> people_emp_id = new ArrayList<String>();
 			List<String> people_emp_name = new ArrayList<String>();
 			
-			logger.debug("room_info :"+room_info);
-
 			for (EmployeeVO vo : room_info.getRoom_people()) {
 			    if (prev_room_name.length() > 0) {
 			        prev_room_name.append(", ");
@@ -225,7 +204,6 @@ public class MessageController {
 			param.setEnter_emp_id(new_person.getEmp_id());
 			msgService.enterRoom(param);
 			
-			logger.debug(inviter_emp_name+"님이 새로 생성된 "+room_id+"번 단체 대화방에 "+people_emp_name.get(1)+", "+new_person.getEmp_name()+"님을 초대하였습니다.");
 			return room_id;
 		}
 	}
@@ -235,7 +213,6 @@ public class MessageController {
 	public void getOutRoom(HttpSession session, int room_id) {
 		String emp_id = (String)session.getAttribute("emp_id");
 		String emp_name = (String)session.getAttribute("emp_name");
-		logger.debug(" /member/getOutRoom -> getOutRoom("+emp_id+","+room_id+"); 실행");
 		MessageVO vo = new MessageVO();
 		vo.setRoom_id(room_id);
 		vo.setLeaver_emp_id(emp_id);
@@ -250,7 +227,6 @@ public class MessageController {
 	@RequestMapping(value = "/follow",method = RequestMethod.GET)
 	public void followEmp(HttpSession session, String emp_id, Integer room_id) {
 		String user_emp_id = (String)session.getAttribute("emp_id");
-		logger.debug(" follow("+user_emp_id+","+emp_id+"); 실행");
 		if(emp_id != null && room_id == null) {
 			mService.followEmp(user_emp_id, emp_id);
 		}
@@ -263,7 +239,6 @@ public class MessageController {
 	@RequestMapping(value = "/unfollow",method = RequestMethod.GET)
 	public void unFollowEmp(HttpSession session, String emp_id, Integer room_id) {
 		String user_emp_id = (String)session.getAttribute("emp_id");
-		logger.debug(" unfollow("+user_emp_id+","+emp_id+"); 실행");
 		if(emp_id != null && room_id == null) {
 			mService.unFollowEmp(user_emp_id, emp_id);
 		}

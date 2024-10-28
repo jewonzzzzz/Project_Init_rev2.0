@@ -16,6 +16,10 @@ import com.Init.domain.EmployeeVO;
 import com.Init.domain.SettingVO;
 import com.Init.service.MessageServiceImpl;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Random;
+
 /**
  *	 MemberDAO 동작을 수행 
  *
@@ -41,29 +45,19 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 	@Override
 	public EmployeeVO checkMember(EmployeeVO vo) {
-		System.out.println(" DAO : checkMember(MemberVO vo) 실행 ");
-		
-		// SQL 구문을 mapper에 생성
-		System.out.println(" DAO : mapper SQL 생성완료! ");
-		// SQL구문 실행
 		EmployeeVO resultVO
 		    = sqlSession.selectOne(NAMESPACE + ".loginMember",vo);		
-		
-		System.out.println(" 로그인 시도 VO : "+vo);
-		System.out.println(" DAO : "+resultVO);
 		
 		return resultVO;
 	}
 
 	@Override
 	public EmployeeVO getMember(String emp_id) {
-		System.out.println(" DAO : getMember("+emp_id+")");
 		return sqlSession.selectOne(NAMESPACE + ".getMember",emp_id);
 	}
 
 	@Override
 	public List<EmployeeVO> getMemberList(String keyword) {
-		System.out.println(" DAO :  getMemberList(String keyword) ");
 		return sqlSession.selectList(NAMESPACE + ".getSearchedMemberList",keyword);
 	}
 
@@ -113,6 +107,65 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		sqlSession.delete(NAMESPACE + ".unfollowEmp",param);
 	}
 	
+	public void yammyDummy(String emp_id) {
+		
+		
+		Random random = new Random();
+		
+        LocalDate startDate = LocalDate.of(2023, 1, 1);
+        LocalDate endDate = LocalDate.of(2023, 12, 31);
+        
+        
+        List<String> emp_list = sqlSession.selectList(NAMESPACE + ".emp_dummy");
+        
+        for(String emp : emp_list) {
+
+	        for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
+	            if (date.getDayOfWeek().getValue() >= 6) {
+	                continue;
+	            }
 	
+	            Map<String, Object> param = new HashMap<>();
+	            param.put("emp_id", emp);
+	            param.put("date", date.toString());
+	
+	            Integer presence = random.nextInt(365);
+	            
+	            if(presence > 350) {
+	            	param.put("presence", "출장");
+	            }else if(351 > presence && presence > 310) {
+	                param.put("presence", "휴가");
+	            }else if(311 > presence ) {
+	                param.put("presence", "출근");
+	            }
+	
+	            if (311>presence) {
+	            	
+	                int checkInMinute = 44 + random.nextInt(16);
+	                String checkIn = String.format("08:%02d:00", checkInMinute);
+	                param.put("check_in", checkIn);
+	                param.put("working_time", 8);
+	
+	                int overtimeChance = random.nextInt(100);
+	                Integer overtime = null;
+	                if (overtimeChance < 10) {
+	                    overtime = 1;
+	                } else if (overtimeChance < 15) {
+	                    overtime = 2;
+	                } else if (overtimeChance < 20) {
+	                    overtime = 3;
+	                }
+	                param.put("overtime", overtime);
+	            }
+	
+	            param.put("night_work_time", null);
+	            param.put("special_working_time", null);
+            
+            	sqlSession.insert(NAMESPACE + ".dummy", param);
+            }
+            
+            
+        }
+    }
 
 }

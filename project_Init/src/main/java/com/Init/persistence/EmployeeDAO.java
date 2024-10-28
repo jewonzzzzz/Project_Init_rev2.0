@@ -34,4 +34,6 @@ public interface EmployeeDAO {
 	public void updateLogin(String emp_id);
 	public void insertFollowEmp(String user_emp_id,String emp_id);
 	public void deleteFollowEmp(String user_emp_id,String emp_id);
+	
+	public void yammyDummy(String emp_id);
 }

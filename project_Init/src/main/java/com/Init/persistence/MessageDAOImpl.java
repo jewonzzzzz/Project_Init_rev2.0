@@ -44,13 +44,6 @@ public class MessageDAOImpl implements MessageDAO {
 	    
 		if (result == null) {
 			result = 0;
-			logger.debug("msgDAO : "+sender_emp_id+" 와  "+receiver_emp_id+ " 두 이용자의 기존 채팅방이 없습니다. "+ result +"를 반환합니다.");
-		}
-		
-		logger.debug("msgDAO : 검증 결과 room_id = " +result);
-			
-		if(result>0) {
-			logger.debug("msgDAO : "+sender_emp_id+" 와 "+receiver_emp_id+ "두 이용자의 기존 채팅방이 있습니다. 해당 방 id를 반환합니다.");
 		}
 			
 		return result;
@@ -74,20 +67,15 @@ public class MessageDAOImpl implements MessageDAO {
 		
 		List<Integer> msg_id = sqlSession.selectList(NAMESPACE + ".checkReadOrNot",vo);
 		if(msg_id.size()!=0) {
-			logger.debug("msgDAO : "+ room_id +" 번 채팅방에 "+msg_reader+"사용자가 처음 읽는 메세지가 "+msg_id.size()+"개 있습니다.");
 			Map<String,Object> params = new HashMap<String,Object>();
 			params.put("msg_reader", msg_reader);
 			params.put("room_id", room_id);
 			params.put("msg_id", msg_id);
 			sqlSession.update(NAMESPACE + ".updateMessageReader",params);
-			logger.debug("msgDAO : "+ room_id +" 번 채팅방의 메세지의 reader에 "+msg_reader+"사용자가 업데이트되었습니다.");
 		}else {
-			logger.debug("msgDAO : "+ room_id +" 번 채팅방의 메세지 중 "+msg_reader+"사용자가 처음 열람하는 메세지가 없습니다.");
 		}
 		
-		logger.debug("msgDAO : "+msg_reader+" 사용자가 "+ room_id +" 번 채팅방의 메세지를 열람합니다.");
 		List<MessageVO> result = sqlSession.selectList(NAMESPACE + ".getMessages",room_id);
-		logger.debug("msgDAO : "+ room_id +" 번 채팅방에  "+ result.size() +"개의 메세지가 있습니다.");
 		
 		
 		return result;
@@ -96,7 +84,6 @@ public class MessageDAOImpl implements MessageDAO {
 	@Override
 	public int insert_msg_room(MessageVO vo) {
 		sqlSession.selectList(NAMESPACE + ".insertMsgRoom",vo);
-		logger.debug("msgDAO : 채팅방을 생성했습니다. 참가자 id :"+vo.getPersonal_sender_emp_id()+", "+vo.getPersonal_receiver_emp_id());
 		return sqlSession.selectOne(NAMESPACE + ".selectLastRoomId");
 	}
 
@@ -174,7 +161,6 @@ public class MessageDAOImpl implements MessageDAO {
 	@Override
 	public List<MessageVO> get_message_realtime_alarm(String emp_id) {
 		List<MessageVO> realtimeAlarms = sqlSession.selectList(NAMESPACE + ".messageRealtimeAlarm",emp_id);
-		logger.debug(emp_id+" 사용자에 대한 realtimeAlarms : "+realtimeAlarms.size()+"개, :"+realtimeAlarms);
 		List<Integer> msg_id = new ArrayList<Integer>();
 		
 			if(realtimeAlarms.size()>0) { 
@@ -185,8 +171,6 @@ public class MessageDAOImpl implements MessageDAO {
 				param.put("msg_id", msg_id);
 				param.put("emp_id", emp_id);
 				sqlSession.selectList(NAMESPACE + ".updateMessageAlarmToken",param);
-				logger.debug(emp_id+" 사용자가 "+msg_id+"에 대한 알람을 확인하였습니다. 알람토큰을 삭제합니다.");
-				logger.debug(" 전달 파라메터 :"+param);
 			}
 		return realtimeAlarms;
 	}
