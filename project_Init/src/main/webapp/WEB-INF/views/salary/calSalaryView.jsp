@@ -236,7 +236,7 @@
             function addCommasToNumber(num) {
                 return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             }
-            const filteredTds = $('td').not('.year');
+            const filteredTds = $('td').not('.year, .employee_id');
             
             filteredTds.each(function() {
                 // 현재 <td>의 텍스트 가져오기
