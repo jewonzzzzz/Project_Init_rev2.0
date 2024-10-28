@@ -168,6 +168,42 @@ input[readonly] {
 	background: #fff;
 	padding: 20px;
 }
+
+.button-group {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;  
+    justify-content: flex-end;  
+}
+
+.button-container button {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button-container .btn-primary {
+    background-color: #0055FF;
+    color: white;
+}
+
+.button-container .btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.button-container button:hover {
+    opacity: 0.9;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
 </style>
 </head>
 <body>
@@ -191,96 +227,99 @@ input[readonly] {
 						<div class="card-body">
 
 							<div class="info-container">
-								<!-- 사진 및 기본 정보 입력 -->
-								<form method="post" action="/member/update" id="updateForm"
-									enctype="multipart/form-data">
-									<table class="table table-bordered table-head-bg-info">
-										<tr>
-											<td colspan="2" rowspan="4" style="width: 8%;">
-												<div class="profile-pic-container">
-													<c:choose>
-														<c:when test="${not empty memberVO.emp_profile}">
-															<img id="profilePicPreview" src="${memberVO.emp_profile}"
-																alt="증명사진" />
-														</c:when>
-														<c:otherwise>
-															<img id="profilePicPreview"
-																src="${pageContext.request.contextPath}/resources/assets/img/profile-default.png"
-																alt="기본 증명사진" />
-														</c:otherwise>
-													</c:choose>
-													<input type="file" name="emp_profile" id="profilePicInput"
-														accept="image/*">
-												</div>
+    <!-- 사진 및 기본 정보 입력 -->
+    <form method="post" action="/member/update" id="updateForm" enctype="multipart/form-data">
+        <div style="display: grid; grid-template-columns: 180px auto; gap: 50px;">
+            <!-- 프로필 사진 테이블 -->
+            <table class="table table-bordered table-head-bg-info">
+                <tr>
+                    <td class="profile-column">
+                        <div class="profile-pic-container">
+                            <c:choose>
+                                <c:when test="${not empty memberVO.emp_profile}">
+                                    <img id="profilePicPreview" src="${memberVO.emp_profile}"
+                                        alt="증명사진" />
+                                </c:when>
+                                <c:otherwise>
+                                    <img id="profilePicPreview"
+                                        src="${pageContext.request.contextPath}/resources/assets/img/profile-default.png"
+                                        alt="기본 증명사진" />
+                                </c:otherwise>
+                            </c:choose>
+                            <input type="file" name="emp_profile" id="profilePicInput"
+                                accept="image/*">
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
+            <!-- 정보 테이블 -->
+            <table class="table table-bordered table-head-bg-info">
+                <colgroup>
+                    <col style="width: 12%;">
+                    <col style="width: 21%;">
+                    <col style="width: 12%;">
+                    <col style="width: 21%;">
+                    <col style="width: 12%;">
+                    <col style="width: 21%;">
+                </colgroup>
+                <tr>
+                    <th>사원번호</th>
+                    <td><input type="text" name="emp_id" value="${memberVO.emp_id}" readonly /></td>
+                    <th>이름</th>
+                    <td><input type="text" name="emp_name" value="${memberVO.emp_name}" readonly /></td>
+                    <th>성별</th>
+                    <td><input type="text" name="emp_gender" value="${memberVO.emp_gender}" readonly /></td>
+                </tr>
+                <tr>
+                    <th>생년월일</th>
+                    <td><input type="text" name="emp_birth" value="${memberVO.emp_birth}" readonly /></td>
+                    <th>주소</th>
+                    <td><input type="text" name="emp_addr" value="${memberVO.emp_addr}" required /></td>
+                    <th>연락처</th>
+                    <td><input type="text" name="emp_tel" value="${memberVO.emp_tel}" required /></td>
+                </tr>
+                <tr>
+                    <th>이메일</th>
+                    <td><input type="email" name="emp_email" value="${memberVO.emp_email}" required /></td>
+                    <th>부서</th>
+                    <td>
+                        <input type="text" value="${memberVO.dept_name}" readonly />
+                        <input type="hidden" name="emp_dnum" value="${memberVO.emp_dnum}" />
+                    </td>
+                    <th>직급/직책</th>
+                    <td><input type="text" name="emp_job_id" value="${memberVO.emp_position} / ${memberVO.emp_job}" readonly /></td>
+                </tr>
+                <tr>
+                    <th>근무형태</th>
+                    <td><input type="text" name="emp_work_type" value="${memberVO.emp_work_type}" readonly /></td>
+                    <th>근무지</th>
+                    <td><input type="text" name="emp_bnum" value="${memberVO.emp_bnum}" readonly /></td>
+                    <th>입사일자</th>
+                    <td><input type="text" name="emp_start_date" value="${memberVO.emp_start_date}" readonly /></td>
+                </tr>
+            </table>
+        </div>
 
-											</td>
-											<th>사원번호</th>
-											<td><input type="text" name="emp_id"
-												value="${memberVO.emp_id}" readonly /></td>
-											<th>이름</th>
-											<td><input type="text" name="emp_name"
-												value="${memberVO.emp_name}" readonly /></td>
-											<th>성별</th>
-											<td><input type="text" name="emp_gender"
-												value="${memberVO.emp_gender}" readonly /></td>
-										</tr>
-										<tr>
-											<th>생년월일</th>
-											<td><input type="text" name="emp_birth"
-												value="${memberVO.emp_birth}" readonly /></td>
-											<th>주소</th>
-											<td><input type="text" name="emp_addr"
-												value="${memberVO.emp_addr}" required /></td>
-											<th>연락처</th>
-											<td><input type="text" name="emp_tel"
-												value="${memberVO.emp_tel}" required /></td>
-										</tr>
-										<tr>
-											<th>이메일</th>
-											<td><input type="email" name="emp_email"
-												value="${memberVO.emp_email}" required /></td>
-											<th>부서</th>
-											<td>
-											    <input type="text" value="${memberVO.dept_name}" readonly />
-											    <input type="hidden" name="emp_dnum" value="${memberVO.emp_dnum}" />
-											</td>
-											<th>직급/직책</th>
-											<td><input type="text" name="emp_job_id"
-												value="${memberVO.emp_position} / ${memberVO.emp_job}"
-												readonly /></td>
+        <!-- Hidden inputs -->
+        <input type="hidden" name="emp_account_num" value="${memberVO.emp_account_num}" />
+        <input type="hidden" name="emp_bank_name" value="${memberVO.emp_bank_name}" />
+        <input type="hidden" name="emp_account_name" value="${memberVO.emp_account_name}" />
+        <input type="hidden" name="emp_position" value="${memberVO.emp_position}" />
+        <input type="hidden" name="emp_status" value="${memberVO.emp_status}" />
+        <input type="hidden" name="emp_job" value="${memberVO.emp_job}" />
 
-										</tr>
-										<tr>
-											<th>근무형태</th>
-											<td><input type="text" name="emp_work_type"
-												value="${memberVO.emp_work_type}" readonly /></td>
-											<th>근무지</th>
-											<td><input type="text" name="emp_bnum"
-												value="${memberVO.emp_bnum}" readonly /></td>
-											<th>입사일자</th>
-											<td><input type="text" name="emp_start_date"
-												value="${memberVO.emp_start_date}" readonly /></td>
-										</tr>
-									</table>
-
-									<input type="hidden" name="emp_account_num"
-										value="${memberVO.emp_account_num}" /> <input type="hidden"
-										name="emp_bank_name" value="${memberVO.emp_bank_name}" /> <input
-										type="hidden" name="emp_account_name"
-										value="${memberVO.emp_account_name}" /> <input type="hidden"
-										name="emp_position" value="${memberVO.emp_position}" /> <input
-										type="hidden" name="emp_status" value="${memberVO.emp_status}" />
-									<input type="hidden" name="emp_job" value="${memberVO.emp_job}" />
-
-									<div class="text-end mt-3">
-										<button type="button" id="uploadProfilePic"
-											class="btn btn-primary btn-sm">프로필 사진 등록</button>
-										<button type="submit" class="btn btn-primary">저장</button>
-										<button type="button" class="btn btn-danger"
-											onclick="location.href='/member/info'">취소</button>
-									</div>
-								</form>
+        <!-- 버튼 영역 -->
+        <div class="text-end mt-3">
+            <button type="button" id="uploadProfilePic" class="btn btn-primary btn-sm">프로필 사진 등록</button>
+            <div class="button-group">
+                <div class="button-container">
+                    <button type="submit" class="btn btn-primary">저장</button>
+                    <button type="button" class="btn btn-danger" onclick="location.href='/member/info'">취소</button>
+                </div>
+            </div>
+        </div>
+    </form>
 								<hr class="my-4">
 								<!-- 비밀번호 수정 -->
 								<form id="passwordForm" action="" method="get" class="mt-4">
@@ -309,6 +348,8 @@ input[readonly] {
 								</form>
 							</div>
 						</div>
+					</div>
+					</div>
 					</div>
 					<!-- page-inner -->
 				</div>

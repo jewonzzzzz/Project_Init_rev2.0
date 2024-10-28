@@ -58,65 +58,60 @@
 }
 
 /* 테이블 공통 스타일 */
-.info-table {
+.info-table, .custom-table {
     width: 100%;
-    border-collapse: collapse;
+    table-layout: fixed;
+    border-collapse: collapse !important;
     margin: 30px auto;
     font-size: 15px;
 }
 
 .info-table th, 
-.info-table td {
-    padding: 20px;
-    border: 1px solid #ddd;
+.info-table td,
+.custom-table th,
+.custom-table td {
+    padding: 15px !important;
+    border: 1px solid #ebedf2 !important;
     text-align: center;
     background-color: white;
     height: 40px;
-    vertical-align: middle;
+    vertical-align: middle !important;
     line-height: 1.5;
 }
 
-.info-table th {
-    background-color: #f8f9fa;
-    font-weight: bold;
+.info-table th,
+.custom-table th,
+.table-head-bg-info th {
+    background-color: #f8f9fa !important;
+    font-weight: bold !important;
     text-align: center;
     width: 15%;
 }
 
-.info-table tr:hover td {
-    background-color: #f8f9fa;
-    transition: background-color 0.3s ease;
-}
-
-.info-table img {
-    border-radius: 5px;
-    max-width: 150px;
-    height: auto;
-}
-
 /* 프로필 관련 스타일 */
+.profile-column {
+    width: 180px !important;
+    vertical-align: middle !important;
+    text-align: center !important;
+}
+
 .profile-pic-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
     padding: 10px;
 }
 
-.profile-pic-container img {
-    width: 160px;
+.profile-pic-container img,
+.profile-image {
+    width: 150px;
     height: 200px;
     object-fit: cover;
     border-radius: 5px;
     margin-bottom: 10px;
-}
-
-.info-table td.profile-cell {
-    width: 180px;
-    height: 240px;
-    padding: 10px;
-    vertical-align: middle;
 }
 
 /* 탭 스타일 */
@@ -191,6 +186,15 @@
     color: white;
     cursor: pointer;
 }
+
+/* 호버 효과 */
+.info-table tr:hover td,
+.custom-table tr:hover td {
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease;
+}
+
+
 </style>
 <!------------------------------------------------------------------------------------------------------------------>
 
@@ -214,59 +218,74 @@
 							<h4 class="card-title">내정보</h4>
 						</div>
 						<div class="card-body">
-							<!-- 프로필 및 기본 정보 테이블 -->
-							<div class="info-container">
-								<table class="table table-bordered table-head-bg-info">
-									<tr>
-										<td rowspan="4" style="width: 8%;">
-											<div class="profile-pic-container">
-											    <c:choose>
-											        <c:when test="${empty memberVO.emp_profile || memberVO.emp_profile eq 'void'}">
-											            <img src="${pageContext.request.contextPath}/resources/assets/img/profile-default.png" 
-											                 alt="기본 증명사진"
-											                 style="max-width: 150px; height: auto;" />
-											        </c:when>
-											        <c:otherwise>
-											            <img src="${memberVO.emp_profile}" 
-											                 alt="증명사진"
-											                 style="max-width: 150px; height: auto;" />
-											        </c:otherwise>
-											    </c:choose>
-											</div>
-										</td>
-										<th>사원번호</th>
-										<td>${memberVO.emp_id}</td>
-										<th>이름</th>
-										<td>${memberVO.emp_name}</td>
-										<th>성별</th>
-										<td>${memberVO.emp_gender}</td>
-									</tr>
-									<tr>
-										<th>생년월일</th>
-										<td>${memberVO.emp_birth}</td>
-										<th>주소</th>
-										<td>${memberVO.emp_addr}</td>
-										<th>연락처</th>
-										<td>${memberVO.emp_tel}</td>
-									</tr>
-									<tr>
-										<th>이메일</th>
-										<td>${memberVO.emp_email}</td>
-										<th>부서</th>
-										<td>${memberVO.dept_name}</td>
-										<th>직급/직책</th>
-										<td>${memberVO.emp_position}/ ${memberVO.emp_job}</td>
-									</tr>
-									<tr>
-										<th>근무형태</th>
-										<td>${memberVO.emp_work_type}</td>
-										<th>근무지</th>
-										<td>${memberVO.emp_bnum}</td>
-										<th>입사일자</th>
-										<td>${memberVO.emp_start_date}</td>
-									</tr>
-								</table>
-							</div>
+							
+							<div class="info-container" style="display: grid; grid-template-columns: 180px auto; gap: 0px;">
+    <!-- 프로필 사진 테이블 -->
+    <table class="table table-bordered table-head-bg-info custom-table">
+        <tr>
+            <td class="profile-column">
+                <div class="profile-pic-container">
+                    <c:choose>
+                        <c:when test="${empty memberVO.emp_profile || memberVO.emp_profile eq 'void'}">
+                            <img src="${pageContext.request.contextPath}/resources/assets/img/profile-default.png" 
+                                 alt="기본 증명사진"
+                                 class="profile-image" />
+                        </c:when>
+                        <c:otherwise>
+                            <img src="${memberVO.emp_profile}" 
+                                 alt="증명사진"
+                                 class="profile-image" />
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- 정보 테이블 -->
+    <table class="table table-bordered table-head-bg-info custom-table">
+        <colgroup>
+            <col style="width: 12%;">
+            <col style="width: 21%;">
+            <col style="width: 12%;">
+            <col style="width: 21%;">
+            <col style="width: 12%;">
+            <col style="width: 21%;">
+        </colgroup>
+        <tr>
+            <th>사원번호</th>
+            <td>${memberVO.emp_id}</td>
+            <th>이름</th>
+            <td>${memberVO.emp_name}</td>
+            <th>성별</th>
+            <td>${memberVO.emp_gender}</td>
+        </tr>
+        <tr>
+            <th>생년월일</th>
+            <td>${memberVO.emp_birth}</td>
+            <th>주소</th>
+            <td>${memberVO.emp_addr}</td>
+            <th>연락처</th>
+            <td>${memberVO.emp_tel}</td>
+        </tr>
+        <tr>
+            <th>이메일</th>
+            <td>${memberVO.emp_email}</td>
+            <th>부서</th>
+            <td>${memberVO.dept_name}</td>
+            <th>직급/직책</th>
+            <td>${memberVO.emp_position}/ ${memberVO.emp_job}</td>
+        </tr>
+        <tr>
+            <th>근무형태</th>
+            <td>${memberVO.emp_work_type}</td>
+            <th>근무지</th>
+            <td>${memberVO.emp_bnum}</td>
+            <th>입사일자</th>
+            <td>${memberVO.emp_start_date}</td>
+        </tr>
+    </table>
+</div>
 
 							<!-- 버튼 영역 -->
 							<div class="text-end mt-3 mb-4">
@@ -285,6 +304,7 @@
 								<!-- 탭 클릭 시 정보가 여기에 표시됩니다. -->
 							  </div>
 							 </div>
+							</div>
 							</div>
 							<!------------------------------------------------------------------------------------------------------------------>
 						</div>
