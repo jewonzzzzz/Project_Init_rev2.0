@@ -1,5 +1,6 @@
 package com.Init.persistence;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Select;
@@ -22,4 +23,5 @@ public interface WorkflowDAO {
 	public List<WorkflowVO> loginAlarmSentWorkflowList(String emp_id);
 	public List<WorkflowVO> loginAlarmReceivedWorkflowList(String emp_id);
 	public int getSmallAlarm(String emp_id);
+	public List<WorkflowVO> getCalendarWorkflow(String emp_id, LocalDate startDate, LocalDate endDate);
 }

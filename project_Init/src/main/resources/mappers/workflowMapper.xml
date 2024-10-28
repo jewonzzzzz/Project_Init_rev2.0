@@ -336,4 +336,7 @@
 		 and wf_status = '1'
 	</select>
 	
+	<select id="getCalendarWorkflow" resultType="WorkflowVO">
+	 select * from workflow where wf_sender = #{emp_id} and wf_create_date between #{startDate} and #{endDate}; 
+	</select>
 </mapper>

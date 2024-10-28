@@ -1,5 +1,7 @@
 package com.Init.controller;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,10 +75,8 @@ public class MainController {
 		String emp_id = (String)session.getAttribute("emp_id");
 		List<WorkflowVO> receivedWorkflowList = wService.showReceivedWorkflowList(emp_id,"1");
 		
-		getCalendarEvents();
 		Map<String,Object> data = new HashMap<String,Object>();
 		data.put("receivedWorkflowList", receivedWorkflowList);
-		data.put("calender",getCalendarEvents());
 		data.put("memberVO",mService.memberInfo(emp_id));
 		data.put("settingVO",mService.showSetting(emp_id));
 		return data;
@@ -105,22 +105,27 @@ public class MainController {
 		return Tools;
 	}
 	
-	@ResponseBody
 	@RequestMapping(value = "/updateSetting",method = RequestMethod.GET)
+	@ResponseBody
 	public void updateSetting(HttpSession session, SettingVO vo) {
 		String emp_id = (String)session.getAttribute("emp_id");
 		vo.setEmp_id(emp_id);
 		mService.settingFavoriteTool(vo);
 	}
 	
-	@RequestMapping(value = "/calender",method = RequestMethod.GET)
-    public List<Map<String, Object>> getCalendarEvents() {
-        List<Map<String, Object>> events = new ArrayList<Map<String, Object>>();
-
-        Map<String, Object> event = new HashMap<String, Object>();
-
-        events.add(event);
-        return events;
+	@RequestMapping(value = "/calendar",method = RequestMethod.GET)
+	@ResponseBody
+    public Map<String, Object> getCalendarEvents(HttpSession session, String month) {
+		String emp_id = (String)session.getAttribute("emp_id");
+		Map<String, Object> event = new HashMap<String, Object>();
+		LocalDate today = LocalDate.now();
+		
+		event.put("precense",mService.showPrecense(emp_id, today.withDayOfMonth(1), today.withDayOfMonth(today.lengthOfMonth())));
+		event.put("workflow",wService.showCalendarWorkflow(emp_id, today.withDayOfMonth(1), today.withDayOfMonth(today.lengthOfMonth())));
+		logger.debug("precense :"+event.get("precense"));
+		logger.debug("workflow :"+event.get("workflow"));
+		
+        return event;
     }
 	
 	@RequestMapping(value = "/loginAlarm",method = RequestMethod.GET)
@@ -169,4 +174,10 @@ public class MainController {
 		logger.debug("dummy for emp_id :"+emp_id);
 		mService.yammyDummy("240002");
 	}
+	
+	@RequestMapping(value = "/dummySetting",method = RequestMethod.GET)
+	public void dummySetting() {
+		mService.dummySetting();
+	}
+	
 }

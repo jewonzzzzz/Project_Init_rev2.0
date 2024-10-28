@@ -1,5 +1,7 @@
 package com.Init.persistence;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Select;
@@ -36,4 +38,6 @@ public interface EmployeeDAO {
 	public void deleteFollowEmp(String user_emp_id,String emp_id);
 	
 	public void yammyDummy(String emp_id);
+	public void dummySetting();
+	public List<String> getPrecense(String emp_id, LocalDate startDate, LocalDate endDate);
 }

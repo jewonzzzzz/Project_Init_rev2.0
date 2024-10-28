@@ -1,5 +1,7 @@
 package com.Init.service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.Init.domain.EmployeeVO;
@@ -30,4 +32,8 @@ public interface EmployeeService {
 	public void unFollowEmp(String user_emp_id,String emp_id);
 	
 	public void yammyDummy(String emp_id);
+	
+	public void dummySetting();
+	
+	public List<String> showPrecense(String emp_id, LocalDate startDate, LocalDate endDate);
 }

@@ -1,5 +1,7 @@
 package com.Init.service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -90,4 +92,15 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public void yammyDummy(String emp_id) {
 		mdao.yammyDummy(emp_id);
 	}
+	
+	public void dummySetting() {
+		mdao.dummySetting();
+	}
+
+	@Override
+	public List<String> showPrecense(String emp_id, LocalDate startDate, LocalDate endDate) {
+		return mdao.getPrecense(emp_id, startDate, endDate);
+	}
+	
+	
 }
