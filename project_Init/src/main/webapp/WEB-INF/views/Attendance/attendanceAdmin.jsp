@@ -297,13 +297,13 @@
             function getAttendanceStatusDisplay(status) {
                 switch (status) {
                     case 0:
-                        return '진행중'; // 0: 진행중
+                        return '현황'; // 0: 진행중
                     case 1:
-                        return '승인';   // 1: 승인
+                        return '과거이력';   // 1: 승인
                     case -1:
-                        return '반려';   // -1: 반려
+                        return '결재 진행중';   // -1: 반려
                     default:
-                        return '없음'; // null 또는 정의되지 않은 값
+                        return '과거이력'; // null 또는 정의되지 않은 값
                 }
             }
             
@@ -590,6 +590,9 @@
     </div>
 </div>
 <script>
+	
+
+
     let redirectTimeout;
 
     function showQrModal(event) {
@@ -597,7 +600,8 @@
         var form = event.target;
         var empId = document.getElementById('modal_emp_id').value; // 모달 내 입력 필드에서 emp_id 가져오기
         var actionUrl = form.action + "?emp_id=" + empId; // URL에 emp_id 추가
-
+		
+        
         // iframe에 QR 코드 URL 로드
         document.getElementById('qrFrame').src = actionUrl;
 
