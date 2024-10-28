@@ -363,7 +363,15 @@ input[readonly] {
 		<script
 			src="${pageContext.request.contextPath}/resources/assets/js/kaiadmin.min.js"></script>
 
-
+		<!-- 필수정보 입력  -->
+		<c:if test="${needInfoUpdate}">
+		    <script type="text/javascript">
+		        window.onload = function() {
+		            alert("필수 정보를 입력해주세요.");
+		        }
+		    </script>
+		</c:if>
+		
 		<script>
     $(document).ready(function() {
         let selectedFile = null;

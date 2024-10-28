@@ -47,34 +47,34 @@ public class MemberController implements ServletContextAware {
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
-	@GetMapping("/main")
-	public String mainPage(HttpSession session, Model model) {
-	    String emp_id = (String) session.getAttribute("emp_id");
-	    MemberVO member = mService.memberInfo(emp_id);
-	    
-	    if (member.getEmp_tel() == null || member.getEmp_email() == null || member.getEmp_addr() == null) {
-	        model.addAttribute("needInfoUpdate", true);
-	    }
-	    
-	    return "main/home";
-	}
+		@GetMapping("/login")
+		public String loginMemberGET() {
+			return "member/loginForm";
+		}
 
-	@GetMapping("/login")
-	public String loginMemberGET() {
-		return "member/loginForm";
-	}
-
-	@PostMapping("/login")
-	public String loginMemberPOST(@ModelAttribute MemberVO vo, HttpSession session, RedirectAttributes rttr) {
-	    MemberVO resultVO = mService.memberLoginCheck(vo);
-	    if (resultVO == null) {
-	        rttr.addFlashAttribute("loginError", "사원번호 또는 비밀번호가 올바르지 않습니다.");
-	        return "redirect:/member/login";
-	    }
-	    session.setAttribute("emp_id", resultVO.getEmp_id());
-	    return "redirect:/main/home";
-	}
-	// 퇴직신청 - GET
+		@PostMapping("/login")
+		public String loginMemberPOST(@ModelAttribute MemberVO vo, HttpSession session, RedirectAttributes rttr) {
+		    MemberVO resultVO = mService.memberLoginCheck(vo);
+		    
+		    if (resultVO == null) {
+		        rttr.addFlashAttribute("loginError", "사원번호 또는 비밀번호가 올바르지 않습니다.");
+		        return "redirect:/member/login";
+		    }
+		    
+		    // 필수 정보가 하나라도 비어있는지 확인
+		    if (resultVO.getEmp_tel() == null || 
+		        resultVO.getEmp_email() == null || 
+		        resultVO.getEmp_addr() == null) {
+		        
+		        session.setAttribute("emp_id", resultVO.getEmp_id());
+		        return "redirect:/member/update";
+		    }
+		    
+		    session.setAttribute("emp_id", resultVO.getEmp_id());
+		    return "redirect:/main/home";
+		}
+		
+		// 퇴직신청 - GET
 		@GetMapping("/quit")
 		public String quitPage(HttpSession session, Model model) {
 		    String emp_id = (String) session.getAttribute("emp_id");
@@ -203,19 +203,25 @@ public class MemberController implements ServletContextAware {
 	    }
 	}
 
-	// 회원정보 수정 - 입력GET
-	 	@RequestMapping(value = "/update",method = RequestMethod.GET)
-	 	public String updateMemberGET(HttpSession session, Model model) {
-	 	logger.debug("/member/update -> updateMemberGET() 실행");				
-	 	logger.debug("기존의 회원정보를 DB에서 가져오기");
-	 	
-	 	String emp_id = (String) session.getAttribute("emp_id");
-	 				
-	 	model.addAttribute(mService.memberInfo(emp_id));				
-	 	logger.debug("연결된 뷰페이지 출력(/views/member/update.jsp)");
-	 				
-	 	return "/member/update";
-	 	}
+		// 회원정보 수정 - 입력GET
+		@RequestMapping(value = "/update", method = RequestMethod.GET)
+		public String updateMemberGET(HttpSession session, Model model) {
+		    logger.debug("/member/update -> updateMemberGET() 실행");				
+		    logger.debug("기존의 회원정보를 DB에서 가져오기");
+		    
+		    String emp_id = (String) session.getAttribute("emp_id");
+		    MemberVO memberVO = mService.memberInfo(emp_id);
+		    model.addAttribute("memberVO", memberVO);
+		    
+		    // 필수 정보가 없는 경우 메시지 표시
+		    if (memberVO.getEmp_tel() == null || 
+		        memberVO.getEmp_email() == null || 
+		        memberVO.getEmp_addr() == null) {
+		        model.addAttribute("needInfoUpdate", true);
+		    }
+		    
+		    return "/member/update";
+		}
 	 			
 	 	// 회원정보 수정 - 처리POST
 	 	@PostMapping("/update")
