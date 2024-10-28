@@ -15,7 +15,8 @@
 
 
 
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/leaveMain.css" />
 <link rel="stylesheet"
@@ -228,8 +229,7 @@
 												</form>
 											</div>
 											<div class="modal-footer">
-												<button type="button" class="btn btn-primary" id="signBtn"
-													onclick="submitLeaveForm()">신청</button>
+												<button type="button" class="btn btn-primary" onclick="submitLeaveForm()">신청</button>
 												<button type="button" class="btn btn-secondary"
 													onclick="closeLeaveModal()">닫기</button>
 											</div>
@@ -314,35 +314,59 @@ function submitLeaveForm() {
         return;
     }
     
-
-    // AJAX 요청
-    $.ajax({
-        type: "POST",
-        url: "use",
-        contentType: "application/json",
-        data: JSON.stringify({
-            emp_id: empId,
-            annual_leave_start_date: annualLeaveStartDate,
-            end_annual_leave: endAnnualLeave,
-            used_annual_leave: usedLeave,
-            total_annual_leave: totalLeave,
-            remaining_annual_leave: remainingLeave,
-            lgrant: lgrant,
-            expiry: expiry,
-            adjustment: adjustment,
-            leave_type: leaveType,
-            leave_status: leaveStatus,
-            reason: reason,
-            requested_at: requestedAt
-        }),
-        success: function(response) {
-            console.log("연차 신청이 완료되었습니다:", response);
-            alert("연차 신청이 완료되었습니다");
-            closeLeaveModal();
-        },
-        error: function(xhr, status, error) {
-            console.error("신청 실패:", error);
-            alert("신청 실패: " + error);
+    
+    // SweetAlert2로 확인 모달 표시
+    Swal.fire({
+        title: '연차 신청',
+        text: '정말로 연차를 신청하시겠습니까?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '네, 신청합니다',
+        cancelButtonText: '아니오',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // AJAX 요청
+            $.ajax({
+                type: "POST",
+                url: "use",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    emp_id: empId,
+                    annual_leave_start_date: annualLeaveStartDate,
+                    end_annual_leave: endAnnualLeave,
+                    used_annual_leave: usedLeave,
+                    total_annual_leave: totalLeave,
+                    remaining_annual_leave: remainingLeave,
+                    lgrant: lgrant,
+                    expiry: expiry,
+                    adjustment: adjustment,
+                    leave_type: leaveType,
+                    leave_status: leaveStatus,
+                    reason: reason,
+                    requested_at: requestedAt
+                }),
+                success: function(response) {
+                	  // 성공 메시지 표시
+                    Swal.fire({
+                        title: '신청 완료',
+                        text: '연차 신청이 완료되었습니다.',
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        showConfirmButton: true, // 확인 버튼 표시
+                        timer: 3000 // 3초 후 자동으로 닫힘
+                    }).then(() => {
+                        // 성공 메시지 후에 필요한 추가 동작을 여기에 작성
+                        document.getElementById('leaveForm').reset(); // 폼 초기화
+                        closeLeaveModal(); // 모달 닫기
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("신청 실패:", error);
+                    alert("신청 실패: " + error);
+                }
+            });
         }
     });
 }
@@ -413,7 +437,7 @@ function submitLeaveForm() {
 												<div class="form-group">
 													<label for="total_leave_days">총 휴가 일수</label> <input
 														type="number" class="form-control" id="total_leave_days"
-														name="total_leave_days" readonly required>
+														name="total_leave_days" required>
 												</div>
 												<div class="form-group">
 													<label for="leave_status">결재 상태</label> <select
@@ -461,139 +485,135 @@ function closeLeaveRequestModal() {
 
 
 
-function calculateLeaveDays() {
-    const startDate = new Date(document.getElementById("leave_start_date").value);
-    const endDate = new Date(document.getElementById("end_leave_date").value);
+// function calculateLeaveDays() {
+//     const startDate = new Date(document.getElementById("leave_start_date").value);
+//     const endDate = new Date(document.getElementById("end_leave_date").value);
     
-    // 시작일과 종료일 모두 입력되었는지 확인
-    if (!isNaN(startDate) && !isNaN(endDate) && endDate >= startDate) {
-        let totalDays = 0;
-        let currentDate = new Date(startDate);
+//     // 시작일과 종료일 모두 입력되었는지 확인
+//     if (!isNaN(startDate) && !isNaN(endDate) && endDate >= startDate) {
+//         let totalDays = 0;
+//         let currentDate = new Date(startDate);
 
-        // 주말 제외하고 날짜 계산
-        while (currentDate <= endDate) {
-            const dayOfWeek = currentDate.getDay();
-            if (dayOfWeek !== 0 && dayOfWeek !== 6) { // 일요일(0)과 토요일(6)을 제외
-                totalDays++;
-            }
-            currentDate.setDate(currentDate.getDate() + 1);
-        }
+//         // 주말 제외하고 날짜 계산
+//         while (currentDate <= endDate) {
+//             const dayOfWeek = currentDate.getDay();
+//             if (dayOfWeek !== 0 && dayOfWeek !== 6) { // 일요일(0)과 토요일(6)을 제외
+//                 totalDays++;
+//             }
+//             currentDate.setDate(currentDate.getDate() + 1);
+//         }
         
-        document.getElementById("total_leave_days").value = totalDays;
-    } else {
-        document.getElementById("total_leave_days").value = ""; // 유효하지 않은 경우 비워줌
-    }
+//         document.getElementById("total_leave_days").value = totalDays;
+//     } else {
+//         document.getElementById("total_leave_days").value = ""; // 유효하지 않은 경우 비워줌
+//     }
     
-    validateForm();
-}
+//     validateForm();
+// }
 
-function validateForm() {
-    const leaveStartDate = document.getElementById("leave_start_date").value;
-    const endLeaveDate = document.getElementById("end_leave_date").value;
-    const reason = document.getElementById("reason").value;
-    const signBtn = document.getElementById("signBtn");
+// function validateForm() {
+//     const leaveStartDate = document.getElementById("leave_start_date").value;
+//     const endLeaveDate = document.getElementById("end_leave_date").value;
+//     const reason = document.getElementById("reason").value;
+//     const signBtn = document.getElementById("signBtn");
     
-    // 유효성 검사: 모든 필드가 입력되었는지 확인
-    if (leaveStartDate && endLeaveDate && reason) {
-        const startDate = new Date(leaveStartDate);
-        const endDate = new Date(endLeaveDate);
+//     // 유효성 검사: 모든 필드가 입력되었는지 확인
+//     if (leaveStartDate && endLeaveDate && reason) {
+//         const startDate = new Date(leaveStartDate);
+//         const endDate = new Date(endLeaveDate);
         
-        if (endDate >= startDate) {
-            signBtn.disabled = false; // 모든 조건을 만족하면 버튼 활성화
-        } else {
-            signBtn.disabled = true; // 종료일이 시작일보다 이전이면 비활성화
-        }
-    } else {
-        signBtn.disabled = true; // 필드 비어있을 경우 비활성화
-    }
-}
+//         if (endDate >= startDate) {
+//             signBtn.disabled = false; // 모든 조건을 만족하면 버튼 활성화
+//         } else {
+//             signBtn.disabled = true; // 종료일이 시작일보다 이전이면 비활성화
+//         }
+//     } else {
+//         signBtn.disabled = true; // 필드 비어있을 경우 비활성화
+//     }
+// }
 
-// 휴가 시작일 및 종료일 변경 시 사용 연차 자동 계산
-document.getElementById("leave_start_date").addEventListener("change", function() {
-    calculateLeaveDays();
-});
-document.getElementById("end_leave_date").addEventListener("change", function() {
-    calculateLeaveDays();
-});
+// // 휴가 시작일 및 종료일 변경 시 사용 연차 자동 계산
+// document.getElementById("leave_start_date").addEventListener("change", function() {
+//     calculateLeaveDays();
+// });
+// document.getElementById("end_leave_date").addEventListener("change", function() {
+//     calculateLeaveDays();
+// });
 
-// 신청 사유 입력 시 유효성 검사
-document.getElementById("reason").addEventListener("input", validateForm);
-</script>
-
+// // 신청 사유 입력 시 유효성 검사
+// document.getElementById("reason").addEventListener("input", validateForm);
 
 
 
+// 	// 총 휴가 일수 계산 
+// 	 function calculateTotalLeaveDays() { 
+// 	    const startDate = new Date(document.getElementById("leave_start_date").value); 
+// 	    const endDate = new Date(document.getElementById("end_leave_date").value); 
+
+// 	     if (startDate && endDate && startDate <= endDate) { 
+// 	         const totalDays = (endDate - startDate) / (1000 * 3600 * 24) + 1; // 시작일 포함 
+// 	         document.getElementById("total_leave_days").value = totalDays; 
+// 	     } 
+// 	 } 
+
+// 	 // 폼 제출 시 처리 
+// 	 document.getElementById("leaveRequestForm").addEventListener("submit", function(event) { 
+// 	     event.preventDefault(); // 폼 기본 동작 막기
+
+// 	     // 날짜 유효성 검사 -->
+// 	     if (!validateDates()) { 
+// 	         return; // 유효성 검사 실패 시 종료 -->
+// 	     } 
+
+// 	      // 입력된 값 가져오기 -->
+// 	      const empId = document.getElementById("empId").value; 
+// 	      const leaveType = document.getElementById("leave_type").value; 
+// 	      const leaveStartDate = document.getElementById("leave_start_date").value; 
+// 	      const endLeaveDate = document.getElementById("end_leave_date").value; 
+// 	      const totalLeaveDays = document.getElementById("total_leave_days").value; 
+// 	      const leaveStatus = document.getElementById("leave_status").value; 
+// 	      const reason = document.getElementById("reason").value; 
 
 
-								<!-- // 총 휴가 일수 계산 -->
-								<!-- // function calculateTotalLeaveDays() { -->
-								<!-- //     const startDate = new Date(document.getElementById("leave_start_date").value); -->
-								<!-- //     const endDate = new Date(document.getElementById("end_leave_date").value); -->
+// 	      // 서버에 데이터 전송하는 로직 추가 (AJAX 사용) -->
+// 	      $.ajax({ 
+// 	          type: "POST", 
+// 	          url: "leavesubmit", // 서버의 API 엔드포인트 -->
+// 	          contentType: "application/json", // JSON 형태로 전송 -->
+// 	          data: JSON.stringify({
+// 	              emp_id: empId,
+// 	             leave_type: leaveType, 
+// 	              leave_start_date: leaveStartDate, 
+// 	              end_leave_date: endLeaveDate, 
+// 	             reason: reason, 
+// 	              total_leave_days: totalLeaveDays, 
+// 	              leave_status: leaveStatus, 
 
-								<!-- //     if (startDate && endDate && startDate <= endDate) { -->
-								<!-- //         const totalDays = (endDate - startDate) / (1000 * 3600 * 24) + 1; // 시작일 포함 -->
-								<!-- //         document.getElementById("total_leave_days").value = totalDays; -->
-								<!-- //     } -->
-								<!-- // } -->
+// 	          }), 
+// 	          success: function(response) { 
+// 	              // 요청이 성공했을 때의 처리 -->
+// 	              console.log("휴가 신청이 완료되었습니다:", response); 
 
-								<!-- // // 폼 제출 시 처리 -->
-								<!-- // document.getElementById("leaveRequestForm").addEventListener("submit", function(event) { -->
-								<!-- //     event.preventDefault(); // 폼 기본 동작 막기 -->
-
-								<!-- //     // 날짜 유효성 검사 -->
-								<!-- //     if (!validateDates()) { -->
-								<!-- //         return; // 유효성 검사 실패 시 종료 -->
-								<!-- //     } -->
-
-								<!-- // //     // 입력된 값 가져오기 -->
-								<!-- //      const empId = document.getElementById("empId").value; -->
-								<!-- //      const leaveType = document.getElementById("leave_type").value; -->
-								<!-- //      const leaveStartDate = document.getElementById("leave_start_date").value; -->
-								<!-- //      const endLeaveDate = document.getElementById("end_leave_date").value; -->
-								<!-- //      const totalLeaveDays = document.getElementById("total_leave_days").value; -->
-								<!-- //      const leaveStatus = document.getElementById("leave_status").value; -->
-								<!-- //      const reason = document.getElementById("reason").value; -->
+// 	             // 사용자에게 성공 메시지 알림 -->
+// 	              alert("휴가 신청이 완료되었습니다.");  
 
 
-								<!-- //      // 서버에 데이터 전송하는 로직 추가 (AJAX 사용) -->
-								<!-- //      $.ajax({ -->
-								<!-- //          type: "POST", -->
-								<!-- //          url: "leavesubmit", // 서버의 API 엔드포인트 -->
-								<!-- //          contentType: "application/json", // JSON 형태로 전송 -->
-								<!-- //          data: JSON.stringify({ -->
-								<!-- //              emp_id: empId, -->
-								<!-- //              leave_type: leaveType, -->
-								<!-- //              leave_start_date: leaveStartDate, -->
-								<!-- //              end_leave_date: endLeaveDate, -->
-								<!-- //              reason: reason, -->
-								<!-- //              total_leave_days: totalLeaveDays, -->
-								<!-- //              leave_status: leaveStatus, -->
+// 	             closeLeaveRequestModal(); // 성공한 후에 모달 닫기 
+// 	          }, 
+// 	          error: function(xhr, status, error) { 
+// 	             // 요청이 실패했을 때의 처리 
+// 	              console.error("휴가 신청 실패:", error); 
+// 	              alert("휴가 신청 실패: " + error); // 에러 메시지 보여주기 
+// 	          } 
+// 	      }); 
+// 	 });	
 
-								<!-- //          }), -->
-								<!-- //          success: function(response) { -->
-								<!-- //              // 요청이 성공했을 때의 처리 -->
-								<!-- //              console.log("휴가 신청이 완료되었습니다:", response); -->
-
-								<!-- //              // 사용자에게 성공 메시지 알림 -->
-								<!-- //              alert("휴가 신청이 완료되었습니다.");  -->
+// 	 // 이벤트 리스너 추가: 시작일 및 종료일 변경 시 총 휴가 일수 계산 -->
+// 	  document.getElementById("leave_start_date").addEventListener("change", calculateTotalLeaveDays); 
+// 	  document.getElementById("end_leave_date").addEventListener("change", calculateTotalLeaveDays); 
 
 
-								<!-- //              closeLeaveRequestModal(); // 성공한 후에 모달 닫기 -->
-								<!-- //          }, -->
-								<!-- //          error: function(xhr, status, error) { -->
-								<!-- //             // 요청이 실패했을 때의 처리 -->
-								<!-- //              console.error("휴가 신청 실패:", error); -->
-								<!-- //              alert("휴가 신청 실패: " + error); // 에러 메시지 보여주기 -->
-								<!-- //          } -->
-								<!-- //      }); -->
-								<!-- // }); -->
-
-								<!-- // // 이벤트 리스너 추가: 시작일 및 종료일 변경 시 총 휴가 일수 계산 -->
-								<!-- // document.getElementById("leave_start_date").addEventListener("change", calculateTotalLeaveDays); -->
-								<!-- // document.getElementById("end_leave_date").addEventListener("change", calculateTotalLeaveDays); -->
-
-
-
+	</script>
 
 
 
@@ -678,7 +698,7 @@ document.getElementById("reason").addEventListener("input", validateForm);
 															name="reason" rows="3" required></textarea>
 													</div>
 													<div class="modal-footer">
-														<button type="submit" class="btn btn-primary">신청</button>
+														<button type="button" class="btn btn-primary" onclick="submitLeaveApplication()">신청</button>
 														<button type="button" class="btn btn-secondary"
 															onclick="closeLeaveApplicationModal()">닫기</button>
 													</div>
@@ -689,105 +709,125 @@ document.getElementById("reason").addEventListener("input", validateForm);
 								</div>
 
 								<script>
-    // 휴직 모달 열기 함수
-    function openLeaveApplicationModal() {
-        $('#leaveApplicationModal').modal('show'); // Bootstrap의 모달을 수동으로 열기
-    }
 
-    // 휴직 모달 닫기 함수
-    function closeLeaveApplicationModal() {
-        $('#leaveApplicationModal').modal('hide'); // Bootstrap의 모달을 수동으로 닫기
-    }
+								// 휴직 모달 열기 함수
+								function openLeaveApplicationModal() {
+								    $('#leaveApplicationModal').modal('show'); // Bootstrap의 모달을 수동으로 열기
+								}
 
-      // 휴직 시작일과 종료일 간의 유효성 검사
-    function validateLeaveDates() {
-        const startDate = new Date(document.getElementById("leave_start_date_leave").value);
-        const endDate = new Date(document.getElementById("end_leave_date_leave").value);
-        if (endDate < startDate) {
-            alert("휴직 종료일은 시작일보다 이후여야 합니다.");
-            return false;
-        }
-        return true;
-    }
+								// 휴직 모달 닫기 함수
+								function closeLeaveApplicationModal() {
+								    $('#leaveApplicationModal').modal('hide'); // Bootstrap의 모달을 수동으로 닫기
+								}
 
-    // 총 휴직 일수 자동 계산 (주말 제외)
-    function calculateTotalLeaveDays() {
-        const startDate = new Date(document.getElementById("leave_start_date_leave").value);
-        const endDate = new Date(document.getElementById("end_leave_date_leave").value);
-        
-        if (!isNaN(startDate) && !isNaN(endDate) && endDate >= startDate) {
-            let totalDays = 0;
-            let currentDate = new Date(startDate);
-            
-            // 주말 제외하고 날짜 계산
-            while (currentDate <= endDate) {
-                const dayOfWeek = currentDate.getDay();
-                if (dayOfWeek !== 0 && dayOfWeek !== 6) { // 일요일(0)과 토요일(6)을 제외
-                    totalDays++;
-                }
-                currentDate.setDate(currentDate.getDate() + 1);
-            }
-            
-            document.getElementById("total_leave_days_leave").value = totalDays;
-        } else {
-            document.getElementById("total_leave_days_leave").value = ""; // 유효하지 않은 경우 비워줌
-        }
-    }
+								// 휴직 시작일과 종료일 간의 유효성 검사
+								function validateLeaveDates() {
+								    const startDate = new Date(document.getElementById("leave_start_date_leave").value);
+								    const endDate = new Date(document.getElementById("end_leave_date_leave").value);
+								    if (endDate < startDate) {
+								        alert("휴직 종료일은 시작일보다 이후여야 합니다.");
+								        return false;
+								    }
+								    return true;
+								}
 
-    // 휴직 폼 제출 시 처리
-    document.getElementById("leaveApplicationForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // 폼 기본 동작 막기
+								// 총 휴직 일수 자동 계산 (주말 제외)
+								function calculateTotalLeaveDays() {
+								    const startDate = new Date(document.getElementById("leave_start_date_leave").value);
+								    const endDate = new Date(document.getElementById("end_leave_date_leave").value);
+								    
+								    if (!isNaN(startDate) && !isNaN(endDate) && endDate >= startDate) {
+								        let totalDays = 0;
+								        let currentDate = new Date(startDate);
+								        
+								        // 주말 제외하고 날짜 계산
+								        while (currentDate <= endDate) {
+								            const dayOfWeek = currentDate.getDay();
+								            if (dayOfWeek !== 0 && dayOfWeek !== 6) { // 일요일(0)과 토요일(6)을 제외
+								                totalDays++;
+								            }
+								            currentDate.setDate(currentDate.getDate() + 1);
+								        }
+								        
+								        document.getElementById("total_leave_days_leave").value = totalDays;
+								    } else {
+								        document.getElementById("total_leave_days_leave").value = ""; // 유효하지 않은 경우 비워줌
+								    }
+								}
 
-        // 날짜 유효성 검사
-        if (!validateLeaveDates()) {
-            return; // 유효성 검사 실패 시 제출 중단
-        }
+								// 휴직 폼 제출 시 처리
+								function submitLeaveApplication() {
+								    // 날짜 유효성 검사
+								    if (!validateLeaveDates()) {
+								        return; // 유효성 검사 실패 시 제출 중단
+								    }
 
-        // 총 휴직 일수 계산
-        calculateTotalLeaveDays();
+								    // 총 휴직 일수 계산
+								    calculateTotalLeaveDays();
 
-        // 입력된 값 가져오기
-        const empId = document.getElementById("empIdLeave").value;
-        const leaveType = document.getElementById("leave_type_leave").value;
-        const leaveStartDate = document.getElementById("leave_start_date_leave").value;
-        const endLeaveDate = document.getElementById("end_leave_date_leave").value;
-        const totalLeaveDays = document.getElementById("total_leave_days_leave").value;
-        const leaveStatus = document.getElementById("leave_status_leave").value;
-        const reason = document.getElementById("reason_leave").value;
-        const requestedAt = document.getElementById("requested_at").value; // 신청 날짜 및 시간 가져오기
+								    // 입력된 값 가져오기
+								    const empId = document.getElementById("empIdLeave").value;
+								    const leaveType = document.getElementById("leave_type_leave").value;
+								    const leaveStartDate = document.getElementById("leave_start_date_leave").value;
+								    const endLeaveDate = document.getElementById("end_leave_date_leave").value;
+								    const totalLeaveDays = document.getElementById("total_leave_days_leave").value;
+								    const leaveStatus = document.getElementById("leave_status_leave").value;
+								    const reason = document.getElementById("reason_leave").value;
 
-        // 서버에 데이터 전송하는 로직 추가 (AJAX 사용)
-        $.ajax({
-            type: "POST",
-            url: "leavesubmit", // 서버의 API 엔드포인트
-            contentType: "application/json", // JSON 형태로 전송
-            data: JSON.stringify({
-                emp_id: empId,
-                leave_type: leaveType,
-                leave_start_date: leaveStartDate,
-                end_leave_date: endLeaveDate,
-                reason: reason,
-                total_leave_days: totalLeaveDays,
-                leave_status: leaveStatus,
-                requested_at: requestedAt // 신청 날짜 및 시간 전송
-            }),
-            success: function(response) {
-                // 요청이 성공했을 때의 처리
-                console.log("휴직 신청이 완료되었습니다:", response);
-                alert("휴직 신청이 완료되었습니다."); // 알림창으로 결과 보여주기
-                closeLeaveApplicationModal(); // 성공한 후에 모달 닫기
-            },
-            error: function(xhr, status, error) {
-                // 요청이 실패했을 때의 처리
-                console.error("휴직 신청 실패:", error);
-                alert("휴직 신청 실패: " + error); // 에러 메시지 보여주기
-            }
-        });
-    });
+								    // SweetAlert2로 확인 메시지 표시
+								    Swal.fire({
+								        title: '휴직 신청',
+								        text: '정말로 연차를 신청하시겠습니까?',
+								        icon: 'question',
+								        showCancelButton: true,
+								        confirmButtonText: '네, 신청합니다',
+								        cancelButtonText: '아니오',
+								        confirmButtonColor: '#3085d6',
+								        cancelButtonColor: '#d33'
+								    }).then((result) => {
+								        if (result.isConfirmed) {
+								            // 서버에 데이터 전송하는 로직 추가 (AJAX 사용)
+								            $.ajax({
+								                type: "POST",
+								                url: "leavesubmit", // 서버의 API 엔드포인트
+								                contentType: "application/json", // JSON 형태로 전송
+								                data: JSON.stringify({
+								                    emp_id: empId,
+								                    leave_type: leaveType,
+								                    leave_start_date: leaveStartDate,
+								                    end_leave_date: endLeaveDate,
+								                    reason: reason,
+								                    total_leave_days: totalLeaveDays,
+								                    leave_status: leaveStatus
+								                }),
+								                success: function(response) {
+								                    // 성공 메시지 표시
+								                    Swal.fire({
+								                        title: '신청 완료',
+								                        text: '휴직 신청이 완료되었습니다.',
+								                        icon: 'success',
+								                        confirmButtonColor: '#3085d6'
+								                    }).then(() => {
+								                    	if (result.isConfirmed) {
+								                            // 사용자가 확인 버튼을 클릭했을 때
+								                            document.getElementById('leaveApplicationForm').reset(); // 폼 초기화
+								                            // 추가 동작을 여기에 작성
+								                        }
+								                    });
+								                },
+								                error: function(xhr, status, error) {
+								                    // 요청이 실패했을 때의 처리
+								                    console.error("휴직 신청 실패:", error);
+								                    alert("휴직 신청 실패: " + error); // 에러 메시지 보여주기
+								                }
+								            });
+								        }
+								    });
+								}
 
-    // 날짜 선택 시 총 휴직 일수 계산
-    document.getElementById("leave_start_date_leave").addEventListener("change", calculateTotalLeaveDays);
-    document.getElementById("end_leave_date_leave").addEventListener("change", calculateTotalLeaveDays);
+								// 날짜 선택 시 총 휴직 일수 계산
+								document.getElementById("leave_start_date_leave").addEventListener("change", calculateTotalLeaveDays);
+								document.getElementById("end_leave_date_leave").addEventListener("change", calculateTotalLeaveDays);
 </script>
 
 
@@ -1236,12 +1276,7 @@ function getAttendanceStatusDisplay(leave_status) {
   	            	};
 	             			
 	                     
-	             			
-	             			
-	             			
-	             			
-	             			
-  	             
+	     
   	             	$.ajax({
   	            		url:'/leave/insertSignInfoForLeave',
   	            		type: 'POST',
@@ -1283,7 +1318,7 @@ function getAttendanceStatusDisplay(leave_status) {
 
 
 
-					<!------------------------------------------------------------------------------------------------------------------>
+<!------------------------------------------------------------------------------------------------------------------>
 				</div>
 				<!-- page-inner -->
 			</div>

@@ -17,6 +17,13 @@
 <!--QR 라이브러리  -->
 
 
+
+<!-- SweetAlert2 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
 <link
 	href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
 	rel="stylesheet">
@@ -219,7 +226,7 @@ body {
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-primary"
-													onclick="submitOvertimeForm()">제출</button>
+													onclick="submitOvertimeForm()">신청</button>
 												<button type="button" class="btn btn-secondary"
 													data-dismiss="modal">닫기</button>
 											</div>
@@ -236,7 +243,9 @@ function validateForm() {
     const overtime = document.getElementById('overtime').value;
     const nightWorkTime = document.getElementById('night_work_time').value;
     const specialWorkingTime = document.getElementById('special_working_time').value;
-
+    const status = document.getElementById('status').value;
+    const modified_reason = document.getElementById('modified_reason').value;
+    
     // 필수 입력 확인
     if (!attendanceId) {
         alert("근태 ID를 입력해 주세요.");
@@ -261,42 +270,72 @@ function submitOvertimeForm() {
         return;
     }
 
-    // 폼 요소 가져오기
-    const form = document.getElementById('overtimeForm');
-    const formData = new FormData(form);
+    // SweetAlert2로 초과 근무 신청 확인 창 표시
+    Swal.fire({
+        title: '초과 근무 신청',
+        text: '정말로 초과 근무를 신청하시겠습니까?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '네, 신청합니다',
+        cancelButtonText: '아니오',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33'
+    }).then((result) => {
+        // 사용자가 확인 버튼을 클릭한 경우
+        if (result.isConfirmed) {
+            // 폼 요소 가져오기
+            const form = document.getElementById('overtimeForm');
+            const formData = new FormData(form);
 
-    // FormData를 JSON으로 변환
-    const data = {};
-    formData.forEach(function(value, key) {
-        data[key] = value;
-    });
+            // FormData를 JSON으로 변환
+            const data = {};
+            formData.forEach(function(value, key) {
+                data[key] = value;
+            });
 
-    // AJAX 요청 생성
-    fetch('overtimeSubmit', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json', // JSON 형식으로 전송
-        },
-        body: JSON.stringify(data), // JSON 문자열로 변환
-    })
-    .then(function(response) {
-        // 서버에서 JSON 형식으로 응답을 받을 경우
-        if (!response.ok) {
-            throw new Error('서버 응답에 문제가 있습니다.');
+            // AJAX 요청 생성
+            fetch('overtimeSubmit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // JSON 형식으로 전송
+                },
+                body: JSON.stringify(data), // JSON 문자열로 변환
+            })
+            .then(function(response) {
+                // 서버에서 JSON 형식으로 응답을 받을 경우
+                if (!response.ok) {
+                    throw new Error('서버 응답에 문제가 있습니다.');
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                // 서버 응답 처리 성공 시
+                Swal.fire({
+                    title: '신청 완료',
+                    text: '초과 근무가 성공적으로 신청되었습니다.',
+                    icon: 'success',
+                    confirmButtonText: '확인',
+                    confirmButtonColor: '#3085d6',
+                });
+
+                $('#overtimeModal').modal('hide'); // 모달 닫기
+                form.reset(); // 폼 초기화
+            })
+            .catch(function(error) {
+                // 오류 발생 시
+                console.error('오류 발생:', error);
+                Swal.fire({
+                	 title: '신청 완료',
+                     text: '초과 근무가 성공적으로 신청되었습니다.',
+                     icon: 'success',
+                     confirmButtonText: '확인',
+                     confirmButtonColor: '#3085d6',
+                });
+
+                $('#overtimeModal').modal('hide'); // 모달 닫기
+                form.reset(); // 폼 초기화
+            });
         }
-        return response.json();
-    })
-    .then(function(data) {
-        // 서버 응답 처리
-        alert('신청서가 성공적으로 제출되었습니다.');
-        $('#addRowModal').modal('hide'); // 모달 닫기
-        form.reset(); // 폼 초기화
-    })
-    .catch(function(error) {
-        console.error('오류 발생:', error);
-        alert('신청서가 성공적으로 제출되었습니다.');
-        $('#addRowModal').modal('hide'); // 모달 닫기
-        form.reset(); // 폼 초기화
     });
 }
 </script>
@@ -591,21 +630,42 @@ function submitAttendanceForm2() {
     };
 
     console.log("전송 데이터:", formData); // 디버깅을 위한 로그 확인
-
-    $.ajax({
-        type: "POST",
-        url: "updateAttendanceA", // 서버로 요청할 URL
-        contentType: "application/json",
-        data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환하여 전송
-        success: function(response) {
-            alert("신청서가 제출되었습니다.");
-            // 폼 전체 초기화
-            $('#attendanceForm')[0].reset();
-            $('#updateModal').modal('hide'); // 모달 닫기
-        },
-        error: function(xhr, status, error) {
-            console.error("Error:", error); // 디버깅을 위한 로그 확인
-            alert("신청서 제출에 실패했습니다: " + xhr.responseText);
+    // 사용자에게 신청 여부 확인
+    Swal.fire({
+        title: '출퇴근 수정 신청',
+        text: '정말로 출퇴근 수정을 신청하시겠습니까?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '네, 신청합니다',
+        cancelButtonText: '아니오',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // AJAX 요청
+            $.ajax({
+                type: "POST",
+                url: "updateAttendanceA", // 서버로 요청할 URL
+                contentType: "application/json",
+                data: JSON.stringify(formData), // 데이터를 JSON 문자열로 변환하여 전송
+                success: function(response) {
+                    // 성공 메시지 표시
+                    Swal.fire({
+                        title: '신청 완료',
+                        text: '출퇴근 수정 신청이 완료되었습니다.',
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6'
+                    }).then(() => {
+                        // 성공 메시지 후에 필요한 추가 동작을 여기에 작성
+                        $('#attendanceForm')[0].reset(); // 폼 초기화
+                        $('#updateModal').modal('hide'); // 모달 닫기
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error); // 디버깅을 위한 로그 확인
+                    alert("신청서 제출에 실패했습니다: " + xhr.responseText);
+                }
+            });
         }
     });
 }
@@ -702,7 +762,7 @@ function submitAttendanceForm2() {
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-primary"
-													onclick="submitBusinessTrip()">신청하기</button>
+													onclick="submitBusinessTrip()">신청</button>
 												<button type="button" class="btn btn-secondary"
 													data-dismiss="modal">닫기</button>
 											</div>
@@ -721,7 +781,11 @@ function submitBusinessTrip() {
     const workformStatus = document.getElementById('workformStatus').value;
     const status = document.getElementById('status').value;
     const reason = document.getElementById('reason').value;
-
+	
+    
+    
+    
+    
     // 유효성 검사
     if (!businessDate && !businessEndDate && !educationDate && !educationEndDate) {
         alert('출장 시작 날짜, 출장 종료 날짜, 교육 시작 날짜, 교육 종료 날짜 중 하나 이상을 입력해야 합니다.');
@@ -737,32 +801,58 @@ function submitBusinessTrip() {
         alert('교육 종료 날짜는 교육 시작 날짜보다 이후여야 합니다.');
         return;
     }
-
-    // 데이터 전송
-    $.ajax({
-        url: 'applyBusinessTrip', // 엔드포인트 URL 확인 필요
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({
-            emp_id: empId,
-            businessDate: businessDate,
-            business_endDate: businessEndDate,
-            educationDate: educationDate,
-            education_endDate: educationEndDate,
-            workform_status: workformStatus,
-            created_at : createdAt,
-            status: status,
-            modified_reason: reason,         
-        }),
-        success: function(response) {
-            alert('신청이 완료되었습니다!');
-            document.getElementById('businessTripForm').reset(); // 폼 ID가 'businessTripForm'일 경우
-            
-            $('#businessTripModal').modal('hide'); // 모달 닫기
-        },
-        error: function(error) {
-            alert('신청 중 오류가 발생했습니다. 다시 시도해주세요.');
-            console.error('Error:', error);
+	// 출장과 교육 날짜가 동시에 입력된 경우
+	if ((businessDate || businessEndDate) && (educationDate || educationEndDate)) {
+	        alert('출장과 교육 날짜는 동시에 입력할 수 없습니다. 둘 중 하나만 입력해주세요.');
+	        return;
+	    }
+    
+    // Swal.fire 확인 모달
+    Swal.fire({
+        title: '교육/출장 신청',
+        text: '정말로 교육/출장을 신청하시겠습니까?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '네, 신청합니다',
+        cancelButtonText: '아니오',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // 사용자 확인 후 AJAX 요청
+            $.ajax({
+                url: 'applyBusinessTrip', // 엔드포인트 URL 확인 필요
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    emp_id: empId,
+                    businessDate: businessDate,
+                    business_endDate: businessEndDate,
+                    educationDate: educationDate,
+                    education_endDate: educationEndDate,
+                    workform_status: workformStatus,
+                    created_at: createdAt,
+                    status: status,
+                    modified_reason: reason,
+                }),
+                success: function(response) {
+                    // 성공 메시지 표시
+                    Swal.fire({
+                        title: '신청 완료',
+                        text: '교육/출장 신청이 완료되었습니다.',
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6'
+                    }).then(() => {
+                        // 폼 초기화 및 모달 닫기
+                        document.getElementById('businessTripForm').reset();
+                        $('#businessTripModal').modal('hide');
+                    });
+                },
+                error: function(error) {
+                    alert('신청 중 오류가 발생했습니다. 다시 시도해주세요.');
+                    console.error('Error:', error);
+                }
+            });
         }
     });
 }
@@ -839,7 +929,7 @@ function submitBusinessTrip() {
 											<span class="font-semibold">출근 시간:</span> <span
 												id="checkinTimeDisplay"> <!-- ID를 추가 --> <c:choose>
 													<c:when test="${not empty checkInTime}">
-                ${checkInTime} <!-- 출근 시간이 있을 경우 표시 -->
+               											 ${checkInTime} <!-- 출근 시간이 있을 경우 표시 -->
 													</c:when>
 													<c:otherwise>
 														<span class="text-gray-500">출근 기록이 없습니다.</span>
@@ -869,14 +959,7 @@ function submitBusinessTrip() {
 										<button id="calculateButton" class="btn btn-primary">근무한
 											시간</button>
 
-
-										<!-- 출근 버튼  로그인 구현시 시도해보기 -->
-
-										<%--      <form action="${pageContext.request.contextPath}/Attendance/checkin" method="post"> --%>
-										<%--         <input type="hidden" name="emp_id" value="${sessionScope.emp_id}" /> <!-- emp_id를 숨겨진 필드로 전달 --> --%>
-										<!--         <button type="submit">출근</button> -->
-										<!--     </form> -->
-
+										
 
 										<button id="checkoutButton" class="btn btn-primary">퇴근</button>
 										<button class="btn btn-primary" onclick="recordOutdoorTime()">외출</button>
@@ -890,14 +973,27 @@ function submitBusinessTrip() {
 
 									</div>
 								</div>
+							
+
+
 
 								<script>
   // 출근 성공 시 알림 표시
   window.onload = function() {
-      <c:if test="${checkInSuccess}">
-          alert('출근이 성공적으로 처리되었습니다.');
-      </c:if>
-  };
+	  // JSP의 JSTL 태그를 통해 checkInSuccess 변수가 true인지 체크
+	    <c:if test="${checkInSuccess}">
+	      // SweetAlert2로 출근 성공 알림 표시
+	      Swal.fire({
+	        title: '출근 성공!',
+	        text: '출근이 성공적으로 처리되었습니다.',
+	        icon: 'success', // success, error, warning, info, question 중 선택 가능
+	        confirmButtonText: '확인',
+	        confirmButtonColor: '#3085d6',
+	        backdrop: true,
+	        timer: 3000 // 3초 후 자동으로 닫힘
+	      });
+	    </c:if>
+	  };
   
   
 function recordOutdoorTime() {
@@ -918,7 +1014,12 @@ function recordOutdoorTime() {
         if (response.ok) {
             const outdoorTime = new Date().toLocaleString(); // 현재 시간을 로컬 포맷으로 가져옴
             document.getElementById('outdoorTimeDisplay').innerText = outdoorTime; // 외출 시간 표시
-            alert('외출 시간이 기록되었습니다.');
+            Swal.fire({
+                title: '외출',
+                text: '외출 시간이 기록되었습니다.',
+                icon: 'success',
+                confirmButtonText: '확인'
+            });
         } else {
             alert('외출 시간 기록에 실패하였습니다.');
         }
@@ -944,7 +1045,12 @@ function recordReturnTime() {
         if (response.ok) {
             const returnTime = new Date().toLocaleString(); // 현재 시간을 로컬 포맷으로 가져옴
             document.getElementById('returnTimeDisplay').innerText = returnTime; // 복귀 시간 표시
-            alert('복귀 시간이 기록되었습니다.');
+            Swal.fire({
+                title: '복귀',
+                text: '복귀 시간이 기록되었습니다.',
+                icon: 'success',
+                confirmButtonText: '확인'
+            });
         } else {
             alert('복귀 시간 기록에 실패하였습니다.');
         }
@@ -1054,7 +1160,12 @@ function determineWorkStatus(checkInTime, checkOutTime) {
 			            type: 'GET',
 			            success: function(response) {
 			                if (response.status === 'success') {
-			                    alert(response.message);
+			                	   Swal.fire({
+			                	        title: '퇴근',
+			                	        text: '퇴근 시간이 기록되었습니다.',
+			                	        icon: 'success',
+			                	        confirmButtonText: '확인'
+			                	    });
 
 			                    // 퇴근 시간이 성공적으로 업데이트되면 현재 시간을 퇴근 시간으로 표시
 			                    const now = new Date();
@@ -1088,7 +1199,12 @@ function determineWorkStatus(checkInTime, checkOutTime) {
 		                url: '<c:url value="calculateWorkingTime" />',
 		                type: 'GET',
 		                success: function(response) {
-		                    alert(response.message);
+		                	  Swal.fire({
+		                	        title: '근무한 시간',
+		                	        text: '근무한 시간이 성공적으로 계산되었습니다.',
+		                	        icon: 'success',
+		                	        confirmButtonText: '확인'
+		                	    });
 		                    // 계산된 근무 시간을 페이지에 표시
 		                    $('#workingTimeDisplay').text('총 근무 시간: ' + formatWorkingTime(response.workingTime));
 		                },
@@ -1100,13 +1216,16 @@ function determineWorkStatus(checkInTime, checkOutTime) {
 		    });
 
 		 // 근무 시간을 hh:mm 형식으로 변환하는 함수
-		    function formatWorkingTime(totalHours) {
-		        var hours = Math.floor(totalHours); // 시간 계산 (정수 부분)
-		        var minutes = Math.round((totalHours - hours) * 60); // 소수 부분을 분으로 변환 (필요 시)
-
-		        // 2자리 숫자 형식으로 변환
-		        return (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
-		    }
+		   // 근무 시간을 hh:mm 형식으로 변환하고 "시간"과 "분" 문구를 추가하는 함수
+		function formatWorkingTime(totalHours) {
+		    var hours = Math.floor(totalHours); // 시간 계산 (정수 부분)
+		    var minutes = Math.round((totalHours - hours) * 60); // 소수 부분을 분으로 변환
+		
+		    // 시간과 분을 문자열로 결합하여 반환
+		    var formattedTime = hours + '시간 ' + minutes + '분';
+		
+		    return formattedTime; // "시간" 문구와 "분" 문구 추가
+		   }
 </script>
 
 
