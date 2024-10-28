@@ -1060,7 +1060,7 @@ function getAttendanceStatusDisplay(leave_status) {
 		        $(this).closest('tr').remove();
 		    });
      	
-     	// 결재요청 시 급여내역리스트 업데이트 및 워크플로우에 INSERT 후 페이지 리로딩
+     	// 결재요청 시 급여내역리스트 업데이트 및 워크플로우에 INSERT 후 페이지 리로딩 d
      	$('#signRequestBtn').click(function(){
      		swal({
   	              title: "결재요청 하시겠습니까?",
