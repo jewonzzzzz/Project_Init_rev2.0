@@ -907,3 +907,6 @@ table tr{
 .main-panel{
 	background-color: rgba(248, 249, 250, 1);
 }
+.modal-content{
+	background-color: #fff;
+}

@@ -327,13 +327,28 @@
             function addCommas(value) {
                 return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             }
-
+        	 
             // 페이지 로드 시 특정 입력 필드의 값에 쉼표 추가
             $('input').each(function() {
                 var originalValue = $(this).val();  // 입력 필드의 기존 값 가져오기
                 if (originalValue) {  // 값이 존재하면 쉼표 추가
                     var formattedValue = addCommas(originalValue);
                     $(this).val(formattedValue);  // 포맷된 값으로 업데이트
+                }
+            });
+            
+        	// input 필드 클릭 시 콤마 제거
+            $('input').on('click', function () {
+                $(this).val($(this).val().replace(/,/g, ''));
+            });
+            
+        	// 숫자이외 값 입력 시 경고알림 및 값 제거
+            $('input').on('input', function () {
+                let value = $(this).val();
+                // 숫자가 아닌 값을 제거
+                if (!/^\d*$/.test(value)) {
+                    alert('숫자만 입력 가능합니다.');
+                    $(this).val(value.replace(/[^0-9]/g, '')); // 숫자 이외의 문자 제거
                 }
             });
             
