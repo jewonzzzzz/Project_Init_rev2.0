@@ -88,10 +88,14 @@ public class AttendanceController {
 				session.setAttribute("emp_job", employee.getEmp_job());
 				session.setAttribute("emp_position", employee.getEmp_position());
 				session.setAttribute("emp_name", employee.getEmp_name());
-
+				session.setAttribute("emp_profile", employee.getEmp_profile());
+				
+				logger.debug("emp_profile: " + employee.getEmp_profile());
+				
 				model.addAttribute("emp_job", employee.getEmp_job());
 				model.addAttribute("emp_position", employee.getEmp_position());
 				model.addAttribute("emp_name", employee.getEmp_name());
+				model.addAttribute("emp_profile", employee.getEmp_profile());
 			}
 		} else {
 			logger.debug("emp_id가 존재하지 않거나 비어 있습니다.");
