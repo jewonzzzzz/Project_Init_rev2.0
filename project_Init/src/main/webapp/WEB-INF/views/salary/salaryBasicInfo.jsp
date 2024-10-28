@@ -289,6 +289,31 @@
                 }
             });
             
+        	// input 필드 클릭 시 콤마 제거
+            $('input').on('click', function () {
+                $(this).val($(this).val().replace(/,/g, ''));
+            });
+            
+            // 숫자이외 값 입력 시 경고알림 및 값 제거
+            $('input[name="hourwage"]').on('input', function () {
+                let value = $(this).val();
+                // 숫자가 아닌 값을 제거
+                if (!/^\d*$/.test(value)) {
+                    alert('숫자만 입력 가능합니다.');
+                    $(this).val(value.replace(/[^0-9]/g, '')); // 숫자 이외의 문자 제거
+                }
+            });
+            
+            // 소수점이외 값 입력 시 경고알림 및 값 제거
+            $('input:not(input[name="hourwage"])').on('input', function () {
+                let value = $(this).val();
+                // 숫자와 소수점 이외의 문자 제거
+                if (!/^\d*\.?\d*$/.test(value)) {
+                    alert('숫자와 소수점만 입력 가능합니다.');
+                    $(this).val(value.replace(/[^0-9.]/g, '')); // 숫자와 소수점 외의 문자 제거
+                }
+            });
+            
             $("#saveBtn").click(function (event) {
             	  event.preventDefault();  // 기본 동작 막기
             	  
