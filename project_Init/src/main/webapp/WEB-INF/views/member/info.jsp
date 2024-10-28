@@ -52,171 +52,144 @@
 
 <style>
 .page-title {
-	font-size: 24px;
-	font-weight: bold;
-	margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
+/* 테이블 공통 스타일 */
 .info-table {
-	width: 100%;
-	border-collapse: collapse;
-	margin-top: 20px;
-	font-size: 14px;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 30px auto;
+    font-size: 15px;
 }
 
-.info-table th, .info-table td {
-	padding: 10px;
-	border: 1px solid #ddd;
-	text-align: left;
-	background-color: white;
+.info-table th, 
+.info-table td {
+    padding: 20px;
+    border: 1px solid #ddd;
+    text-align: center;
+    background-color: white;
+    height: 40px;
+    vertical-align: middle;
+    line-height: 1.5;
 }
 
 .info-table th {
-	font-weight: bold;
+    background-color: #f8f9fa;
+    font-weight: bold;
+    text-align: center;
+    width: 15%;
+}
+
+.info-table tr:hover td {
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease;
 }
 
 .info-table img {
-	border-radius: 5px;
-	max-width: 150px;
-	height: auto;
+    border-radius: 5px;
+    max-width: 150px;
+    height: auto;
 }
 
-.info-actions {
-	margin-top: 20px;
-	text-align: left;
+/* 프로필 관련 스타일 */
+.profile-pic-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
 }
 
-.btn-modal {
-	padding: 8px 15px;
-	margin-left: 92%;
-	margin-top: 1%;
-	border: none;
-	border-radius: 4px;
-	background-color: #0055FF;
-	color: white;
-	cursor: pointer;
+.profile-pic-container img {
+    width: 160px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.info-table td.profile-cell {
+    width: 180px;
+    height: 240px;
+    padding: 10px;
+    vertical-align: middle;
 }
 
 /* 탭 스타일 */
 .tabs {
-	display: flex;
-	border-bottom: 2px solid #ddd;
-	margin-bottom: 20px;
-	margin-top: 30px;
+    display: flex;
+    border-bottom: 2px solid #ebedf2;
+    margin-bottom: 20px;
+    margin-top: 30px;
+    background-color: #fff;
+    padding: 0;
 }
 
 .tabs a {
-	padding: 10px 20px;
-	text-decoration: none;
-	color: #333;
-	border: 1px solid #ddd;
-	border-bottom: none;
-	background-color: #ebedf2;
-	margin-right: 5px;
-}
-
-.tabs a.active {
-	background-color: white;
-	font-weight: bold;
-}
-
-#addLicenseBtn {
-	padding: 8px 15px;
-	margin-top: 1%;
-	margin-left: 92%;
-	border: none;
-	border-radius: 4px;
-	background-color: #0055FF;
-	color: white;
-	cursor: pointer;
-}
-
-.delete-license {
-	border: none;
-	border-radius: 4px;
-	background-color: #f44336;
-	color: white;
-	cursor: pointer;
-}
-
-.profile-pic-container {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: 100%;
-	height: 100%;
-	padding: 10px;
-}
-
-.profile-pic-container img {
-	width: 160px;
-	height: 200px;
-	object-fit: cover;
-	border-radius: 5px;
-	margin-bottom: 10px;
-}
-
-.info-table td.profile-cell {
-	width: 180px;
-	height: 240px;
-	padding: 10px;
-	vertical-align: middle;
-}
-
-.tabs {
-	display: flex;
-	border-bottom: 2px solid #ebedf2;
-	margin-bottom: 20px;
-	margin-top: 30px;
-	background-color: #fff;
-	padding: 0;
-}
-
-.tabs a {
-	padding: 15px 25px;
-	text-decoration: none;
-	color: #1a2035;
-	position: relative;
-	font-weight: 500;
-	transition: all 0.3s ease;
-	border: none;
-	background: none;
-	margin-right: 5px;
+    padding: 15px 25px;
+    text-decoration: none;
+    color: #1a2035;
+    position: relative;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    background: none;
+    margin-right: 5px;
 }
 
 .tabs a:hover {
-	color: #0055FF;
-	background-color: rgba(0, 85, 255, 0.1);
+    color: #0055FF;
+    background-color: rgba(0, 85, 255, 0.1);
 }
 
-/* active 클래스 스타일 */
 .tabs a.active {
-	color: #0055FF;
-	background-color: transparent;
-	border-bottom: 2px solid #0055FF;
-	margin-bottom: -2px;
+    color: #0055FF;
+    background-color: transparent;
+    border-bottom: 2px solid #0055FF;
+    margin-bottom: -2px;
 }
 
-/* 탭 내용을 감싸는 카드 스타일 */
+/* 탭 콘텐츠 영역 */
 .tab-content {
-	background: #fff;
-	padding: 20px;
-	border-radius: 0 0 8px 8px;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    padding: 30px;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    min-height: 400px;
+    margin-bottom: 30px;
+    display: flex;           
+    flex-direction: column; 
+    align-items: center;    
 }
 
+/* 버튼 스타일 */
 .btn-modal, #addLicenseBtn {
-	padding: 8px 20px;
-	border-radius: 4px;
-	background-color: #0055FF;
-	color: white;
-	border: none;
-	transition: all 0.3s ease;
+    padding: 8px 20px;
+    margin-left: 92%;
+    margin-top: 1%;
+    border: none;
+    border-radius: 4px;
+    background-color: #0055FF;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .btn-modal:hover, #addLicenseBtn:hover {
-	background-color: #0044cc;
-	box-shadow: 0 2px 6px rgba(0, 85, 255, 0.2);
+    background-color: #0044cc;
+    box-shadow: 0 2px 6px rgba(0, 85, 255, 0.2);
+}
+
+.delete-license {
+    border: none;
+    border-radius: 4px;
+    background-color: #f44336;
+    color: white;
+    cursor: pointer;
 }
 </style>
 <!------------------------------------------------------------------------------------------------------------------>
@@ -245,7 +218,7 @@
 							<div class="info-container">
 								<table class="table table-bordered table-head-bg-info">
 									<tr>
-										<td colspan="2" rowspan="4" style="width: 8%;">
+										<td rowspan="4" style="width: 8%;">
 											<div class="profile-pic-container">
 											    <c:choose>
 											        <c:when test="${empty memberVO.emp_profile || memberVO.emp_profile eq 'void'}">
@@ -310,6 +283,8 @@
 
 							<div class="tab-content" style="width: 100%;">
 								<!-- 탭 클릭 시 정보가 여기에 표시됩니다. -->
+							  </div>
+							 </div>
 							</div>
 							<!------------------------------------------------------------------------------------------------------------------>
 						</div>
