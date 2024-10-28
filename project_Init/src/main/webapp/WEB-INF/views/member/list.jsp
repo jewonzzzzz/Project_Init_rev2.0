@@ -328,19 +328,39 @@ footer {
 
 						<!-- 페이징  -->
 						<div class="d-flex justify-content-center mt-4">
-							<div class="pagination">
-								<ul>
-									<li class="${currentPage == 1 ? 'disabled' : ''}"><a
-										href="?page=${currentPage - 1}">&laquo; 이전</a></li>
-									<c:forEach var="i" begin="1" end="${totalPages}">
-										<li class="${currentPage == i ? 'active' : ''}"><a
-											href="?page=${i}">${i}</a></li>
-									</c:forEach>
-									<li class="${currentPage == totalPages ? 'disabled' : ''}">
-										<a href="?page=${currentPage + 1}">다음 &raquo;</a>
-									</li>
-								</ul>
-							</div>
+						    <div class="pagination">
+						        <ul>
+						            <!-- 이전 10페이지 그룹으로 이동 -->
+						            <li class="${currentPage <= 10 ? 'disabled' : ''}">
+						                <a href="?page=${((currentPage-1) - ((currentPage-1) % 10))}">&laquo;</a>
+						            </li>
+						            
+						            <!-- 이전 페이지 -->
+						            <li class="${currentPage == 1 ? 'disabled' : ''}">
+						                <a href="?page=${currentPage - 1}">이전</a>
+						            </li>
+						            
+						            <!-- 페이지 번호 -->
+						            <c:forEach var="i" begin="1" end="${totalPages}">
+						                <!-- 현재 페이지가 속한 그룹의 10페이지만 보여줌 -->
+						                <c:if test="${i <= ((currentPage-1) - ((currentPage-1) % 10)) + 10 && i > ((currentPage-1) - ((currentPage-1) % 10))}">
+						                    <li class="${currentPage == i ? 'active' : ''}">
+						                        <a href="?page=${i}">${i}</a>
+						                    </li>
+						                </c:if>
+						            </c:forEach>
+						            
+						            <!-- 다음 페이지 -->
+						            <li class="${currentPage == totalPages ? 'disabled' : ''}">
+						                <a href="?page=${currentPage + 1}">다음</a>
+						            </li>
+						            
+						            <!-- 다음 10페이지 그룹으로 이동 -->
+						            <li class="${((currentPage-1) - ((currentPage-1) % 10)) + 10 >= totalPages ? 'disabled' : ''}">
+						                <a href="?page=${((currentPage-1) - ((currentPage-1) % 10)) + 11}">&raquo;</a>
+						            </li>
+						        </ul>
+						    </div>
 						</div>
 					</div>
 				</div>
