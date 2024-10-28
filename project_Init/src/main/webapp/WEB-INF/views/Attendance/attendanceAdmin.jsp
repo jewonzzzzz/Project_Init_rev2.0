@@ -549,27 +549,12 @@
                 });
             }
         });
-     
-     
-     
-     
-        
+          
         // 닫기 버튼 클릭 시 모달 닫기
         $('.btn-secondary').on('click', function() {
             $("#editModal").modal('hide'); // 모달을 닫는 코드
-        });
-     
-    });
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        });     
+    });    
     </script>
 	<br>
 	<br>
