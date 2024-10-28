@@ -343,7 +343,7 @@ function submitLeaveForm() {
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="leaveRequestForm">
+            
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="empId">사원 번호:</label>
@@ -398,10 +398,10 @@ function submitLeaveForm() {
                     </div>
                 </div>
                 <div class="modal-footer">
-                   <button type="submit" class="btn btn-primary">신청</button>
+                   <button type="button" class="btn btn-primary" id ="signBtn" data-bs-toggle="modal" data-bs-target="#addRowModal">신청</button>
                     <button type="button" class="btn btn-secondary" onclick="closeLeaveRequestModal()">닫기</button>
                 </div>	
-            </form>
+         
         </div>
     </div>
 </div>
