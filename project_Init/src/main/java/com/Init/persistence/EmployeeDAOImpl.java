@@ -16,6 +16,7 @@ import com.Init.domain.EmployeeVO;
 import com.Init.domain.SettingVO;
 import com.Init.service.MessageServiceImpl;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Random;
@@ -112,8 +113,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		
 		Random random = new Random();
 		
-        LocalDate startDate = LocalDate.of(2023, 1, 1);
-        LocalDate endDate = LocalDate.of(2023, 12, 31);
+        LocalDate startDate = LocalDate.of(2024, 1, 1);
+        LocalDate endDate = LocalDate.of(2024, 10, 30);
         
         
         List<String> emp_list = sqlSession.selectList(NAMESPACE + ".emp_dummy");
@@ -167,5 +168,28 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             
         }
     }
+
+	@Override
+	public void dummySetting() {
+		 List<String> emp_list = sqlSession.selectList(NAMESPACE + ".emp_dummy");
+	        
+	        for(String emp : emp_list) {
+	        	sqlSession.insert(NAMESPACE + ".dummySetting",emp);
+	        	sqlSession.insert(NAMESPACE + ".dummyFavorite",emp);
+	        }
+	}
+
+	@Override
+	public List<String> getPrecense(String emp_id, LocalDate startDate, LocalDate endDate) {
+		 Map<String, Object> param = new HashMap<>();
+         param.put("emp_id", emp_id);
+         param.put("startDate", startDate);
+         param.put("endDate", endDate);
+         List<String> result =  sqlSession.selectList(NAMESPACE + ".getPresence",param);
+         logger.debug("precense : " + result);
+		return result;
+	}
+	
+	
 
 }

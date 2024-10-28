@@ -107,5 +107,23 @@
 		select emp_id from employee
 	</select>
 	
+	<insert id="dummySetting">
+	    INSERT INTO user_setting
+	    (emp_id, tool_id_1, tool_id_2, tool_id_3, tool_id_4, log_on) 
+	    VALUES 
+	    (#{emp_id}, null, null, null, null, false)
+	</insert>
+	
+	<insert id="dummyFavorite">
+	    INSERT INTO user_favorites
+	    (emp_id, favorite_emp_id, favorite_room_id) 
+	    VALUES 
+	    (#{emp_id}, null, null)
+	</insert>
+	
+	<select id = "getPresence" resultType="java.util.Map" >
+		select date,presence from work_record where emp_id = #{emp_id} and date between #{startDate} and #{endDate}
+	</select>
+	
 </mapper>  
   
