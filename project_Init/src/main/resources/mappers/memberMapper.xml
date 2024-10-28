@@ -350,15 +350,18 @@
 	    FROM employee e
 	    LEFT JOIN dept d ON e.emp_dnum = d.dnum
 	    WHERE e.approval = 0
-	    ORDER BY e.emp_bnum, e.emp_dnum, e.emp_position
+	    ORDER BY 
+	        FIELD(e.emp_position, '사장', '부사장', '본부장', '부장') ASC,
+	        e.emp_bnum, 
+	        e.emp_dnum
 	</select>
 
-    <select id="getTeamMemPage" parameterType="string" resultType="MemberVO">
+	<select id="getTeamMemPage" parameterType="string" resultType="MemberVO">
 	    SELECT e.*, d.dname as dept_name
 	    FROM employee e
 	    LEFT JOIN dept d ON e.emp_dnum = d.dnum
 	    WHERE e.emp_dnum = #{deptId} 
-	    AND e.emp_job != '부서장'
+	    AND e.emp_position != '부장'
 	    AND e.approval = 0
 	    ORDER BY e.emp_position
 	</select>
