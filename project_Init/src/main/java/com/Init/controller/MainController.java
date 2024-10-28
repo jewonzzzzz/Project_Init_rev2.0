@@ -43,13 +43,13 @@ public class MainController {
 	
 	@RequestMapping(value = "/login",method = RequestMethod.GET)
 	public String loginGet(EmployeeVO vo) {
-		logger.debug("사용자가 로그인하였습니다. 로그온 정보를 업데이트하였습니다.");
+		logger.debug("�궗�슜�옄媛� 濡쒓렇�씤�븯���뒿�땲�떎. 濡쒓렇�삩 �젙蹂대�� �뾽�뜲�씠�듃�븯���뒿�땲�떎.");
 		return "/main/loginForm";
 	}
 
 	@RequestMapping(value = "/login",method = RequestMethod.POST)
 	public String loginPOST(EmployeeVO vo,HttpSession session,Model model) {
-		logger.debug("사용자가 로그인하였습니다. 로그온 정보를 업데이트하였습니다.");
+		logger.debug("�궗�슜�옄媛� 濡쒓렇�씤�븯���뒿�땲�떎. 濡쒓렇�삩 �젙蹂대�� �뾽�뜲�씠�듃�븯���뒿�땲�떎.");
 		EmployeeVO resultVO = mService.memberLogin(vo);
 		
 		session.removeAttribute("emp_id");
@@ -58,7 +58,7 @@ public class MainController {
 		session.setAttribute("emp_position", resultVO.getEmp_position());
 		session.setAttribute("logined", true);
 		mService.userLogin(resultVO.getEmp_id());
-		logger.debug(resultVO.getEmp_id()+"사용자가 로그인하였습니다. 로그온 정보를 업데이트하였습니다.");
+		logger.debug(resultVO.getEmp_id()+"�궗�슜�옄媛� 濡쒓렇�씤�븯���뒿�땲�떎. 濡쒓렇�삩 �젙蹂대�� �뾽�뜲�씠�듃�븯���뒿�땲�떎.");
 		
 		return "redirect:/main/home";
 	}
@@ -120,9 +120,9 @@ public class MainController {
 		Map<String, Object> event = new HashMap<String, Object>();
 		LocalDate today = LocalDate.now();
 		
-		event.put("precense",mService.showPrecense(emp_id, today.withDayOfMonth(1), today.withDayOfMonth(today.lengthOfMonth())));
+		event.put("presence",mService.showPrecense(emp_id, today.withDayOfMonth(1), today.withDayOfMonth(today.lengthOfMonth())));
 		event.put("workflow",wService.showCalendarWorkflow(emp_id, today.withDayOfMonth(1), today.withDayOfMonth(today.lengthOfMonth())));
-		logger.debug("precense :"+event.get("precense"));
+		logger.debug("presence :"+event.get("presence"));
 		logger.debug("workflow :"+event.get("workflow"));
 		
         return event;

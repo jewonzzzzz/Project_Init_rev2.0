@@ -656,14 +656,20 @@ button {
     justify-content: flex-start;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
 }
-.days .flag.workflow{
-	color:rgba(150,200,250,0.9);
-}
 .days .flag.enter{
 	color:rgba(119, 221, 119, 0.8);
 }
 .days .flag.workout{
 	color:rgba(255, 182, 193, 0.8);
+}
+.days .flag.edu{
+	color:rgba(255,255,100, 0.8);
+}
+.days .flag.leave{
+	color:rgba(0, 0, 0, 0.6);
+}
+.days .flag.workflow{
+	color:rgba(150,200,250,0.9);
 }
 .days.saturday .date{
 	color:rgba(0,100,200,1) ;

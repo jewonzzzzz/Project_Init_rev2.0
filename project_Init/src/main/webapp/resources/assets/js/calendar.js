@@ -101,8 +101,8 @@ function updateCalendar(year, month) {
 		success: function (data) {
 			console.log('calendar data :',data)
 			
-			for (const precense of data.precense) {
-				console.log('precense :',getDay(precense.date))
+			for (const presence of data.presence) {
+				console.log('presence :',getDay(presence.date))
 	        }
 			
 			for (const workflow of data.workflow) {
@@ -112,29 +112,34 @@ function updateCalendar(year, month) {
 			for (let i = 1; i <= daysInMonth; i++) {
 				const flag_position = startDay + i - 1; 
 				
-	            for(const precense of data.precense){
+	           /* for(const precense of data.precense){
 	            	if(getDay(precense.date) == i){
 	            		$(`#d_${flag_position + 1}`).append(`
 	            		<div class="flag enter"><i class="fa-solid fa-bookmark"></i></div>
 	                `	);
 	            	}
-	            }
+	            }*/
 	            
-	            for(const precense of data.precense){
-	            	if(getDay(precense.date) == i){
-	            		if(precense.precense == '출근'){
+	            for(const presence of data.presence){
+	            	if(getDay(presence.date) == i){
+	            		if(presence.presence == '출근'){
 		            		$(`#d_${flag_position + 1}`).append(`
 		            		<div class="flag enter"><i class="fa-solid fa-bookmark"></i></div>
 		                `	);
 	            		}
-	            		if(precense.precense == '휴가'){
+	            		if(presence.presence == '휴가'){
 		            		$(`#d_${flag_position + 1}`).append(`
 		            		<div class="flag leave"><i class="fa-solid fa-bookmark"></i></div>
 		                `	);
 	            		}
-	            		if(precense.precense == '출장'){
+	            		if(presence.presence == '출장'){
 		            		$(`#d_${flag_position + 1}`).append(`
 		            		<div class="flag workout"><i class="fa-solid fa-bookmark"></i></div>
+		                `	);
+	            		}
+	            		if(presence.presence == '교육'){
+		            		$(`#d_${flag_position + 1}`).append(`
+		            		<div class="flag edu"><i class="fa-solid fa-bookmark"></i></div>
 		                `	);
 	            		}
 	            	}
