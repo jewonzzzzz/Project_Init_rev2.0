@@ -192,18 +192,19 @@
 	<select id="getEmpStartDate"
 		resultType="com.Init.domain.LeaveVO">
 		SELECT
-		e.emp_start_date,
-		e.emp_id,
-		l.leave_id,
-		l.total_annual_leave,
-		l.used_annual_leave,
-		l.remaining_annual_leave,
-		l.lgrant,
-		l.adjustmentDate
+		    e.emp_start_date,
+		    e.emp_id,
+		    l.leave_id,
+		    l.total_annual_leave,
+		    l.used_annual_leave,
+		    l.remaining_annual_leave,
+		    l.lgrant,
+		    l.adjustmentDate
 		FROM employee e
 		LEFT JOIN leave_management l
-		ON e.emp_id = l.emp_id
+		    ON e.emp_id = l.emp_id
 		WHERE e.emp_id = #{emp_id}
+		ORDER BY l.adjustmentDate DESC;
 	</select>
 
 	<!-- 연차 생성 및 업데이트 쿼리 -->

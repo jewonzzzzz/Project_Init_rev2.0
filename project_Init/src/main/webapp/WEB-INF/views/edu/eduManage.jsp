@@ -88,14 +88,14 @@
                         class="display table table-striped table-hover">
                       <thead>
                         <tr>
-                          <th scope="col">선택</th>
-                          <th scope="col">교육구분</th>
-                          <th scope="col">교육명</th>
-                          <th scope="col">강사명</th>
-                          <th scope="col">교육시작일</th>
-                          <th scope="col">접수마감일</th>
-                          <th scope="col">상태</th>
-                          <th scope="col">신청자명단</th>
+                          <th>선택</th>
+                          <th>교육구분</th>
+                          <th style="width: 30%;">교육명</th>
+                          <th>강사명</th>
+                          <th>교육시작일</th>
+                          <th>접수마감일</th>
+                          <th>상태</th>
+                          <th>신청자명단</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -109,7 +109,7 @@
                       		<td>${list.edu_apply_end }</td>
                       		<td>${list.edu_list_status }</td>
                       		<td><c:if test="${list.edu_list_status != '임시저장' && list.edu_list_status != '결재중'}">
-                      			<a href="#" class="open-modal" data-bs-toggle="modal" data-bs-target="#eduPersonnelModal" data-id="${list.edu_id }">신청자명단</a>
+                      			<a href="#" class="open-modal" data-bs-toggle="modal" data-bs-target="#eduPersonnelModal" data-id="${list.edu_id }">확인</a>
                       		</c:if></td>
                       	</tr>
                       </c:forEach>
@@ -399,6 +399,11 @@
         	            'text-align': 'center',
         	            'vertical-align': 'middle'
         	        });
+        			$('input[type="checkbox"]').prop('checked', false);
+        			$('#confirmEduBtn').prop('disabled', true);
+ 	                $('#endEduBtn').prop('disabled', true);
+ 	                $('#signBtn').prop('disabled', true);
+ 	                $('#deleteBtn').prop('disabled', true);
         		}
         	});
         	

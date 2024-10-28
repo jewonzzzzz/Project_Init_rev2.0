@@ -14,6 +14,7 @@
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 	</properties>
 	<dependencies>
+	
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -197,12 +198,6 @@
 		    <version>2.11.0</version> <!-- commons-io는 파일 조작에 필요 -->
 		</dependency>
 		
-		<dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>jstl</artifactId>
-		    <version>1.2</version>
-		</dependency>
-		
 		<!-- 비밀번호 설정  -->
 		<dependency>
 		    <groupId>org.springframework.security</groupId>
@@ -268,7 +263,7 @@
 		    <version>3.4.1</version> <!-- 최신 버전 확인 후 업데이트 -->
 		</dependency>
 				
-	
+		
 		
 		
 		
