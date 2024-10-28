@@ -108,4 +108,9 @@ public class LeaveServiceImpl implements LeaveService {
 	   leaveDAO.insertSignInfoForLeave(lvo);
 	}
 	
+	@Override
+	public void insertSignInfoForOtherLeave(LeaveVO lvoa) {
+		 leaveDAO.insertSignInfoForOtherLeave(lvoa);
+		
+	}
 }

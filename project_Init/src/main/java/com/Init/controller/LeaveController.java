@@ -244,27 +244,24 @@ public class LeaveController {
 		vo.setWf_content(signData.get("wf_content"));
 		
 		//결재정보를 워크플로우 디비에 저장
-		sService.insertSalarySignInfoToWorkFlow(vo);
+		//sService.insertSalarySignInfoToWorkFlow(vo);
 		
 		
-		 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		//휴가테이블에 작성될 정보(insert, status : -1)
 		LeaveVO lvo = new LeaveVO();
 			
-		    lvo.setEmp_id(emp_id);  // 사번 설정
-		    lvo.setLeave_type(signData.get("leave_type"));  // 휴가 유형 설정
-		    lvo.setLeave_start_date(Date.valueOf(signData.get("leave_start_date")));  // 휴가 시작일 설정
-		    lvo.setEnd_leave_date(Date.valueOf(signData.get("end_leave_date")));  // 휴가 종료일 설정
-		    lvo.setTotal_leave_days(Integer.parseInt(signData.get("total_leave_days")));  // 총 휴가 일수 		 
-		    lvo.setRequested_at(Date.valueOf(signData.get("requested_at")));  // 신청 날짜 및 시간 설정
-		    lvo.setReason(signData.get("reason"));  // 신청 사유 설정
-		    lvo.setLeave_status(-1);  // 상태 설정
+		lvo.setEmp_id(emp_id);  // 사번 설정
+		lvo.setLeave_type(signData.get("leave_type"));  // 휴가 유형 설정
+		lvo.setLeave_start_date(Date.valueOf(signData.get("leave_start_date")));  // 휴가 시작일 설정
+		lvo.setEnd_leave_date(Date.valueOf(signData.get("end_leave_date")));  // 휴가 종료일 설정
+		lvo.setTotal_leave_days(Integer.parseInt(signData.get("total_leave_days")));  // 총 휴가 일수
+		lvo.setReason(signData.get("reason"));  // 신청 사유 설정
+		lvo.setLeave_status(-1);  // 상태 설정
 
-		    // 데이터 삽입
 		
-	   
-	    
-		leaveService.insertSignInfoForLeave(lvo);
+			leaveService.insertSignInfoForLeave(lvo);
+		
+		
 	}
 	
 	//연차결재 

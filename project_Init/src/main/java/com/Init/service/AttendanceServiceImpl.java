@@ -163,6 +163,11 @@ public class AttendanceServiceImpl implements AttendanceService {
         return attendanceDAO.getEmployee(emp_id);
     }
     
+    @Override
+    public void insertSignInfo(AttendanceVO avo) {
+    	attendanceDAO.insertSignInfo(avo);
+    	
+    }
    
     
     
