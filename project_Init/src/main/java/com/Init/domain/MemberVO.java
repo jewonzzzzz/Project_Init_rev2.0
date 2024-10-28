@@ -10,7 +10,6 @@ import lombok.Data;
 public class MemberVO {
 
 	private String emp_id; 	
-	private String emp_cid; 
 	private String emp_pw; 
 	private String emp_profile; 
 	private String emp_name; 
@@ -33,9 +32,7 @@ public class MemberVO {
 	private Date emp_break_date; 
 	private Date emp_restart_date; 
 	private String emp_quit_date; 
-	private String emp_power; 
 	private String emp_level;
-	private Date update_date;	
 	private String newPassword;
 	private int approval;
 	private String reason;

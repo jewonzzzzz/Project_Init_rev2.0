@@ -100,10 +100,11 @@ public class OrgServiceImpl implements OrgService {
         branchNode.put("title", branchName);
         branchNode.put("children", new ArrayList<>());
 
-        // 해당 본부 산하의 부서별로 그룹화
+        // 해당 본부 산하의 부서별로 그룹화 (emp_dnum이 "00"인 부서는 제외)
         List<MemberVO> departmentMembers = allMembers.stream()
             .filter(m -> branchName.equals(m.getEmp_bnum()) && 
                    m.getDept_name() != null &&
+                   !"00".equals(m.getEmp_dnum()) &&  // emp_dnum이 "00"인 경우 제외
                    !"본부장".equals(m.getEmp_position()))
             .collect(Collectors.toList());
 
@@ -121,14 +122,15 @@ public class OrgServiceImpl implements OrgService {
     }
 
     private Map<String, Object> createDepartmentNode(String deptName, List<MemberVO> deptMembers) {
-        if (deptName == null || deptMembers == null || deptMembers.isEmpty()) {
-            logger.warn("Invalid department data: name={}, members={}", deptName, deptMembers);
+        if (deptName == null || deptMembers == null || deptMembers.isEmpty() || 
+            deptMembers.stream().anyMatch(m -> "00".equals(m.getEmp_dnum()))) {  // emp_dnum이 "00"인 부서는 제외
+            logger.warn("Invalid department data or department with dnum '00': name={}, members={}", deptName, deptMembers);
             return null;
         }
 
         Map<String, Object> deptNode = new HashMap<>();
         
-        // 부장 찾기 (부서장 대신 부장으로 변경)
+        // 부장 찾기
         MemberVO deptManager = deptMembers.stream()
             .filter(m -> "부장".equals(m.getEmp_position()))
             .findFirst()
