@@ -552,7 +552,11 @@ footer {
 														<option value="사원">사원</option>
 														<option value="대리">대리</option>
 														<option value="과장">과장</option>
+														<option value="팀장">팀장</option>
 														<option value="부장">부장</option>
+														<option value="본부장">본부장</option>
+														<option value="부사장">부사장</option>
+														<option value="사장">사장</option>
 													</select>
 												</div>
 												<div class="form-group">
@@ -560,13 +564,16 @@ footer {
 														class="text-danger">*</span></label> <select class="form-control"
 														id="reg_emp_job" name="emp_job" required>
 														<option value="">선택하세요</option>
-														<option value="개발자">개발자</option>
-														<option value="기획자">기획자</option>
-														<option value="디자이너">디자이너</option>
-														<option value="매니저">매니저</option>
-														<option value="영업사원">영업사원</option>
-														<option value="부서장">부서장</option>
-														<option value="본부장">본부장</option>
+														<option value="직무1">직무1</option>
+														<option value="직무2">직무2</option>
+														<option value="직무3">직무3</option>
+														<option value="직무4">직무4</option>
+														<option value="직무5">직무5</option>
+														<option value="직무6">직무6</option>
+														<option value="직무7">직무7</option>
+														<option value="직무8">직무8</option>
+														<option value="직무9">직무9</option>
+														<option value="직무10">직무10</option>
 													</select>
 												</div>
 												<div class="form-group">
@@ -579,8 +586,9 @@ footer {
 														class="text-danger">*</span></label> <select class="form-control"
 														id="reg_emp_work_type" name="emp_work_type" required>
 														<option value="">선택하세요</option>
-														<option value="통상">통상</option>
-														<option value="교대">교대</option>
+														<option value="통상근무">통상근무</option>
+														<option value="교대근무">교대근무</option>
+														<option value="시급제">시급제</option>
 													</select>
 												</div>
 												<div class="form-group">
