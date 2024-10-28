@@ -241,8 +241,10 @@ input[readonly] {
 											<td><input type="email" name="emp_email"
 												value="${memberVO.emp_email}" required /></td>
 											<th>부서</th>
-											<td><input type="text" name="emp_dnum"
-												value="${memberVO.dept_name}" readonly /></td>
+											<td>
+											    <input type="text" value="${memberVO.dept_name}" readonly />
+											    <input type="hidden" name="emp_dnum" value="${memberVO.emp_dnum}" />
+											</td>
 											<th>직급/직책</th>
 											<td><input type="text" name="emp_job_id"
 												value="${memberVO.emp_position} / ${memberVO.emp_job}"
