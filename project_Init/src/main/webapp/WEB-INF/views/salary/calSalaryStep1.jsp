@@ -144,22 +144,17 @@
                   </div>
                 </div>
               </div>
-            
-            
               <div class="col-md-11">
                 <div class="col-md-12">
-                <div class="card">
+                <div class="card" style="margin-bottom: 10px;">
                   <div class="card-header">
                     <div class="card-title">급여형태/귀속연월 설정</div>
-                    <div class="card-category">
-                      급여형태와 귀속연도를 설정합니다. <b>기존과 동일한 내역이 있으면 작성되지 않습니다.</b>
-                    </div>
                   </div>
                   <div class="card-body">
                     <div class="form">
                       <div class="form-group form-show-notify row">
-                        <div class="col-lg-3 col-md-3 col-sm-4 text-end">
-                          <label>급여형태 :</label>
+                        <div class="col-lg-3 col-md-3 col-sm-3 text-end">
+                          <label style="padding-top: 0.65rem;">급여형태 :</label>
                         </div>
                         <div class="col-lg-9 col-md-9 col-sm-8">
                           <select
@@ -175,7 +170,7 @@
                       </div>
                       <div class="form-group form-show-notify row" id="bonusInput" style="display: none;">
                         <div class="col-lg-3 col-md-3 col-sm-4 text-end">
-                          <label>상여지급율(%) :</label>
+                          <label style="padding-top: 0.65rem;">상여지급율(%) :</label>
                         </div>
                         <div class="col-lg-9 col-md-9 col-sm-8">
                           <input type="text" 
@@ -190,7 +185,7 @@
                       
                       <div class="form-group form-show-notify row">
                         <div class="col-lg-3 col-md-3 col-sm-4 text-end">
-                          <label>연도 :</label>
+                          <label style="padding-top: 0.65rem;">연도 :</label>
                         </div>
                         <div class="col-lg-4 col-md-9 col-sm-8">
                           <select
@@ -203,7 +198,7 @@
                       </div>
                       <div class="form-group form-show-notify row">
                         <div class="col-lg-3 col-md-3 col-sm-4 text-end">
-                          <label>월 :</label>
+                          <label style="padding-top: 0.65rem;">월 :</label>
                         </div>
                         <div class="col-lg-4 col-md-9 col-sm-8">
                           <select
@@ -231,6 +226,9 @@
                     </div>
                   </div>
                 </div>
+                	<div class="card-category" style="margin-top: 0;">
+                      급여형태와 귀속연도를 설정합니다. 기존과 동일한 내역이 있으면 작성되지 않습니다.
+                    </div>
               </div>
               </div>
             </div>

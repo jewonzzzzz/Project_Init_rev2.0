@@ -142,8 +142,7 @@
                 $('#yearSelect').append(new Option(year, year));  // Option 생성 및 추가
             }
             
-         	// 조회 버튼 시 연/월/사번가지고 조회하기
-            $('#inquiryBtn').click(function(event){
+            function handleInquiry(){
             	var checkSalaryInfo = [];
             	checkSalaryInfo.push($('#yearSelect').val());
             	checkSalaryInfo.push($('#employeeInfo').val());
@@ -153,13 +152,12 @@
             		data: JSON.stringify(checkSalaryInfo),
             		contentType: 'application/json',
             		success: function(response) {
-            			
             			if(response.length > 0){
             				swal("Success!", "직원 급여정보 조회완료", "success");
             				dataTable.clear();
 	            			response.forEach(function(data){
                             dataTable.row.add([
-	                            data.emp_id,
+                            	'<span class="employee_id">' + data.emp_id + '</span>',
 	                            data.sal_type,
 	                            '<span class="year">' + data.year + '</span>',
 	                            data.month,
@@ -178,8 +176,22 @@
                         swal("Error!", "실패", "error");
                     }
             	});
+            }
+            
+         	// 조회 버튼 시 연/월/사번가지고 조회하기
+            $('#inquiryBtn').click(function(event){
+            	handleInquiry();
+            });
+         	
+         	// 조회란에 작성 후 엔터 시 조회하기
+         	 $('#employeeInfo').on('keypress', function (e) {
+                if (e.which === 13) { // Enter 키인지 확인
+                	console.log("엔터눌러짐");
+                	handleInquiry(); 
+                }
             });
             
+         	//테이블 세팅
             let dataTable = $("#basic-datatables").DataTable({
             	pageLength: 6,
             	drawCallback: function() { //가운대 정렬
@@ -195,7 +207,7 @@
                 return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             }
             function addCommasToNumbersInTable() {
-                const filteredTds = $('#basic-datatables tbody td').not(':has(.year)');
+                const filteredTds = $('td').not(':has(.year), :has(.employee_id)');
 
                 filteredTds.each(function() {
                     const currentText = $(this).text();

@@ -267,8 +267,7 @@
                  });
             });
         	
-         	// 조회 버튼 시 연/월/사번가지고 조회하기
-            $('#inquiryBtn').click(function(event){
+            function handleInquiry(){
             	var checkSalaryInfo = [];
             	checkSalaryInfo.push($('#typeSelect').val());
             	checkSalaryInfo.push($('#eduInfo').val());
@@ -301,7 +300,19 @@
                         swal("Error!", "실패", "error");
                     }
             	});
+            }
+        	
+         	// 조회 버튼 시 연/월/사번가지고 조회하기
+            $('#inquiryBtn').click(function(event){
+            	handleInquiry();
             });
+         	
+         	// 조회란에 작성 후 엔터 시 조회하기
+        	 $('#eduInfo').on('keypress', function (e) {
+               if (e.which === 13) { // Enter 키인지 확인
+               	handleInquiry(); 
+               }
+           });
             
          	// 데이터테이블 설정
             let dataTable = $("#basic-datatables").DataTable({

@@ -92,7 +92,7 @@
                           <th scope="col">연도</th>
                           <th scope="col">반기</th>
                           <th scope="col">평가유형</th>
-                          <th scope="col">성과평가명</th>
+                          <th scope="col" style="width: 25%;">성과평가명</th>
                           <th scope="col">평가시작일</th>
                           <th scope="col">평가종료일</th>
                           <th scope="col">상태</th>

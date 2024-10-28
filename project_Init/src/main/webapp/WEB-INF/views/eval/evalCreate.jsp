@@ -81,18 +81,15 @@
             <div class="row">
               <div class="col-md-11">
                 <div class="col-md-12">
-                <div class="card">
+                <div class="card" style="margin-bottom: 5px;">
                   <div class="card-header">
                     <div class="card-title">성과평가 신규등록</div>
-                    <div class="card-category">
-                      성과유형과 평가대상 성과기간을 설정합니다. <b>기존과 동일한 내역이 있으면 작성되지 않습니다.</b>
-                    </div>
                   </div>
                   <div class="card-body">
                     <div class="form">
                       <div class="form-group form-show-notify row">
                         <div class="col-lg-3 col-md-3 col-sm-4 text-end">
-                          <label>성과유형 :</label>
+                          <label style="padding-top: 0.65rem;">성과유형 :</label>
                         </div>
                         <div class="col-lg-9 col-md-9 col-sm-8">
                           <select
@@ -108,7 +105,7 @@
                       
                       <div class="form-group form-show-notify row">
                         <div class="col-lg-3 col-md-3 col-sm-4 text-end">
-                          <label>연도 :</label>
+                          <label style="padding-top: 0.65rem;">연도 :</label>
                         </div>
                         <div class="col-lg-4 col-md-9 col-sm-8">
                           <select
@@ -121,7 +118,7 @@
                       </div>
                       <div class="form-group form-show-notify row" id="branchSelect">
                         <div class="col-lg-3 col-md-3 col-sm-4 text-end">
-                          <label>반기 :</label>
+                          <label style="padding-top: 0.65rem;">반기 :</label>
                         </div>
                         <div class="col-lg-4 col-md-9 col-sm-8">
                           <select
@@ -137,7 +134,7 @@
                       
                       <div class="form-group form-show-notify row">
                         <div class="col-lg-3 col-md-3 col-sm-4 text-end">
-                          <label>보고시작일 :</label>
+                          <label style="padding-top: 0.65rem;">보고시작일 :</label>
                         </div>
                         <div class="col-lg-2 col-md-9 col-sm-8">
                           <input type="date" 
@@ -147,7 +144,7 @@
 				           style="margin-bottom: 0px; padding: 5px 14px; border-bottom-width: 1px;">
                         </div>
                         <div class="col-lg-1 col-md-3 col-sm-4 text-end">
-                          <label>보고종료일 :</label>
+                          <label style="padding-top: 0.65rem;">보고종료일 :</label>
                         </div>
                         <div class="col-lg-4 col-md-9 col-sm-8">
                           <input type="date" 
@@ -160,7 +157,7 @@
                       
                       <div class="form-group form-show-notify row">
                         <div class="col-lg-3 col-md-3 col-sm-4 text-end">
-                          <label>평가시작일 :</label>
+                          <label style="padding-top: 0.65rem;">평가시작일 :</label>
                         </div>
                         <div class="col-lg-2 col-md-9 col-sm-8">
                           <input type="date" 
@@ -170,7 +167,7 @@
 				           style="margin-bottom: 0px; padding: 5px 14px; border-bottom-width: 1px;">
                         </div>
                         <div class="col-lg-1 col-md-3 col-sm-4 text-end">
-                          <label>평가종료일 :</label>
+                          <label style="padding-top: 0.65rem;">평가종료일 :</label>
                         </div>
                         <div class="col-lg-4 col-md-9 col-sm-8">
                           <input type="date" 
@@ -183,7 +180,7 @@
                       
                       <div class="form-group form-show-notify row">
                         <div class="col-lg-3 col-md-3 col-sm-4 text-end">
-                          <label>성과평가명 :</label>
+                          <label style="padding-top: 0.65rem;">성과평가명 :</label>
                         </div>
                         <div class="col-lg-9 col-md-9 col-sm-8">
                           <input type="text" 
@@ -212,6 +209,9 @@
                     </div>
                   </div>
                 </div>
+                	<div class="card-category">
+                      성과유형과 평가대상 성과기간을 설정합니다. 기존과 동일한 내역이 있으면 작성되지 않습니다.
+                    </div>
               </div>
               </div>
             </div>

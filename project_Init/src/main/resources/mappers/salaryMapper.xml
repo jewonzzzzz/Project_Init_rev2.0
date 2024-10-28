@@ -86,9 +86,9 @@
 		select e.emp_id, emp_name, dname, dgrade, perform_rate, emp_position, emp_job, emp_work_type, 
 		sum(working_time) working_time, sum(overtime) overtime, sum(night_work_time) night_work_time, 
 		sum(special_working_time) special_working_time 
-		from employee e, attendance_ch a, dept d 
-		where e.emp_id = a.emp_id and e.emp_dnum = d.dnum and e.emp_id = #{emp_id} and check_in 
-		between #{check_in } and concat(last_day(#{check_in}), ' 23:59:59') and approval = 0 
+		from employee e, work_record w, dept d 
+		where e.emp_id = w.emp_id and e.emp_dnum = d.dnum and e.emp_id = #{emp_id} and date 
+		between #{check_in } and last_day(#{check_in}) and approval = 0 
 	</select>
 	
 	<!-- 전체 직원정보 가져오기 -->
@@ -96,9 +96,9 @@
 		select e.emp_id, emp_name, dname, emp_position, emp_job, 
 		emp_work_type, sum(working_time) working_time, sum(overtime) overtime, 
 		sum(night_work_time) night_work_time, sum(special_working_time) special_working_time 
-		from employee e, attendance_ch a, dept d 
-		where e.emp_id = a.emp_id and e.emp_dnum = d.dnum and check_in 
-		between #{check_in } and concat(last_day(#{check_in}), ' 23:59:59') and emp_status = '재직' 
+		from employee e, work_record w, dept d 
+		where e.emp_id = w.emp_id and e.emp_dnum = d.dnum and date 
+		between #{check_in } and last_day(#{check_in}) and emp_status = '재직' 
 		and approval = 0 group by e.emp_id 
 	</select>
 	
