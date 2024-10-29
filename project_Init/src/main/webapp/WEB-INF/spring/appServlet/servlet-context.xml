@@ -20,9 +20,7 @@
 	<resources mapping="/resources/**" location="/resources/" />
 	
 	<!-- 이미지주소 맵핑(학원) -->
-	<resources mapping="/uploads/**" location="file:///C:/workspace_sts6_teamproject/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/project_Init/uploads/" />
-	<!-- 이미지주소 맵핑(집) -->
-<!-- 	<resources mapping="/uploads/**" location="file:///C:/SpringWorkspace/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/Init/uploads/" /> -->
+	<!-- <resources mapping="/uploads/**" location="file:///C:/workspace_sts6_teamproject/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/project_Init/uploads/" /> -->
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
