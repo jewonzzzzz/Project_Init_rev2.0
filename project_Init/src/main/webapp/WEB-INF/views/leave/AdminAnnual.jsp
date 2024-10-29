@@ -12,7 +12,13 @@
    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
    
    
-   
+   <title>INIT</title>
+	  <link
+	      rel="icon"
+	      href="${pageContext.request.contextPath }/resources/assets/img/project/favicon_black.png"
+	      style="border-radius: 50%;"
+	      type="image/x-icon"
+	    />
    
     <!-- Fonts and icons -->
     

@@ -19,35 +19,33 @@ import com.google.zxing.qrcode.QRCodeWriter;
 @RestController
 public class QrCodeController {
 
+	 @GetMapping("/getQR")
+	    public ResponseEntity<byte[]> createQr(@RequestParam String emp_id) {
+	        String mainUrl = "http://c6d2406t2.itwillbs.com/Attendance/attendanceMain";
+	        String qrCodeUrl = mainUrl + "?emp_id=" + emp_id;
 
-    @GetMapping("/getQR")
-    public ResponseEntity<byte[]> createQr(@RequestParam String emp_id) {
-        String mainUrl = "http://localhost:8088/Attendance/attendanceMain";
-        String qrCodeUrl = mainUrl + "?emp_id=" + emp_id;
+	        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+	        try {
+	            // QR 코드 생성
+	            BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeUrl, BarcodeFormat.QR_CODE, 200, 200);
 
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        try {
-            // QR 肄붾뱶 �깮�꽦
-            BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeUrl, BarcodeFormat.QR_CODE, 200, 200);
-            
+	            // 이미지를 바이트 배열로 변환
+	            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	            MatrixToImageWriter.writeToStream(bitMatrix, "PNG", baos);
 
-            // �씠誘몄�瑜� 諛붿씠�듃 諛곗뿴濡� 蹂��솚
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            MatrixToImageWriter.writeToStream(bitMatrix, "PNG", baos);
-
-            // ResponseEntity濡� 諛붿씠�듃 諛곗뿴 諛섑솚
-            return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_PNG)
-                    .body(baos.toByteArray());
-        } catch (WriterException e) {
-            // QR 肄붾뱶 �깮�꽦 �삤瑜� 泥섎━
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("QR 肄붾뱶 �깮�꽦�뿉 �떎�뙣�뻽�뒿�땲�떎.".getBytes());
-        } catch (IOException e) {
-            // �씠誘몄� 蹂��솚 �삤瑜� 泥섎━
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("�씠誘몄� 蹂��솚�뿉 �떎�뙣�뻽�뒿�땲�떎.".getBytes());
-        }
-    }
-}
+	            // ResponseEntity로 바이트 배열 반환
+	            return ResponseEntity.ok()
+	                    .contentType(MediaType.IMAGE_PNG)
+	                    .body(baos.toByteArray());
+	        } catch (WriterException e) {
+	            // QR 코드 생성 오류 처리
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                    .body("QR 코드 생성에 실패하였습니다.".getBytes());
+	        } catch (IOException e) {
+	            // 이미지 변환 오류 처리
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                    .body("이미지 변환에 실패하였습니다.".getBytes());
+	        }
+	    }
+	}
 

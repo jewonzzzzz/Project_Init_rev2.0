@@ -241,7 +241,7 @@
               <!-- Menu start -->
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#attendance"> <!-- href="" 를 여는 a태그 -->
-                  <i class="fas fa-chalkboard-teacher"></i>
+                  <i class="fas fa-clipboard"></i>
                   <p>근태관리</p>
                   <span class="caret"></span>
                 </a>
@@ -264,7 +264,7 @@
               <!-- Menu start -->
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#leave"> <!-- href="" 를 여는 a태그 -->
-                  <i class="fas fa-calculator"></i>
+                  <i class="fas fa-rocket"></i>
                   <p>휴가관리</p>
                   <span class="caret"></span>
                 </a>

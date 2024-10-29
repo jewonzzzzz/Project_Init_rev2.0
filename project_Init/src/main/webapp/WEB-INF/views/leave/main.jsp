@@ -13,7 +13,13 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
-
+  <title>INIT</title>
+	  <link
+	      rel="icon"
+	      href="${pageContext.request.contextPath }/resources/assets/img/project/favicon_black.png"
+	      style="border-radius: 50%;"
+	      type="image/x-icon"
+	    />
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>

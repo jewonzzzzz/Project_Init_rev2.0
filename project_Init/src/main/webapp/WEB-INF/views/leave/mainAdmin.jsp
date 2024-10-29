@@ -13,7 +13,13 @@
    
    
    
-   
+     <title>INIT</title>
+	  <link
+	      rel="icon"
+	      href="${pageContext.request.contextPath }/resources/assets/img/project/favicon_black.png"
+	      style="border-radius: 50%;"
+	      type="image/x-icon"
+	    />
  
   
   <style>
