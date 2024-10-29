@@ -399,7 +399,7 @@ public class MemberController implements ServletContextAware {
 
 		try {
 			String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-			String uploadDir = servletContext.getRealPath("/profiles");
+			String uploadDir = servletContext.getRealPath("/uploads");
 			logger.debug("uploadDir : "+uploadDir);
 			File uploadPath = new File(uploadDir);
 			if (!uploadPath.exists()) {
@@ -408,7 +408,7 @@ public class MemberController implements ServletContextAware {
 			File dest = new File(uploadPath + File.separator + fileName);
 			file.transferTo(dest);
 
-			String emp_profile = "/profiles/" + fileName; // 웹에서 접근 가능한 URL
+			String emp_profile = "/uploads/" + fileName; // 웹에서 접근 가능한 URL
 			mService.updateProfilePicture(emp_id, emp_profile);
 
 			return "{\"success\": true, \"newProfilePicUrl\": \"" + emp_profile + "\"}";
