@@ -298,10 +298,16 @@ public class EduController {
 		return "redirect:/edu/eduManage";
 	}
 	
-	// 교육관리에서 교육종료 하기(교육리스트아 이력 모두 교육종료// 이후 이수관리는 이력관리에서 실행)
+	// 교육관리에서 교육종료 하기(교육리스트 이력 모두 교육종료// 이후 이수관리는 이력관리에서 실행)
 	@PostMapping(value = "endEduInfo")
 	public String endEduInfo(EduListVO vo) {
 		logger.debug("endEduInfo :"+ vo.toString());
+		
+		// 가져온 edu_id로 edu_list에서 edu_end_date 가져오기
+		String edu_id = vo.getEdu_id();
+		EduListVO eduInfo = eService.getEduListToId(edu_id);
+		vo.setEdu_end_date(eduInfo.getEdu_end_date());
+		
 		eService.endEduInfo(vo);
 		
 		return "redirect:/edu/eduManage";

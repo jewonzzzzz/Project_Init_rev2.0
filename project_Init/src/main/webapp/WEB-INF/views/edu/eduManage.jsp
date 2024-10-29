@@ -108,7 +108,7 @@
                       		<td>${list.edu_start_date }</td>
                       		<td>${list.edu_apply_end }</td>
                       		<td>${list.edu_list_status }</td>
-                      		<td><c:if test="${list.edu_list_status != '임시저장' && list.edu_list_status != '결재중'}">
+                      		<td><c:if test="${list.edu_list_status != '임시저장' && list.edu_list_status != '결재중' && list.edu_list_status != '반려'}">
                       			<a href="#" class="open-modal" data-bs-toggle="modal" data-bs-target="#eduPersonnelModal" data-id="${list.edu_id }">확인</a>
                       		</c:if></td>
                       	</tr>
@@ -420,9 +420,18 @@
         		var tdText = $(this).closest('tr').find('td:eq(6)').text();
 	        	if($(this).is(':checked') && tdText === '임시저장') {
 	                $('#signBtn').prop('disabled', false);
-	                $('#deleteBtn').prop('disabled', false);
 	        	} else {
                     $('#signBtn').prop('disabled', true);
+                }
+        	});
+        	
+        	// 체크여부에 따른 삭제버튼 활성화(체크버튼 클릭 + 임시저장/결재완료/반려)
+        	$('#basic-datatables tbody').on('click', 'input[type="checkbox"]', function() {
+        		var tdText = $(this).closest('tr').find('td:eq(6)').text();
+	        	if(($(this).is(':checked') && tdText === '임시저장') ||
+        		   ($(this).is(':checked') && tdText === '반려')) {
+	                $('#deleteBtn').prop('disabled', false);
+	        	} else {
                     $('#deleteBtn').prop('disabled', true);
                 }
         	});
