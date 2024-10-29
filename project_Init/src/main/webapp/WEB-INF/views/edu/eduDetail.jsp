@@ -83,7 +83,7 @@
               <div class="col-md-11">
                 <div class="card">
                   <div class="card-header">
-                    <div class="card-title">교육 상세조회</div>
+                    <div class="card-title">교육 상세내용</div>
                     </div>
                   <div class="card-body">
                     <div class="row"> 

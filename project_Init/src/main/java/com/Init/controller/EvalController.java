@@ -191,12 +191,21 @@ public class EvalController {
 	public String resultEvalDetail(@RequestParam("eval_his_id") String eval_his_id,
 			HttpSession session, Model model) {
 		
-		// 평가자 정보 가져오기
-		String emp_id = (String)session.getAttribute("emp_id");
-		EvalVO evaluatorInfo = evService.getEvaluatorInfo(emp_id);
+		String emp_id;
+		EvalVO evaluatorInfo;
 		
 		// 피평가자 정보 가져오기
 		EvalVO reportInfoForEval = evService.getReportInfoForEval(eval_his_id);
+		
+		// 평가종료 시에는 평가자 정보를 가져오고, 이외에는 세션에서 정보 받아서 조회
+		if(reportInfoForEval.getEval_his_status().equals("평가종료")) {
+			emp_id = reportInfoForEval.getEvaluator();
+			evaluatorInfo = evService.getEvaluatorInfo(emp_id);
+		} else {
+			emp_id = (String)session.getAttribute("emp_id");
+			evaluatorInfo = evService.getEvaluatorInfo(emp_id);
+		}
+		
 		model.addAttribute("reportInfoForEval", reportInfoForEval);
 		model.addAttribute("evaluatorInfo", evaluatorInfo);
 		

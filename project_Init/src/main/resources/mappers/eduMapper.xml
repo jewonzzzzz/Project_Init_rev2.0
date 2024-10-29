@@ -38,7 +38,8 @@
 		update edu_list 
 		set edu_type=#{edu_type}, edu_name=#{edu_name}, edu_teacher=#{edu_teacher}, edu_place=#{edu_place}, 
 		edu_content=#{edu_content}, edu_start_date=#{edu_start_date}, edu_end_date=#{edu_end_date}, 
-		edu_apply_end=#{edu_apply_end}, edu_thumbnail_src=#{edu_thumbnail_src}, edu_personnel=#{edu_personnel} 
+		edu_apply_start=#{edu_apply_start}, edu_apply_end=#{edu_apply_end}, edu_thumbnail_src=#{edu_thumbnail_src}, 
+		edu_personnel=#{edu_personnel} 
 		where edu_id = #{edu_id} 
 	</select>
 

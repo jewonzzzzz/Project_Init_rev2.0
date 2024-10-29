@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/resources/assets/inc/get_employee_info.jsp" %>
 <%@ include file="/resources/assets/inc/realtime_alarm.jsp" %>
 <%@ include file="/resources/assets/inc/workflow_modal.jsp" %>
@@ -143,11 +144,12 @@
                 </a>
                 <div class="collapse" id="base"> <!-- href="" 를 여는 a태그의 타겟 -->
                   <ul class="nav nav-collapse">
-                    <li>
-                      <a href="/salary/salaryBasicInfo">
-                        <span class="sub-item">급여기본정보 설정</span>
-                      </a>
-                    </li>
+					<c:if test="${emp_level <= 3 }">              
+	                    <li>
+	                      <a href="/salary/salaryBasicInfo">
+	                        <span class="sub-item">급여기본정보 설정</span>
+	                      </a>
+	                    </li>
                     <li>
                       <a href="/salary/salaryPositionJobInfo">
                         <span class="sub-item">직무급/직급급 설정</span>
@@ -163,6 +165,7 @@
                         <span class="sub-item">급여조회(관리자)</span>
                       </a>
                     </li>
+                    </c:if>
                     <li>
                       <a href="/salary/salaryInquiryForEmployee">
                         <span class="sub-item">급여조회</span>
@@ -181,19 +184,21 @@
                 </a>
                 <div class="collapse" id="maps"> <!-- href="" 를 여는 a태그의 타겟 -->
                   <ul class="nav nav-collapse">
+                  <c:if test="${emp_level <= 3 }">  
                     <li>
                       <a href="/edu/eduManage">
                         <span class="sub-item">교육관리(관리자)</span>
                       </a>
                     </li>
                     <li>
-                      <a href="/edu/eduApply">
-                        <span class="sub-item">교육신청</span>
-                      </a>
-                    </li>
-                    <li>
                       <a href="/edu/eduHisManageForManager">
                         <span class="sub-item">교육이력관리(관리자)</span>
+                      </a>
+                    </li>
+                    </c:if>
+                    <li>
+                      <a href="/edu/eduApply">
+                        <span class="sub-item">교육신청</span>
                       </a>
                     </li>
                     <li>
@@ -214,21 +219,26 @@
                 </a>
                 <div class="collapse" id="charts"> <!-- href="" 를 여는 a태그의 타겟 -->
                   <ul class="nav nav-collapse">
+                  <c:if test="${emp_level <= 3 }">  
                     <li>
                       <a href="/eval/evalManage">
                         <span class="sub-item">성과관리(관리자)</span>
                       </a>
                     </li>
+                   </c:if>
                     <li>
                       <a href="/eval/reportEval">
                         <span class="sub-item">성과보고(피평가자)</span>
                       </a>
                     </li>
+                    <c:if test="${emp_position == '부장' || emp_position == '본부장' || emp_position == '부사장'
+                    || emp_position == '사장'}">  
                     <li>
                       <a href="/eval/resultEval">
                         <span class="sub-item">성과평가(평가자)</span>
                       </a>
                     </li>
+                    </c:if>
                     <li>
                       <a href="/eval/evalHisInquiry">
                         <span class="sub-item">성과이력조회</span>
