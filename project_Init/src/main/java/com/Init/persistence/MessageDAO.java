@@ -30,4 +30,6 @@ public interface MessageDAO {
 	public SettingVO get_messenger_setting(String emp_id);
 	public void insert_follow_room(String emp_id,Integer room_id);
 	public void delete_follow_room(String emp_id,Integer room_id);
+	public String getRoomName(Integer room_id);
+	
 }

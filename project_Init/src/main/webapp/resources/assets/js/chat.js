@@ -5,6 +5,14 @@ let member_check_interval;
 $(document).ready(function () {
 	$('.messenger_body_chat.room').css('display', 'none');
 	
+	$(document).on('click', function(e) {
+	    if (!$('#open_messenger').is(e.target) && $('#open_messenger').has(e.target).length === 0) {
+	    	$('.messenger_body_chat.list input').val('');
+	    	$('.messenger_body_menu input').val('');
+	    }
+	});
+
+	
 	if ($('#open_messenger').css('display') === 'flex') {
 		
 		getMembers();
@@ -93,10 +101,10 @@ $(document).ready(function () {
 		});
 		
 		$(document).on('click', '.messenger_invite', function (e) {
-			let room_id = $('#hidden_room_id').val();
-			let emp_id = $(this).data('emp_id');
-			console.log(emp_id + 'invited to :' + room_id);
-			inviteRoom(emp_id,room_id);
+			let invite_emp_id = $(this).data('emp_id');
+			let invite_room_id = $('#hidden_room_id').val()
+			console.log(invite_emp_id + 'invited to :' + invite_room_id);
+			inviteRoom(invite_emp_id,invite_room_id);
 		});
 		
 		$(document).on('click', '.messenger_exit_room', function (e) {
@@ -105,7 +113,9 @@ $(document).ready(function () {
 		    }
 			let room_id = $('#hidden_room_id').val();
 			getOutRoom(room_id);
-			chatRoomList();
+			room_check_interval = setInterval(function() {
+				chatRoomList();
+		    }, 5000);
 			$('.messenger_invite').css('display', 'none').removeClass('fadeIn').addClass('fadeOut');
 		    $('.messenger_body_chat.room').css('display', 'none').removeClass('fadeUp').addClass('fadeDown');
 		    $('.messenger_body_chat.list').css('display', 'block').removeClass('fadeDown').addClass('fadeUp');
@@ -220,7 +230,8 @@ function getMembers() {
 								<i class="fa-solid fa-star favorite" style="font-size:15px;"></i>
 								</div>
 								<div style="flex:8; display:flex; justify-content: center; align-items: center;">
-								${memberVO.emp_profile}
+									<img src="${memberVO.emp_profile}"
+						        	style="width: 20px; height: 20px; border-radius: 50%;">
 								</div>
 							</div>
 							<div class="member_info" data-emp_id="${memberVO.emp_id}" style="flex:0.5; display:flex; flex-direction: column;">
@@ -266,7 +277,8 @@ function getMembers() {
 							<i class="fa-solid fa-star" style="font-size:15px; color:rgba(0,0,0,0.1);"></i>
 							</div>
 							<div style="flex:8; display:flex; justify-content: center; align-items: center;">
-							${memberVO.emp_profile}
+								<img src="${memberVO.emp_profile}"
+					        	style="width: 20px; height: 20px; border-radius: 50%;">
 							</div>
 						</div>
 						<div class="member_info" data-emp_id="${memberVO.emp_id}" style="flex:0.5; display:flex; flex-direction: column;">
@@ -360,7 +372,8 @@ function getMessages(room_id,receiver_emp_id) {
 				    			`<div class="r_msg_box" style="display:flex; width:100%; margin:4px 0px; height:auto;">
 									<a data-emp_id="${msg.msg_sender.emp_id}" class="member_info">
 										<div id="r_msg_sender_img" style="width:30px; height:30px; margin-top:10px;">
-										${msg.msg_sender.emp_profile}
+											<img src="${msg.msg_sender.emp_profile}"
+				    						style="width: 20px; height: 20px; border-radius: 50%;">
 										</div>
 									</a>
 									<div style="width:200px; display:flex; flex-direction:column;">
@@ -396,8 +409,8 @@ function getMessages(room_id,receiver_emp_id) {
 			    			}
 					}
 		    	}/* for문 종료*/
-				$('#hidden_room_id').val(data.messageList[0].room_id);
-				$('.chat_room_name').text(data.messageList[0].room_name);
+				$('#hidden_room_id').val(room_id);
+				$('.chat_room_name').text(data.room_name);
 		    }/* if else문 종료*/
 		    
 		    $('.chat_content').scrollTop($('.chat_content')[0].scrollHeight);
@@ -429,7 +442,9 @@ function chatRoomList() {
 								<i class="fa-solid fa-thumbtack favorite" style="font-size:15px;"></i>
 								</div>
 								<div style="flex:8; display:flex; justify-content: center; align-items: center; margin:0 15px;">
-								${rooms.room_name.split(',').length > 1 ? '<i style="font-size:15px; color:rgba(0,0,0,0.5)" class="fas fa-users"></i>' : rooms.room_thumbnail}
+								${rooms.room_name.split(',').length > 1 ? '<i style="font-size:15px; color:rgba(0,0,0,0.5)" class="fas fa-users"></i>' : 
+									`<img src="${rooms.room_thumbnail}"
+						        	style="width: 20px; height: 20px; border-radius: 50%;">`}
 								</div>
 							</div>
 							<div style="flex:7; display:flex; flex-direction:column; justify-content: center; align-items: center;">
@@ -468,7 +483,9 @@ function chatRoomList() {
 								<i class="fa-solid fa-thumbtack" style="font-size:15px; color:rgba(0,0,0,0.1);"></i>
 								</div>
 								<div style="flex:8; display:flex; justify-content: center; align-items: center; margin:0 15px;">
-								${rooms.room_name.split(',').length > 1 ? '<i style="font-size:15px; color:rgba(0,0,0,0.5)" class="fas fa-users"></i>' : rooms.room_thumbnail}
+								${rooms.room_name.split(',').length > 1 ? '<i style="font-size:15px; color:rgba(0,0,0,0.5)" class="fas fa-users"></i>' : 
+									`<img src="${rooms.room_thumbnail}"
+						        	style="width: 20px; height: 20px; border-radius: 50%;">`}
 								</div>
 							</div>
 							<div style="flex:7; display:flex; flex-direction:column; justify-content: center; align-items: center;">
@@ -535,7 +552,7 @@ function messenger_search(input) {
 				$('.messenger_search_result').remove();
 				$('.messenger_search_person').remove();
 				$('.messenger_search').after(`
-						<div class="messenger_search_result" style="width:100%, height:5px;">
+						<div class="messenger_search_result" style="width:100%, height:5px; font-size:10px;">
 							'${keyword}' 검색 결과 (${data.length})
 						</div>
 				`);
@@ -544,29 +561,30 @@ function messenger_search(input) {
 						<div class="messenger_search_person" style="display:flex;">
 							<div class="member_info" data-emp_id="${memberVO.emp_id}" style="flex:0.3; display:flex; justify-content: center;  align-items: center;">
 								<div style="flex:2; display:flex; justify-content: center; align-items: center;">
-								<i class="fa-solid fa-star" style="font-size:20px; color:rgba(0,0,0,0.1);"></i>
+								<i class="fa-solid fa-star" style="font-size:15px; color:rgba(0,0,0,0.1);"></i>
 								</div>
 								<div style="flex:8; display:flex; justify-content: center; align-items: center;">
-								${memberVO.emp_profile}
+									<img src="${memberVO.emp_profile}"
+						        	style="width: 20px; height: 20px; border-radius: 50%;">
 								</div>
 							</div>
 							<div class="member_info" data-emp_id="${memberVO.emp_id}" style="flex:0.4; display:flex; flex-direction: column;">
 								<div style="display:flex; flex:0.4;">
-									<div style="flex:1; height:auto; display:flex; justify-content: flex-start;  align-items: center; margin-top:3px;">
+									<div style="flex:1; font-size:12px; height:auto; display:flex; justify-content: flex-start;  align-items: center; margin-top:3px;">
 									${memberVO.emp_position}  ${memberVO.emp_name}
 									</div>
 								</div>
-								<div style="flex:0.3; display:flex; justify-content: flex-start;  align-items: center; font-size:12px;">
+								<div style="flex:0.3; display:flex; justify-content: flex-start;  align-items: center; font-size:10px;">
 								${memberVO.emp_bnum}
 								</div>
 								<div style="display:flex; flex:0.3;">
-									<div style="flex:1; height:auto; display:flex; justify-content: flex-start;  align-items: center; font-size:12px;">
+									<div style="flex:1; height:auto; display:flex; justify-content: flex-start;  align-items: center; font-size:10px;">
 									${memberVO.emp_dname}  ${memberVO.emp_job}
 									</div>
 								</div>
 							</div>
 							<div style="flex:0.1; display:flex; flex-direction:column; justify-content: center;  align-items: center;">
-								<i style="color:rgba(0,0,0,0.1); font-size:20px;" class="fas fa-dot-circle ${memberVO.log_on ? 'log_on' : ''}"></i>
+								<i style="color:rgba(0,0,0,0.1); font-size:15px;" class="fas fa-dot-circle ${memberVO.log_on ? 'log_on' : ''}"></i>
 							</div>
 							<div style="flex:0.2; display:flex; flex-direction:column; justify-content: center;  align-items: center;">
 								<div class="messenger_invite" data-emp_id="${memberVO.emp_id}" style="display:none;">
@@ -610,7 +628,7 @@ function room_search(input) {
 				console.log('correct value input. start room_search, result:', data);
 				$('.messenger_body_chat.list').children(':not(.messenger_room_search)').remove();
 				$('.messenger_room_search').after(`
-						<div class="room_search_result" style="width:100%, height:5px;">
+						<div class="room_search_result" style="width:100%, height:5px; font-size:10px;">
 							'${keyword}' 검색 결과 (${data.length})
 						</div>
 				`);
@@ -618,33 +636,35 @@ function room_search(input) {
 					$('.room_search_result').after(`
 						<div class="room" id="to_chat_room" data-room_id="${rooms.room_id}" style="display:flex; justify-content: center; align-items: center; width: 100%; box-sizing: border-box; overflow-x: hidden;">
 							<div style="flex:2; display:flex; justify-content: center; align-items: center;">
-								<div style="flex:2; display:flex; justify-content: center; align-items: center;">
-								<i class="fa-solid fa-thumbtack" style="font-size:20px; color:rgba(0,0,0,0.1);"></i>
+								<div data-room_id="${rooms.room_id}" class="unfollow" style="cursor: pointer; flex:2; display:flex; justify-content: center; align-items: center;">
+								<i class="fa-solid fa-thumbtack" style="font-size:15px; color:rgba(0,0,0,0.1);"></i>
 								</div>
-								<div style="flex:8; display:flex; justify-content: center; align-items: center;">
-								${rooms.room_thumbnail}
+								<div style="flex:8; display:flex; justify-content: center; align-items: center; margin:0 15px;">
+								${rooms.room_name.split(',').length > 1 ? '<i style="font-size:15px; color:rgba(0,0,0,0.5)" class="fas fa-users"></i>' : 
+									`<img src="${rooms.room_thumbnail}"
+						        	style="width: 20px; height: 20px; border-radius: 50%;">`}
 								</div>
 							</div>
 							<div style="flex:7; display:flex; flex-direction:column; justify-content: center; align-items: center;">
 								<div style="flex:4; display:flex; width: 100%; box-sizing: border-box; justify-content: flex-start; align-items: center;">
-									<div style="font-size:15px; width:100%; height:100%; width: 100%; box-sizing: border-box; display:flex; justify-content: flex-start; align-items: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight:bold;">
+									<div style="font-size:12px; font-weight:bold; width:100%; height:100%; width: 100%; box-sizing: border-box; display:flex; justify-content: flex-start; align-items: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
 									${rooms.room_name}
 									</div>
 								</div>
 								<div style="flex:3; display:flex; width:100%; justify-content: flex-start; align-items: center;">
-									<div style="font-size:12px; flex:1; height:100%; display:flex; justify-content: flex-start; align-items: center;">
-									${rooms.room_last_sender_position}  ${rooms.room_last_sender_name}
+									<div style="font-size:10px; flex:1; height:100%; display:flex; justify-content: flex-start; align-items: center;">
+									${rooms.room_last_sender_position  ? rooms.room_last_sender_position : ""}  ${rooms.room_last_sender_name  ? rooms.room_last_sender_name : ""}
 									</div>
-									<div style="font-size:12px; flex:1; height:100%; display:flex; justify-content: flex-end; align-items: center;">
+									<div style="font-size:10px; flex:1; height:100%; display:flex; justify-content: flex-end; align-items: center;">
 									${getMsgDate(rooms.room_last_message_date)}
 									</div>
 								</div>
-								<div style="font-size:12px; flex:3; display:flex; width: 300px; box-sizing: border-box; justify-content: flex-start; align-items: center; padding-left:3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">
-								${rooms.room_last_message}
+								<div style="font-size:10px; flex:3; display:flex; width: 150px; box-sizing: border-box; justify-content: flex-start; align-items: center; padding-left:3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">
+								${rooms.room_last_message ? rooms.room_last_message : "입력 된 메세지가 없습니다."}
 								</div>
 							</div>
 							<div style="flex:1; justify-content: center; align-items: center; display:flex;">
-								<div style="display: ${rooms.room_alarm_count > 0 ? 'flex' : 'none'}; justify-content: center; align-items: center; width: 23px; height: 23px;  background-color: rgb(0,0,100); color: white; border-radius: 50%; font-size: 12px;">
+								<div style="display: ${rooms.room_alarm_count > 0 ? 'flex' : 'none'}; justify-content: center; align-items: center; width: 15px; height: 15px;  background-color: rgb(0,0,100); color: white; border-radius: 50%; font-size: 8px; margin-left:8px; margin-right:8px;">
 								${rooms.room_alarm_count}
 								</div>
 							</div>
@@ -679,6 +699,10 @@ function inviteRoom(emp_id,room_id){
 				clearInterval(message_check_interval);
 			}
 			
+			message_check_interval = setInterval(function() {
+		        getMessages(data,null);
+		    }, 1000);
+			
 			if(data == 0){
 				alert('초대 할 수 없는 사용자입니다.');
 				message_check_interval = setInterval(function() {
@@ -712,6 +736,7 @@ function getOutRoom(room_id){
 		success: function (data) {
 			console.log('exit from' + room_id);
 			console.log('get Room List again');
+			chatRoomList();
 		},error:function (xhr, status, error) {
 			if (status !== 'abort') {
 				console.error('AJAX 요청 실패:', status, error);

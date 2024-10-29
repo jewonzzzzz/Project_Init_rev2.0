@@ -75,24 +75,21 @@ public class MessageController {
 		/* 개인톡으로 접근 */
 		if(room_id == null) {
 			data.put("personal_receiver_memberVO", mService.memberInfo(receiver_emp_id));
-			
 			List<MessageVO> messageList = msgService.openPersonalChat(emp_id, receiver_emp_id);
-			if (!messageList.isEmpty() && messageList.get(0) != null) {
-				messageList.get(0).setRoom_name(
-				messageList.get(0).getRoom_name().replaceAll("(^|,)"+ emp_name + "(,|$)", "$1$2")
-	            .replaceAll(",,", ",") 
-	            .replaceAll("^,|,$", "")
-	            );
+			if(messageList.size()>0) {
+				String room_name =messageList.get(0).getRoom_name().replaceAll("(^|,)\\s*" + emp_name.trim() + "\\s*(,|$)", "$1$2") 
+					    .replaceAll(",,", ",")  
+					    .replaceAll("^,|,$", "");
+				data.put("room_name", room_name);
 			}
 			data.put("messageList", messageList);
 		}else {
 			List<MessageVO> messageList = msgService.openChatRoom(emp_id, room_id);
-			if (!messageList.isEmpty() && messageList.get(0) != null) {
-				messageList.get(0).setRoom_name(
-				messageList.get(0).getRoom_name().replaceAll("(^|,)\\s*" + emp_name.trim() + "\\s*(,|$)", "$1$2") 
+			if (msgService.getRoomName(room_id) != null) {
+				String room_name = msgService.getRoomName(room_id).replaceAll("(^|,)\\s*" + emp_name.trim() + "\\s*(,|$)", "$1$2") 
 			    .replaceAll(",,", ",")  
-			    .replaceAll("^,|,$", "")
-	            );
+			    .replaceAll("^,|,$", "");
+				data.put("room_name", room_name);
 			}
 			data.put("messageList", messageList);
 		}
@@ -134,7 +131,10 @@ public class MessageController {
 	
 	@RequestMapping(value = "/invite",method = RequestMethod.GET)
 	@ResponseBody
-	public int inviteToRoom(HttpSession session,String emp_id, int room_id) {
+	public int inviteToRoom(HttpSession session,String emp_id, Integer room_id) {
+		
+		logger.debug(room_id+"번 방에 "+emp_id+"사용자를 초대합니다");
+		
 		int currentPeopleCount = msgService.countParticipant(room_id);
 		
 		String inviter_emp_id = (String)session.getAttribute("emp_id");

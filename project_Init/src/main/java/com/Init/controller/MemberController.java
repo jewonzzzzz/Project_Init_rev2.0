@@ -13,9 +13,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.Init.domain.*;
+import com.Init.service.EmployeeService;
 import com.Init.service.MemberService;
+import com.Init.service.MessageService;
 import com.Init.service.SalaryService;
 
+import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -42,6 +45,9 @@ public class MemberController implements ServletContextAware {
 	private MemberService mService;
 	@Autowired
 	private SalaryService sService;
+	
+	@Inject
+	private EmployeeService eService;
 
 	private ServletContext servletContext;
 
@@ -107,9 +113,14 @@ public class MemberController implements ServletContextAware {
 		    }
 		    
 		    // 세션에 필요한 정보들을 저장
+		    session.removeAttribute("emp_id");
 		    session.setAttribute("emp_id", resultVO.getEmp_id());
+		    session.setAttribute("emp_name", resultVO.getEmp_name());
 		    session.setAttribute("emp_position", resultVO.getEmp_position());
 		    session.setAttribute("emp_level", resultVO.getEmp_level());
+		    session.setAttribute("emp_profile", resultVO.getEmp_profile());
+			session.setAttribute("logined", true);
+			eService.userLogin(resultVO.getEmp_id());
 		    
 		    return "redirect:/main/home";
 		}

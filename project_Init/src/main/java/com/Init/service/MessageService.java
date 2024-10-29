@@ -28,4 +28,5 @@ public interface MessageService {
 	public SettingVO showMessengerSetting(String emp_id);
 	public void followRoom(String emp_id,Integer room_id);
 	public void unfollowRoom(String emp_id,Integer room_id);
+	public String getRoomName(Integer room_id);
 }

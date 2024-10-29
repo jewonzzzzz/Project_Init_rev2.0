@@ -79,7 +79,6 @@ public class WorkflowServiceImpl implements WorkflowService{
 	@Override
 	public Map<String,Object> loginCheckWorkflow(String emp_id) {
 		Map<String,Object> resultMap = new HashMap<String,Object>();
-		resultMap.put("sentWorkflowList",wdao.loginAlarmSentWorkflowList(emp_id));
 		resultMap.put("receivedWorkflowList",wdao.loginAlarmReceivedWorkflowList(emp_id));
 		resultMap.put("smallAlarm",wdao.getSmallAlarm(emp_id));
 		

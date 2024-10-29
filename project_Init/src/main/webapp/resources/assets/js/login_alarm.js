@@ -5,7 +5,7 @@ $(document).ready(function () {
 	    const date = new Date(stringDate);
 	    return String(date.getFullYear()).slice(-2) + '.' +
 		       String(date.getMonth() + 1).padStart(2, '0') + '.' +
-		       String(date.getDate()).padStart(2, '0') + '_' +
+		       String(date.getDate()).padStart(2, '0') + '  ' +
 		       String(date.getHours()).padStart(2, '0') + ':' +
 		       String(date.getMinutes()).padStart(2, '0');
 	};
@@ -22,14 +22,14 @@ $(document).ready(function () {
 			$('#welcome').text("어서오세요, "+ data.emp_name+" 님!");
 			$('#smallAlarm').text(data.smallAlarm);
 			
-		    if(data.receiverWorkflowList == null && data.sentWorkflowList == null){
+		    if(data.receivedWorkflowList == null){
 		    	$('.card-body').append(`
 		    			<div 
 		    			id="notify" 
 		    			style="
-		    			height:60px; width:100%; border-bottom:1px solid rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; padding:10px;"
+		    			height:60px; width:100%; display: flex; align-items: center; justify-content: center; padding:10px;"
 		    			>
-	            			there is no workflow to notify for you.
+	            			도착한 요청이 없습니다.
 	                	</div>
 	                	`);
 		    }else{
@@ -47,27 +47,26 @@ $(document).ready(function () {
 							login_wf_progress = '3차 승인 대기';
 						};
 			        	 $('#received_workflows').append(`
-				            		<div style="display: flex; width:100%; height:100px; border-bottom:1px solid rgba(0,0,0,0.1);">
-			                    		<a data-emp_id="${workflowVO.wf_sender}" class="member_info" >
-				                    		<div style="display: flex; flex:0.4; align-items: center; justify-content: center; border-right: 1px solid rgba(0,0,0,0.1); margin:15px 0px 15px 0px; ">
+				            		<div style="display: flex; width:100%; height:80px; background-color:white; box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3); border-radius:5px; margin-bottom:10px;">
+			                    		<a data-emp_id="${workflowVO.wf_sender}" class="member_info">
+				                    		<div style="display: flex; flex:0.4; padding-right:20px; align-items: center; justify-content: center; border-right: 1px solid rgba(0,0,0,0.1); margin-top:10px; ">
 				                    			<div style="display: flex; flex-direction:column; flex:0.4; align-items: center; justify-content: center;">
-				                    				<div style="flex:0.2; font-weight: bold width:100%;" >발신자</div>
-									        		<div style="flex:0.8; width:100%;">
+									        		<div style="flex:1; width:100%; padding:0px 10px;">
 										        		<img src="${workflowVO.sender_profile}"
 										        		style=" width: 40px; height: 40px; border-radius: 50%;">
 									        		</div>
 									        	</div>
 				                    			<div style="display: flex; flex:0.6; flex-direction:column;">
-				                    				<div style="display: flex; width:100%; flex:0.4; font-weight: bold; align-items: center; justify-content: center;">
+				                    				<div style="display: flex; width:100%; flex:0.4; font-weight: bold; align-items: center; justify-content: center; padding-bottom:5px;">
 				                    					${workflowVO.sender_name}
 				                    				</div>
-				                    				<div style="display: flex; width:100%; flex:0.2; align-items: center; justify-content: center;" >
+				                    				<div style="display: flex; width:100%; flex:0.2; font-size:12px; align-items: center; justify-content: center;" >
 				                    					${workflowVO.sender_bnum}
 				                    				</div>
-				                    				<div style="display: flex; width:100%; flex:0.2; align-items: center; justify-content: center;">
+				                    				<div style="display: flex; width:100%; flex:0.2; font-size:12px; align-items: center; justify-content: center;">
 				                    					${workflowVO.sender_dname}
 				                    				</div>
-				                    				<div style="display: flex; width:100%; flex:0.2; align-items: center; justify-content: center;" >
+				                    				<div style="display: flex; width:100%; flex:0.2; font-size:12px; align-items: center; justify-content: center;" >
 				                    					${workflowVO.sender_position}
 				                    				</div>
 				                    			</div>
@@ -77,20 +76,20 @@ $(document).ready(function () {
 				                    		<div style="display: flex; flex:0.6; flex-direction:column;">
 					                    		<div style="display: flex; flex:0.5; width:100%;">
 					                    			<div style="flex:1; display: flex; flex-direction:column; align-items: center; justify-content: center;">
-					                    				<div style="flex:0.5; font-weight: bold">유형</div>
+					                    				<div style="flex:0.5; font-weight: bold; padding-bottom:10px;">유형</div>
 				                    					<div style="flex:0.5;">${workflowVO.wf_type}</div>
 					                    			</div>
 					                    			<div style="flex:1; display: flex; flex-direction:column; align-items: center; justify-content: center;">
-					                    				<div style="flex:0.5; font-weight: bold">상태</div>
+					                    				<div style="flex:0.5; font-weight: bold; padding-bottom:10px;">상태</div>
 				                    					<div style="flex:0.5;">${login_wf_progress}</div>
 					                    			</div>
 					                    			<div style="flex:1; display: flex; flex-direction:column; align-items: center; justify-content: center;">
-					                    				<div style="flex:0.5; font-weight: bold">수신일</div>
+					                    				<div style="flex:0.5; font-weight: bold; padding-bottom:10px;">수신일</div>
 				                    					<div style="flex:0.5;">${getDate(workflowVO.wf_progress === '1' ? workflowVO.wf_create_date : workflowVO.wf_last_result_date)}</div>
 					                    			</div>
 					                    		</div>
 					                    		<div 
-					                    		style="display: flex; flex:0.5; width:100%; align-items: center; justify-content: left; margin-left:30px; 
+					                    		style="display: flex; padding-top:10px; flex:0.5; width:100%; align-items: center; justify-content: center; margin-left:30px; 
 					                    		white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width:245px;">
 					                    			${workflowVO.wf_title}
 					                    		</div>
@@ -109,97 +108,14 @@ $(document).ready(function () {
 				        			<div 
 					        			id="notify" 
 					        			style="
-					        			display: flex; height:60px; border-bottom:1px solid rgba(0,0,0,0.1); align-items: center; justify-content: center;"
+					        			display: flex; height:60px; align-items: center; justify-content: center;"
 				        			>
-				        				there is more `+(data.receivedWorkflowList.length-3)+` received workflow to notify for you.
+				        				`+(data.receivedWorkflowList.length-3)+` 개의 받은 요청이 더 있습니다.
 				        			</div>
 			        			</a>
 			        	`); 
 			        }
 		        } /* received workflow end */
-		        if(data.sentWorkflowList.length > 0){   /* sent workflow end */
-		        	
-			    	$('#sent_workflows').append(`<p>새로운 응답이 있는 요청</p>`); 
-			    	
-			    	let sentWorkflowCount = 0;
-			        for (const workflowVO of data.sentWorkflowList) {
-			        	let login_wf_progress = null;
-			        	if (workflowVO.wf_progress == '1') {
-			        		login_wf_progress = '1차 승인 대기';
-						} else if (wf_progress == '2') {
-							login_wf_progress = '2차 승인 대기';
-						} else if (wf_progress == '3') {
-							login_wf_progress = '3차 승인 대기';
-						};
-			        	$('#sent_workflows').append(`
-			            		<div style="display: flex; width:100%; height:100px; border-bottom:1px solid rgba(0,0,0,0.1);">
-		                    		<a data-emp_id="${workflowVO.wf_code}" id="workflow_info" style="display: flex; align-items: center; justify-content: center;">
-			                    		<div style="display: flex; flex-direction:column; flex:0.5; align-items: center; justify-content: center; border-right: 1px solid rgba(0,0,0,0.1); margin:15px 0px 15px 0px; ">
-		                    				<div style="display: flex; flex:0.5; width:100%;">
-				                    			<div style="flex:1; display: flex; flex-direction:column; align-items: center; justify-content: center;">
-				                    				<div style="flex:0.5 width:100%; ; font-weight: bold">유형</div>
-			                    					<div style="flex:0.5 width:100%; ;">${workflowVO.wf_type}</div>
-				                    			</div>
-				                    			<div style="flex:1; display: flex; flex-direction:column; align-items: center; justify-content: center;">
-				                    				<div style="flex:0.5 width:100%; ; font-weight: bold">상태</div>
-			                    					<div style="flex:0.5 width:100%; ;">${login_wf_progress}</div>
-				                    			</div>
-				                    			<div style="flex:1; display: flex; flex-direction:column; align-items: center; justify-content: center;">
-				                    				<div style="flex:0.5 width:100%; ; font-weight: bold">완료일</div>
-			                    					<div style="flex:0.5 width:100%; ;">${getDate(workflowVO.wf_progress === '1' ? workflowVO.wf_create_date : workflowVO.wf_last_result_date)}</div>
-				                    			</div>
-				                    		</div>
-				                    		<div 
-				                    		style="display: flex; flex:0.5; align-items: center; justify-content: left; margin-left:30px; 
-				                    		white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width:100%; ">
-				                    			${workflowVO.wf_title}
-				                    		</div>
-			                    		</div>
-		                    		</a>
-		                    		<div style="display: flex; flex:0.5;">
-		                    			<a data-emp_id="${workflowVO.wf_receiver_1st}" class="member_info" style="display: flex; align-items: center; justify-content: center;">
-			                    			<div style="flex:1; display: flex; flex-direction:column; align-items: center; justify-content: center;">
-			                    				<div style="flex:0.4 width:100%; ; font-weight: bold">1st_result</div>
-		                    					<div style="flex:0.3 width:100%; ;">${workflowVO.wf_result_1st}</div>
-		                    					<div style="flex:0.3 width:100%; ;">${workflowVO.receiver_name_1st}</div>
-			                    			</div>
-		                    			</a>
-		                    			<a data-emp_id="${workflowVO.wf_receiver_2nd}" class="member_info">
-			                    			<div style="flex:1; display: flex; flex-direction:column; align-items: center; justify-content: center;">
-			                    				<div style="flex:0.4 width:100%; ; font-weight: bold">2nd_result</div>
-		                    					<div style="flex:0.3 width:100%; ;">${workflowVO.wf_result_2nd}</div>
-		                    					<div style="flex:0.3 width:100%; ;">${workflowVO.receiver_name_2nd}</div>
-			                    			</div>
-		                    			</a>
-		                    			<a data-emp_id="${workflowVO.wf_receiver_3rd}" class="member_info">
-			                    			<div style="flex:1; display: flex; flex-direction:column; align-items: center; justify-content: center;">
-			                    				<div style="flex:0.4 width:100%; ; font-weight: bold">3rd_result</div>
-		                    					<div style="flex:0.3 width:100%; ;">${workflowVO.wf_result_3rd}</div>
-		                    					<div style="flex:0.3 width:100%; ;">${workflowVO.receiver_name_3rd}</div>
-			                    			</div>
-		                    			</a>
-			                    	</div>
-		                    	</div>
-			            		`); 
-			        	sentWorkflowCount ++;
-		        	    if (sentWorkflowCount >= 3) {
-		        	        break;
-		        	    }
-				    }
-			        if(data.sentWorkflowList.length > 3){
-			        	$('#sent_workflows').append(`
-			        			<a href="/work/workflow">
-				        			<div 
-					        			id="notify" 
-					        			style="
-					        			display: flex; height:60px; border-bottom:1px solid rgba(0,0,0,0.1); align-items: center; justify-content: center;"
-				        			>
-				        				there is more `+(data.sentWorkflowList.length-3)+` copleted workflow that you sent.
-				        			</div>
-			        			</a>
-			        	`); 
-			        }
-		        } /* sent workflow end */
 		    } /* workflows end */
 	    
         $('#login_alarm_modal').modal('show');

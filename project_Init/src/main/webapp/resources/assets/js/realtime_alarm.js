@@ -91,7 +91,7 @@ $(document).ready(function () {
 		
 		$('#realtimeAlarm_date').text(getDate(workflowVO.wf_last_result_date));
 		$('#realtimeAlarm_sender_profile').text(workflowVO.sender_profile);
-		$('#realtimeAlarm_sender_dnum').text(workflowVO.sender_dnum);
+		$('#realtimeAlarm_sender_dname').text(workflowVO.sender_dname);
 		$('#realtimeAlarm_sender_bnum').text(workflowVO.sender_bnum);
 		$('#realtimeAlarm_sender_name').text(workflowVO.sender_name);
 		$('#realtimeAlarm_sender_position').text(workflowVO.sender_position);

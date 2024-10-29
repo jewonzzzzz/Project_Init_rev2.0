@@ -395,7 +395,7 @@ a{
     position: absolute; 
     top: calc(100% + 5px);
     right: 20px; 
-    width: 600px; 
+    width: 500px; 
     min-height: 70px; 
     max-height: 800px;
     background-color: rgba(0,0,0,0.5);
@@ -421,8 +421,9 @@ a{
 /* ------------------------------------ */
 
 
-* :not(i) {
+* :not(i):not(.sidebar *) {
     font-family: 'Apple', sans-serif !important;
+    color:black;
 }
 
 a,
@@ -843,7 +844,7 @@ td a{
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 .messenger_body_menu div.messenger_search_person{
-	background-color:rgba(0,0,0,0.1);
+	background-color:white;
 	height:60px;	
 	margin-bottom:5px;
 	padding-left:10px;

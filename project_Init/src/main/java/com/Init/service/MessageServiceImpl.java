@@ -192,6 +192,11 @@ public class MessageServiceImpl implements MessageService{
 	public void unfollowRoom(String emp_id, Integer room_id) {
 		msgdao.delete_follow_room(emp_id, room_id);
 	}
+
+	@Override
+	public String getRoomName(Integer room_id) {
+		return msgdao.getRoomName(room_id);
+	}
 	
 	
 }

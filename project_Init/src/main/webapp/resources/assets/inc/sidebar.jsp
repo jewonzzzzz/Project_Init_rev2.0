@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/brands.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/custom.css" />
       <!-- Sidebar -->
-      <div class="sidebar" data-background-color="dark">
+      <div class="sidebar" data-background-color="dark" style="color:white !important;">
         <!-- Start logo -->
         <div class="sidebar-logo" >
           <div class="logo-header" style="background-color: rgba(0,0,0,0.8)">

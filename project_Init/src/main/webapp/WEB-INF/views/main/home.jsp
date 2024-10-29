@@ -225,9 +225,43 @@
 					공지사항
 					</div>
 				</div>
-				<div class="main-box-body" style="display:flex; flex-direction:column;">
-					<div></div>
-					<div></div>
+				<div class="main-box-body" style="display:flex; flex-direction:column; color:black; font-size:12px;">
+					<div style="display:flex;">
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">[알림]</div>
+						<div style="flex:0.6; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">1차 프로젝트가 끝났다고 알림</div>			
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">조우영</div>
+						<div style="flex:0.2; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">2024-10-30</div>
+					</div>
+					<div style="display:flex;">
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">[알림]</div>
+						<div style="flex:0.6; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">24년 하반기 채용알림</div>			
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">관리자</div>
+						<div style="flex:0.2; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">2024-08-24</div>
+					</div>
+					<div style="display:flex;">
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">[공지]</div>
+						<div style="flex:0.6; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">24년 하반기 성과평가 공지</div>			
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">관리자</div>
+						<div style="flex:0.2; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">2024-07-01</div>
+					</div>
+					<div style="display:flex;">
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">[공지]</div>
+						<div style="flex:0.6; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">사내 포털 이용 공지</div>			
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">관리자</div>
+						<div style="flex:0.2; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">2024-06-22</div>
+					</div>
+					<div style="display:flex;">
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">[공지]</div>
+						<div style="flex:0.6; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">아무것도 없지만 그래도 스크롤정도는 내려갑...</div>			
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">조우영</div>
+						<div style="flex:0.2; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">2024-06-21</div>
+					</div>
+					<div style="display:flex;">
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">[공지]</div>
+						<div style="flex:0.6; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">진짜 내려감</div>			
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">조우영</div>
+						<div style="flex:0.2; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">2024-06-20</div>
+					</div>
 				</div>
 			</div>		
 		</div>
@@ -237,9 +271,43 @@
 					<div style="box-shadow: 2px 0px 2px 1px rgba(0, 0, 0, 0.4);">교육 일정</div>
 					<div style="box-shadow: 2px 0px 2px 1px rgba(0, 0, 0, 0.4);">우수 사원</div>
 				</div>
-				<div class="main-box-body" style="display:flex; flex-direction:column;">
-					<div></div>
-					<div></div>
+				<div class="main-box-body" style="display:flex; flex-direction:column; color:black; font-size:12px;">
+					<div style="display:flex;">
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">[사내]</div>
+						<div style="flex:0.6; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">직장 내 괴롭힘 방지교육 일정안내</div>			
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">관리자</div>
+						<div style="flex:0.2; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">2024-10-30</div>
+					</div>
+					<div style="display:flex;">
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">[외부]</div>
+						<div style="flex:0.6; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">외부강연 : 꼰대가 되지 않는 법 / 일시 : 24-10...</div>			
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">관리자</div>
+						<div style="flex:0.2; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">2024-09-30</div>
+					</div>
+					<div style="display:flex;">
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">[사내]</div>
+						<div style="flex:0.6; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">회식문화 교육 일정안내</div>			
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">관리자</div>
+						<div style="flex:0.2; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">2024-07-04</div>
+					</div>
+					<div style="display:flex;">
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">[사내]</div>
+						<div style="flex:0.6; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">직장 내 성희롱 방지교육 일정안내</div>			
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">관리자</div>
+						<div style="flex:0.2; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">2024-06-29</div>
+					</div>
+					<div style="display:flex;">
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">[사내]</div>
+						<div style="flex:0.6; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">구내식당에서 혼밥 잘 하는 법</div>			
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">관리자</div>
+						<div style="flex:0.2; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">2024-06-29</div>
+					</div>
+					<div style="display:flex;">
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">[사내]</div>
+						<div style="flex:0.6; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">여기도 내려감</div>			
+						<div style="flex:0.1; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">조우영</div>
+						<div style="flex:0.2; display:flex; align-items: flex-end; border:none; padding-bottom:5px;">2024-06-29</div>
+					</div>
 				</div>
 			</div>	
 		</div>
@@ -249,8 +317,8 @@
 					<div id="main-info-box" style="width:100%; height:100%; display:flex; flex-direction:column;">
 						<div style="width:100%; height:100%; display:flex; flex-direction:column;">
 							<div style="flex:1; display:flex; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">
-								<div style="flex:0.4;">
-								<img src="" style="border:1px solid black; height: 100%; object-fit: cover; width: auto; border-radius: 50%;">
+								<div style="flex:0.4; display:flex; justify-content: center; align-items: center;">
+									<img src="${memberVO.emp_profile}" style="width: 90px; height: 90px; border-radius: 50%;">
 								</div>
 								<div style="flex:0.6; display:flex; flex-direction:column; font-size:14px;">
 									<div style="flex:1; display:flex; align-items: flex-end; justify-content: flex-start;">

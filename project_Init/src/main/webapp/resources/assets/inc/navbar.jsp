@@ -3,6 +3,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <script src="${pageContext.request.contextPath }/resources/assets/js/navbar.js"></script>
 <script src="${pageContext.request.contextPath }/resources/assets/js/search.js"></script>
+
+  	<c:if test="${empty sessionScope.emp_id}">
+	    <script type="text/javascript">
+	   		alert("로그인 정보가 없습니다. 로그인 페이지로 이동합니다.");
+	        window.location.href = "/member/login";
+	    </script>
+	</c:if>
+	
 		  <!-- Navbar Header -->
           <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom" style="position: relative; background-color: rgba(0,0,0,0.8)">
            	<!-- 알람 확장 -->
@@ -57,8 +65,6 @@
 					</div>
 				</div>
               </nav>
-              
-              <i class="fa-regular fa-calendar-days"></i><i class="fa-brands fa-signal-messenger"></i>
               <!-- 검색창 -->
               
 			  <!-- 드롭다운 메뉴들 -->
@@ -100,59 +106,15 @@
                 
 				<!-- 개인프로필 -->
                 <li class="nav-item topbar-user dropdown hidden-caret">
-                  <a
-                    class="dropdown-toggle profile-pic"
-                    data-bs-toggle="dropdown"
-                    href="#"
-                    aria-expanded="false"
-                  >
-                    <div class="avatar-sm">
-                      <img
-                        src="${pageContext.request.contextPath }/resources/assets/img/profile.jpg"
-                        alt="..."
-                        class="avatar-img rounded-circle"
-                      />
-                    </div>
-                    <span class="profile-username" style="color:white;">
-                      <span class="op-7">안녕하세요, </span>
-                      <span class="fw-bold">${emp_name}</span>
-                      <span class="op-7"> 님!</span>
-                    </span>
-                  </a>
-                  <ul class="dropdown-menu dropdown-user animated fadeIn">
-                    <div class="dropdown-user-scroll scrollbar-outer">
-                      <li>
-                        <div class="user-box">
-                          <div class="avatar-lg">
-                            <img
-                              src="${pageContext.request.contextPath }/resources/assets/img/profile.jpg"
-                              alt="image profile"
-                              class="avatar-img rounded"
+               			 <img
+                              src="${emp_profile}"
+                              style="width: 30px; height: 30px; border-radius: 50%;"
                             />
-                          </div>
-                          <div class="u-text">
-                            <h4>Hizrian</h4>
-                            <p class="text-muted">hello@example.com</p>
-                            <a
-                              href="profile.html"
-                              class="btn btn-xs btn-secondary btn-sm"
-                              >View Profile</a
-                            >
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">My Profile</a>
-                        <a class="dropdown-item" href="#">My Balance</a>
-                        <a class="dropdown-item" href="#">Inbox</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Account Setting</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Logout</a>
-                      </li>
-                    </div>
-                  </ul>
+                    <span class="profile-username" style="color:white;">
+                      <span class="op-7" style="color:white;">안녕하세요, </span>
+                      <span class="fw-bold" style="color:white;">${emp_name}</span>
+                      <span class="op-7" style="color:white;"> 님!</span>
+                    </span>
                 </li>
                 <!-- 개인프로필 -->
                 <!-- 아이콘1 -->

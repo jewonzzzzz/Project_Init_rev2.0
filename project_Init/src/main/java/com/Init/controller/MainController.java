@@ -146,12 +146,7 @@ public class MainController {
 		String emp_name = (String)session.getAttribute("emp_name");
 		Map<String, Object> loginAlarms = wService.loginCheckWorkflow(emp_id);
 		loginAlarms.put("messageList",msgService.getMessageUnreadAlarm(emp_id));
-		
 		loginAlarms.put("emp_name", emp_name);
-		
-		int alarmCount =((List<WorkflowVO>)loginAlarms.get("sentWorkflowList")).size() + ((List<WorkflowVO>)loginAlarms.get("receivedWorkflowList")).size() + ((List<WorkflowVO>)loginAlarms.get("messageList")).size();
-			
-		
 		session.removeAttribute("logined");
 		return loginAlarms;
 	}
