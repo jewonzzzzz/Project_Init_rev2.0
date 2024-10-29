@@ -51,9 +51,13 @@ body {
 
 
 
-<link rel="icon"
-	href="${pageContext.request.contextPath }/resources/assets/img/kaiadmin/favicon.ico"
-	type="image/x-icon" />
+<title>INIT</title>
+	  <link
+	      rel="icon"
+	      href="${pageContext.request.contextPath }/resources/assets/img/project/favicon_black.png"
+	      style="border-radius: 50%;"
+	      type="image/x-icon"
+	    />
 
 <!-- Fonts and icons -->
 

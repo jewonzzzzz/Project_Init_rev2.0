@@ -11,7 +11,15 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Fonts and icons -->
     
-    
+	    
+	<title>INIT</title>
+	  <link
+	      rel="icon"
+	      href="${pageContext.request.contextPath }/resources/assets/img/project/favicon_black.png"
+	      style="border-radius: 50%;"
+	      type="image/x-icon"
+	    />
+	    
     
     <script src="${pageContext.request.contextPath }/resources/assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
@@ -32,54 +40,49 @@
       });
     </script>
     <!--qr코드 숨김 스타일  -->
-    <style>
-     
-        
-        #qrcode {
-            margin-top: 20px;
-            display: none; /* 처음에는 QR 코드 숨김 */
-        }
-        
-        
-        #qrFrame {
-            width: 200px;
-            height: 200px;
-            border: none;
-            overflow: hidden; /* 스크롤바 숨기기 */
-        }
-    
-        
-    </style>
-    
-    <!-- 사원 테이블 -->
-      <style>
-      .table-container {
-        width: 100%;
-        overflow-x: auto; /* 가로 스크롤을 추가 */
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    th, td {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-    }
-    th {
-        background-color: #f2f2f2;
-    }
+<style>
+#qrcode {
+	margin-top: 20px;
+	display: none; /* 처음에는 QR 코드 숨김 */
+}
 
-    .btn-wide {
-        width: 150px; /* 원하는 너비로 조정 */
-    }
-    </style>
-    
-    
-    
+#qrFrame {
+	width: 200px;
+	height: 200px;
+	border: none;
+	overflow: hidden; /* 스크롤바 숨기기 */
+}
 
-    
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+.table-container {
+	width: 100%;
+	overflow-x: auto; /* 가로 스크롤을 추가 */
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+th, td {
+	border: 1px solid #dddddd;
+	text-align: left;
+	padding: 8px;
+}
+
+th {
+	background-color: #f2f2f2;
+}
+
+.btn-wide {
+	width: 150px; /* 원하는 너비로 조정 */
+}
+</style>
+
+
+
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
