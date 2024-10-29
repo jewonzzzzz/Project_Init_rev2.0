@@ -125,16 +125,22 @@ function updateCalendar(year, month) {
 	            		if(param.presence == '출근'){
 		            		$(`#d_${flag_position + 1} .calendar_info.presence`).html(`
 		            		${year}년 ${month+1}월 ${i}일 : ${param.presence} <br>
-			            			체크 인 : ${param.check_in}`);
+		            			체크 인 : ${param.check_in}`);
 	            		}
 	            		if(param.presence == '휴가'){
 	            			$(`#d_${flag_position + 1} .flag.presence`).addClass("leave");
+	            			$(`#d_${flag_position + 1} .calendar_info.presence`).html(`
+    		            		${year}년 ${month+1}월 ${i}일 : ${param.presence}`);
 	            		}
 	            		if(param.presence == '출장'){
 	            			$(`#d_${flag_position + 1} .flag.presence`).addClass("workout");
+	            			$(`#d_${flag_position + 1} .calendar_info.presence`).html(`
+		            			${year}년 ${month+1}월 ${i}일 : ${param.presence}`);
 	            		}
 	            		if(param.presence == '교육'){
 	            			$(`#d_${flag_position + 1} .flag.presence`).addClass("edu");
+	            			$(`#d_${flag_position + 1} .calendar_info.presence`).html(`
+		            			${year}년 ${month+1}월 ${i}일 : ${param.presence}`);
 	            		}
 	            	}
 	            }

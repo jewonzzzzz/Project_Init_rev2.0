@@ -20,7 +20,6 @@ public interface WorkflowDAO {
 	public int updateWorkflow(WorkflowVO vo);
 	public List<WorkflowVO> alarmSentWorkflowList(String emp_id);
 	public List<WorkflowVO> alarmReceivedWorkflowList(String emp_id);
-	public List<WorkflowVO> loginAlarmSentWorkflowList(String emp_id);
 	public List<WorkflowVO> loginAlarmReceivedWorkflowList(String emp_id);
 	public int getSmallAlarm(String emp_id);
 	public List<WorkflowVO> getCalendarWorkflow(String emp_id, LocalDate startDate, LocalDate endDate);

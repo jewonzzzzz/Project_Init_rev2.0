@@ -82,7 +82,7 @@ public class WorkflowDAOImpl implements WorkflowDAO {
 		List<WorkflowVO> resultList= sqlSession.selectList(NAMESPACE + ".realtimeAlarmSentWorkflow", emp_id);
 		for(WorkflowVO workflowVO : resultList) {
 			sqlSession.update(NAMESPACE + ".workflowSenderAlarmCheck", workflowVO.getWf_code());
-			logger.debug("wf_code : " + workflowVO.getWf_code()+ " : 발신자가 업데이트된 내용에 대한 알람을 받았습니다. 발신자 알람 토큰을 제거합니다. ");
+			logger.debug("wf_code : " + workflowVO.getWf_code()+ " : real발신자가 업데이트된 내용에 대한 알람을 받았습니다. 발신자 알람 토큰을 제거합니다. ");
 		}
 		return resultList;
 	}
@@ -94,16 +94,6 @@ public class WorkflowDAOImpl implements WorkflowDAO {
 			sqlSession.update(NAMESPACE + ".workflowReceiverAlarmCheck", workflowVO.getWf_code());
 			logger.debug("wf_code : " + workflowVO.getWf_code()+ " : 수신자가 워크플로우에 대한 알람을 받았습니다. 수신자 알람 토큰을 제거합니다. ");
 		}
-		return resultList;
-	}
-	
-	@Override
-	public List<WorkflowVO> loginAlarmSentWorkflowList(String emp_id) {
-		List<WorkflowVO> resultList= sqlSession.selectList(NAMESPACE + ".loginAlarmSentWorkflow", emp_id);
-			for(WorkflowVO workflowVO : resultList) {
-				sqlSession.update(NAMESPACE + ".workflowSenderAlarmCheck", workflowVO.getWf_code());
-				logger.debug("wf_code : " + workflowVO.getWf_code()+ " : 발신자가 업데이트 내용에 대한 알람을 받았습니다. 발신자 알람 토큰을 제거합니다. ");
-			}
 		return resultList;
 	}
 	

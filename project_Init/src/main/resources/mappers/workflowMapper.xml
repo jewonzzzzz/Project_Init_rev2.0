@@ -37,18 +37,22 @@
 	<!-- 보낸 워크플로우 목록 -->
 	<select id="getSentWorkflowList" parameterType="WorkflowVO" resultType="WorkflowVO">
 		select * , 
-		 emp.emp_name as receiver_name, emp.emp_bnum as receiver_bnum, emp.emp_dnum as receiver_dnum, emp.emp_position as receiver_position, emp.emp_profile as receiver_profile, emp.emp_job as receiver_job
+		 emp.emp_name as receiver_name, emp.emp_bnum as receiver_bnum, emp.emp_dnum as receiver_dnum, emp.emp_position as receiver_position, 
+		 emp.emp_profile as receiver_profile, emp.emp_job as receiver_job, d.dname as sender_dname
 		 from workflow wf
 		 join employee emp on wf.wf_receiver = emp.emp_id and emp.approval = 0
+		 join dept d on emp.emp_dnum = d.dnum
 		 where wf_sender=#{wf_sender} and wf_status=#{wf_status}
 	</select>
 	
 	<!-- 받은 워크플로우 목록 -->
 	<select id="getReceivedWorkflowList" parameterType="WorkflowVO" resultType="WorkflowVO">
 		select * ,
-		 emp.emp_name as sender_name, emp.emp_bnum as sender_bnum, emp.emp_dnum as sender_dnum, emp.emp_position as sender_position, emp.emp_profile as sender_profile, emp.emp_job as sender_job
+		 emp.emp_name as sender_name, emp.emp_bnum as sender_bnum, emp.emp_dnum as sender_dnum, emp.emp_position as sender_position, 
+		 emp.emp_profile as sender_profile, emp.emp_job as sender_job, d.dname as sender_dname
 		 from workflow wf
 		 join employee emp on wf.wf_sender = emp.emp_id and emp.approval = 0
+		 join dept d on emp.emp_dnum = d.dnum
 		 where wf_receiver=#{wf_receiver} and wf_status=#{wf_status}
 	</select>
 	

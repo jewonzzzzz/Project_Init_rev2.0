@@ -12,7 +12,7 @@
 					</div>
 					<!-- card body start -->
 					<div class="card-body" style="background-color: rgba(0,0,0,0.1); border-top:0px !important;">
-						<div id="welcome" style="display: flex; align-items: center; justify-content: center; width:100%; height: 30px; font-size:20px; border-bottom:1px solid rgba(0,0,0,0.1);"></div>
+						<div id="welcome" style="display: flex; align-items: center; justify-content: center; width:100%; height: 30px; font-size:20px;"></div>
 						<div class="form-group" id="received_workflows" style= "width:100%; display: flex; flex-direction:column; align-items: center; justify-content: center; "></div>
 	                    <div class="form-group" id="sent_workflows" style= "width:100%; display: flex; flex-direction:column; align-items: center; justify-content: center; "></div>
 			        </div>

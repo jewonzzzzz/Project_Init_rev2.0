@@ -12,6 +12,7 @@
       style="border-radius: 50%;"
       type="image/x-icon"
     />
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/assets/css/custom.css" />
 <style>
 	*{
 	    padding: 0;
@@ -57,9 +58,8 @@
 	}
 	
 	#login-form > input[type="submit"]{
-	    color: #fff;
+	    color: black;
 	    font-size: 16px;
-	    background-color: #0055FF;
 	    margin-top: 20px;
 	}
 	
@@ -150,14 +150,17 @@
 </head>
 <body>
 	<div class="login-wrapper">
-        <h2>Login</h2>
+        <img
+          src="${pageContext.request.contextPath }/resources/assets/img/project/logo_white.png"
+          style="width: 140px; height: 140px;"
+        />
         <form method="post" id="login-form" onsubmit="return frm_check();">
             <input type="text" name="emp_id" id="logId" placeholder="사원번호">
             <input type="password" name="emp_pw" placeholder="비밀번호">
             <label for="remember-check">
                 <input type="checkbox" class="save_id" name="checkId" id="saveId"> 사원번호 저장
             </label>
-            <input type="submit" value="로그인">
+            <input type="submit" value="로그인" class="custom_button">
             <a href="/member/forgotPassword" class="forgot-password">비밀번호를 잊으셨나요?</a>
         </form>
 

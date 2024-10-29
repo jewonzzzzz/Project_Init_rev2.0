@@ -129,11 +129,11 @@
 	        d.dname as msg_sender_emp_dname
 	    FROM 
 	        messages m
-	    JOIN 
+	    left join 
 	        msg_room r ON m.room_id = r.room_id
-	    JOIN 
+	    left join 
 	        employee e ON m.msg_sender = e.emp_id and e.approval=0
-	    join 
+	    left join 
 	    	dept d on e.emp_dnum = d.dnum
 	    WHERE 
 	        m.room_id = #{room_id}
@@ -240,7 +240,7 @@
 	    	 AND msg_id IN 
 	      <foreach item="msg_id" collection="msg_id" open="(" separator="," close=")">
 	     	 #{msg_id}
-	      </foreach>;
+	      </foreach>
 	</update>
 	
 	<update id="updateRoomInfo" parameterType="MessageVO">
@@ -366,12 +366,16 @@
 		 WHERE r.room_id = #{room_id}
 	</select>
 	
+	<select id="getRoomName" resultType="String">
+	    select room_name from msg_room where room_id = #{room_id}
+	</select>
+	
 	<insert id="insertNewPartyRoom" parameterType="MessageVO">
 	    INSERT INTO msg_room (room_name, room_admin)
 	     VALUES (#{room_name},#{room_admin})
 	</insert>
 	
-	<select id="getGarbageMessage" parameterType="MessageVO">
+	<select id="getGarbageMessage" parameterType="MessageVO" resultType="int">
 	    SELECT m.msg_id
 		 FROM messages m
 		 JOIN msg_room r on m.room_id = r.room_id 

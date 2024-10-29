@@ -56,13 +56,12 @@ $(document).ready(function () {
 				
 				if (workflowVO.wf_progress == '1') {
 				 	$('#wf_progress').text('1차 승인 대기');
-				} else if (wf_progress == '2') {
+				} else if (workflowVO.wf_progress == '2') {
 					$('#wf_progress').text('2차 승인 대기');
-				} else if (wf_progress == '3') {
+				} else if (workflowVO.wf_progress == '3') {
 					$('#wf_progress').text('3차 승인 대기');
 				};
 					
-				$('#wf_level').text(workflowVO.wf_level);
 				$('#wf_create_date').text(getDate(workflowVO.wf_create_date));
 				$('#wf_content').text(workflowVO.wf_content);
 				$('#wf_sender_emp_name').text(workflowVO.sender_name);
@@ -150,17 +149,53 @@ $(document).ready(function () {
 				
 				/* set result start */
 				if(workflowVO.wf_result_1st != null){
-					$('#wf_result_1st').text(workflowVO.wf_result_1st);
+					
+					let wf_modal_result_1st = null;
+					if(workflowVO.wf_result_1st == '1'){
+						wf_modal_result_1st = '승인';
+					}
+					if(workflowVO.wf_result_1st == '0'){
+						wf_modal_result_1st = '반려';
+					}
+					if(workflowVO.wf_result_1st == '2'){
+						wf_modal_result_1st = '보류';
+					}
+					
+					$('#wf_result_1st').text(wf_modal_result_1st);
 					$('#wf_result_date_1st').text(getDate(workflowVO.wf_result_date_1st));
 				}
 				
 				if(workflowVO.wf_result_2nd != null){
-					$('#wf_result_2nd').text(workflowVO.wf_result_2nd);
+					
+					let wf_modal_result_2nd = null;
+					if(workflowVO.wf_result_2nd == '1'){
+						wf_modal_result_2nd = '승인';
+					}
+					if(workflowVO.wf_result_2nd == '0'){
+						wf_modal_result_2nd = '반려';
+					}
+					if(workflowVO.wf_result_2nd == '2'){
+						wf_modal_result_2nd = '보류';
+					}
+					
+					$('#wf_result_2nd').text(wf_modal_result_2nd);
 					$('#wf_result_date_2nd').text(getDate(workflowVO.wf_result_date_2nd));
 				}
 				
 				if(workflowVO.wf_result_3rd != null){
-					$('#wf_result_3rd').text(workflowVO.wf_result_3rd);
+					
+					let wf_modal_result_3rd = null;
+					if(workflowVO.wf_result_3rd == '1'){
+						wf_modal_result_3rd = '승인';
+					}
+					if(workflowVO.wf_result_3rd == '0'){
+						wf_modal_result_3rd = '반려';
+					}
+					if(workflowVO.wf_result_3rd == '2'){
+						wf_modal_result_3rd = '보류';
+					}
+
+					$('#wf_result_3rd').text(wf_modal_result_3rd);
 		            $('#wf_result_date_3rd').text(getDate(workflowVO.wf_result_date_3rd));
 				}
 				/* set result end */

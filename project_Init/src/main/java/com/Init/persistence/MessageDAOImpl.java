@@ -128,13 +128,15 @@ public class MessageDAOImpl implements MessageDAO {
 		int room_id = vo.getRoom_id();
 		String emp_id = vo.getLeaver_emp_id();
 		List<Integer> garbageMsg = sqlSession.selectList(NAMESPACE + ".getGarbageMessage",vo);
-		Map<String, Object> param = new HashMap<String, Object>();
-	    param.put("emp_id", emp_id);
-	    param.put("msg_reader", emp_id);
-	    param.put("room_id", room_id);
-	    param.put("msg_id", garbageMsg);
-	    sqlSession.update(NAMESPACE + ".updateMessageReader",param);
-	    sqlSession.update(NAMESPACE + ".updateMessageAlarmToken",param);
+		if(garbageMsg.size()>0) {
+			Map<String, Object> param = new HashMap<String, Object>();
+		    param.put("emp_id", emp_id);
+		    param.put("msg_reader", emp_id);
+		    param.put("room_id", room_id);
+		    param.put("msg_id", garbageMsg);
+		    sqlSession.update(NAMESPACE + ".updateMessageReader",param);
+		    sqlSession.update(NAMESPACE + ".updateMessageAlarmToken",param);
+		}
 	}
 
 	@Override
@@ -210,6 +212,11 @@ public class MessageDAOImpl implements MessageDAO {
 		param.put("emp_id", emp_id);
 	    param.put("room_id", room_id);
 		sqlSession.delete(NAMESPACE + ".unfollowRoom",param);
+	}
+
+	@Override
+	public String getRoomName(Integer room_id) {
+		return sqlSession.selectOne(NAMESPACE + ".getRoomName",room_id);
 	}
 	
 	

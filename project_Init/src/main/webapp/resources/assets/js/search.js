@@ -25,21 +25,6 @@ $(document).ready(function () {
     });
 });
 
-/*
-function checkModal() {
-	const openModals = $('.modal.show');
-	if (openModals.length > 0) {
-	    console.log("there is open modal :",openModals.length);
-	    openModals.each(function() {
-	        console.log($(this).attr('id'));
-	    });
-	}else{
-		console.log("there is no open modal");
-	}
-	console.log(openModals.length);
-}
-*/
-
 function extendSearchForm() {
 	console.log('search form extended!');
 	$('#search_employees').empty();
@@ -122,10 +107,10 @@ function showEmployees(data) {
     	$('#search_employees').append(`
     			<li>
 					<a class="member_info" data-emp_id="${memberVO.emp_id}">
-	                	<div style="display: flex; height:100px; padding: 0px 50px;">
+	                	<div style="display: flex; height:80px; padding: 0px 50px;">
 	                		<div style="display: flex; flex:0.2; align-items: center; justify-content: center;">
 	                			<img src="${memberVO.emp_profile}"
-					        	style="width: 60px; height: 60px; border-radius: 50%;">
+					        	style="width: 40px; height: 40px; border-radius: 50%;">
 	                		</div>
 	                		<div style="flex:0.3; display: flex; flex-direction:column; margin-left:10px;">
 	                			<div style="flex:1; color: rgba(0, 0, 0, 0.7); display: flex; flex-direction:column; align-items: center; justify-content: flex-end;">
@@ -136,13 +121,13 @@ function showEmployees(data) {
 	                    		</div>
 	                		</div>
 	                		<div style="flex:0.2; display: flex; flex-direction:column; margin-left:10px;">
-	                			<div style="flex:1; color: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center;">
+	                			<div style="flex:0.4; color: rgba(0, 0, 0, 0.7); display: flex; align-items: flex-end; justify-content: center;">
 	                				${memberVO.emp_bnum}
 	                			</div>
-	                			<div style="flex:1; color: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center;">
+	                			<div style="flex:0.2; color: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center;">
 	                				${memberVO.emp_dname}
 	                    		</div>
-	                    		<div style="flex:1; color: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center;">
+	                    		<div style="flex:0.4; color: rgba(0, 0, 0, 0.7); display: flex; align-items: flex-start; justify-content: center;">
 	                    			${memberVO.emp_job}
 	                    		</div>
 	                		</div>
