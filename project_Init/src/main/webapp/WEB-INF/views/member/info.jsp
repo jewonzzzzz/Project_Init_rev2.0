@@ -580,36 +580,42 @@
 			        console.log("Modal shown, select options:", $('#licenseSelect option').length);
 			    });	
 			
-		 $(document).on('click', '#saveLicenseBtn', function() {
-		     if (!$('#addLicenseForm')[0].checkValidity()) {
-		         $('#addLicenseForm')[0].reportValidity();
-		         return;
-		     }
-		
-		     let licenseData = {
-		         li_id: $('#licenseSelect').val(),
-		         li_date: $('#licenseDate').val()
-		     };
-		     $.ajax({
-		         url: '${pageContext.request.contextPath}/member/addLicense',
-		         type: 'POST',
-		         contentType: 'application/json',
-		         data: JSON.stringify(licenseData),
-		         success: function(response) {
-		             if (response.success) {
-		                 alert(response.message);
-		                 $('#licenseModal').modal('hide');
-		                 loadTabContent('license');
-		             } else {
-		                 alert(response.message);
-		             }
-		         },
-		         error: function(xhr, status, error) {
-		             console.error("AJAX Error: " + error);
-		             alert("자격증 추가 중 오류가 발생했습니다.");
-		         }
-		     });
-		 });
+			 $(document).on('click', '#saveLicenseBtn', function() {
+				    if (!$('#addLicenseForm')[0].checkValidity()) {
+				        $('#addLicenseForm')[0].reportValidity();
+				        return;
+				    }
+
+				    // 선택된 날짜를 가져옴
+				    let selectedDate = new Date($('#licenseDate').val());
+				    // UTC 시간으로 변환하면서 발생하는 시간차이를 보정
+				    selectedDate.setHours(selectedDate.getHours() + 9); // 한국 시간대 기준
+				    
+				    let licenseData = {
+				        li_id: $('#licenseSelect').val(),
+				        li_date: selectedDate.toISOString().split('T')[0] // YYYY-MM-DD 형식으로 변환
+				    };
+
+				    $.ajax({
+				        url: '${pageContext.request.contextPath}/member/addLicense',
+				        type: 'POST',
+				        contentType: 'application/json',
+				        data: JSON.stringify(licenseData),
+				        success: function(response) {
+				            if (response.success) {
+				                alert(response.message);
+				                $('#licenseModal').modal('hide');
+				                loadTabContent('license');
+				            } else {
+				                alert(response.message);
+				            }
+				        },
+				        error: function(xhr, status, error) {
+				            console.error("AJAX Error: " + error);
+				            alert("자격증 추가 중 오류가 발생했습니다.");
+				        }
+				    });
+				});
 
 	    $(document).on('click', '.delete-license', function() {
 	        let licenseId = $(this).data('id');
