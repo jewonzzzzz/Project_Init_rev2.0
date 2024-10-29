@@ -1064,7 +1064,7 @@ function recordReturnTime() {
 								<!--// 출근 시간 문자열을 Date 객체로 변환
                       var checkInTime = new Date(attendance.check_in);
                       // 한국 시간 (UTC+9)으로 변환   -->
-								<script>
+	<script>
 $(document).ready(function() {
     // 페이지가 로드될 때 출근 기록을 가져오는 AJAX 요청
     $.ajax({
@@ -1075,23 +1075,23 @@ $(document).ready(function() {
             var tableBody = $("#attendanceTable tbody");
             tableBody.empty(); // 기존 데이터 지우기
             attendanceList.forEach(function(attendance) {
-                // 출근 시간 문자열을 Date 객체로 변환
-                var checkInTime = new Date(attendance.check_in);
-                // 한국 시간 (UTC+9)으로 변환
-               
+                if (attendance.check_in) { // 출근 시간이 있는 경우에만 처리
+                    // 출근 시간 문자열을 Date 객체로 변환
+                    var checkInTime = new Date(attendance.check_in);
+                    // 한국 시간 (UTC+9)으로 변환
+                    
+                    var checkOutTime = attendance.check_out ? new Date(attendance.check_out) : null; // 퇴근 시간이 있을 경우만 변환
 
-                var checkOutTime = attendance.check_out ? new Date(attendance.check_out) : null; // 퇴근 시간이 있을 경우만 변환
-             
+                    var workStatus = determineWorkStatus(checkInTime, checkOutTime); // 근무 상태 결정
 
-                var workStatus = determineWorkStatus(checkInTime, checkOutTime); // 근무 상태 결정
-
-                tableBody.append(
-                    "<tr>" +
-                    "<td>" + checkInTime.toLocaleString() + "</td>" + // 로컬 시간 형식으로 표시
-                    "<td>" + (checkOutTime ? checkOutTime.toLocaleString() : '퇴근하지 않음') + "</td>" + // 퇴근 시간 표시
-                    "<td>" + workStatus + "</td>" + // 근무 상태 표시
-                    "</tr>"
-                );
+                    tableBody.append(
+                        "<tr>" +
+                        "<td>" + checkInTime.toLocaleString() + "</td>" + // 로컬 시간 형식으로 표시
+                        "<td>" + (checkOutTime ? checkOutTime.toLocaleString() : '퇴근하지 않음') + "</td>" + // 퇴근 시간 표시
+                        "<td>" + workStatus + "</td>" + // 근무 상태 표시
+                        "</tr>"
+                    );
+                }
             });
         },
         error: function() {
@@ -1140,7 +1140,7 @@ function determineWorkStatus(checkInTime, checkOutTime) {
 
 
 
-								<script>
+<script>
 			
 			
 			$(document).ready(function() {
