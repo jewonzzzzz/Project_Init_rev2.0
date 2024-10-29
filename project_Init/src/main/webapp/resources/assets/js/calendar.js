@@ -45,13 +45,15 @@ $(document).ready(function() {
 	 
 	 $(document).on('mouseenter', '.flag', function() {
 		 	const flag_show_classes = $(this).find('.calendar_info').attr('class');
-		 	if(flag_show_classes){
-		 		showInfoCalendar(flag_show_classes)};
+		 	const show_target_sell_id = $(this).closest(".days").attr("id");
+		 	if(flag_show_classes,show_target_sell_id){
+		 		showInfoCalendar(flag_show_classes,show_target_sell_id)};
 	 });
 	 $(document).on('mouseleave', '.flag, .calendar_info', function() {
-		 	const flag_hide_classes = $(this).find('.calendar_info').attr('class');
-		 	if(flag_hide_classes){
-		 	hideInfoCalendar(flag_hide_classes)};
+		 $('.calendar_info').css('display', 'none');
+	 });
+	 $(document).on('click', function() {
+		 $('.calendar_info').css('display', 'none');
 	 });
 }); // docready
 
@@ -69,41 +71,14 @@ const getMonthAndDay = (stringDate) => {
     String(monthAndDay.getDate()).padStart(2, '0');
 };
 
-
 function updateCalendar(year, month) {
 	
-    $('#year').text(year);
-    $('#month').text(month + 1);
-    $('#day').text(currentDay);
-
-    $('.date').text('');
-    $('.flag').text('');
-    $('.days').removeClass('today');
-    $('.days').removeClass('null');
-
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     const daysInMonth = lastDay.getDate();
 
     const startDay = firstDay.getDay();
     const totalDays = daysInMonth + startDay;
-    
-    for (let i = 1; i <= daysInMonth; i++) {
-        const position = startDay + i - 1; 
-        $(`#d_${position + 1}`).html(`
-                <div class="date">${i}</div>
-            `);
-    }
-    
-    $('.days').each(function() {
-        if ($(this).find('.date').text().trim() === '') {
-            $(this).addClass('null');
-        }
-    });
-
-    if (year == today.getFullYear() && month == today.getMonth() && currentDay <= daysInMonth) {
-        $(`#d_${currentDay + startDay}`).addClass('today');
-    }
     
     $.ajax({
 		url: '/main/calendar',
@@ -112,95 +87,103 @@ function updateCalendar(year, month) {
 				year:currentYear},
 		success: function (data) {
 			
+		    $('#year').text(year);
+		    $('#month').text(month + 1);
+		    $('#day').text(currentDay);
+		    $('.days').children().not('.flag').remove();
+		    $('.flag').css("display","none");
+		    $('.flag').removeClass("workout");
+		    $('.flag').removeClass("edu");
+		    $('.flag').removeClass("leave");
+		    $('.calendar_info').empty();
+		    $('.days').removeClass('today');
+		    $('.days').removeClass('null');
+		    
+		    for (let i = 1; i <= daysInMonth; i++) {
+		        const position = startDay + i - 1; 
+		        $(`#d_${position + 1}`).prepend(`
+		                <div class="date">${i}</div>
+		            `);
+		    }
+		    
+		    $('.days').each(function() {
+		        if ($(this).find('.date').text().trim() === '') {
+		            $(this).addClass('null');
+		        }
+		    });
+
+		    if (year == today.getFullYear() && month == today.getMonth() && currentDay <= daysInMonth) {
+		        $(`#d_${currentDay + startDay}`).addClass('today');
+		    }
+			
 			for (let i = 1; i <= daysInMonth; i++) {
 				const flag_position = startDay + i - 1; 
 				
 	            for(const param of data.presence){
 	            	if(getDay(param.date) == i){
+	            		$(`#d_${flag_position + 1} .flag.presence`).css("display","flex");
 	            		if(param.presence == '출근'){
-		            		$(`#d_${flag_position + 1}`).append(`
-		            		<div class="flag enter presence_${i}" data-checkin="${param.check_in}">
-			            		<i class="fa-solid fa-bookmark"></i>
-			            		<div class="calendar_info presence_${i}">
-		            				${year}년 ${month+1}월 ${i}일 : ${param.presence} <br>
-			            			체크 인 : ${param.check_in}
-			            		</div>
-		            		</div>
-		                `	);
+		            		$(`#d_${flag_position + 1} .calendar_info.presence`).html(`
+		            		${year}년 ${month+1}월 ${i}일 : ${param.presence} <br>
+			            			체크 인 : ${param.check_in}`);
 	            		}
 	            		if(param.presence == '휴가'){
-		            		$(`#d_${flag_position + 1}`).append(`
-		            		<div class="flag leave presence_${i}">
-			            		<i class="fa-solid fa-bookmark"></i>
-		            		</div>
-		                `	);
+	            			$(`#d_${flag_position + 1} .flag.presence`).addClass("leave");
 	            		}
 	            		if(param.presence == '출장'){
-		            		$(`#d_${flag_position + 1}`).append(`
-		            		<div class="flag workout presence_${i}">
-			            		<i class="fa-solid fa-bookmark"></i>
-		            		</div>
-		                `	);
+	            			$(`#d_${flag_position + 1} .flag.presence`).addClass("workout");
 	            		}
 	            		if(param.presence == '교육'){
-		            		$(`#d_${flag_position + 1}`).append(`
-		            		<div class="flag edu presence_${i}">
-			            		<i class="fa-solid fa-bookmark"></i>
-		            		</div>
-		                `	);
+	            			$(`#d_${flag_position + 1} .flag.presence`).addClass("edu");
 	            		}
 	            	}
-	            	if(getDay(param.date) == i){
-	            		 for(const workflow of data.workflow){
-	            			 
-	            			let target_day = null;
-	 	            		if(workflow.wf_receiver_1st == data.session_emp_id){
-	 	            			target_day = workflow.wf_create_date;
-	 	            		}else if (workflow.wf_receiver_2nd == data.session_emp_id){
-	 	            			target_day = workflow.wf_result_date_1st;
-	 	            		}else if (workflow.wf_receiver_3rd == data.session_emp_id){
-	 	            			target_day = workflow.wf_result_date_2nd;
-	 	            		}
-	            			
-	            			if(workflow != null 
-	            					&& getMonthAndDay(workflow.wf_create_date) == getMonthAndDay(param.date)
-	            					&& workflow.wf_sender == data.session_emp_id){
-	 		            		$(`#d_${flag_position + 1}`).append(`
-	 		            		<div class="flag s_workflow workflow_${i}" data-wf_code="${workflow.wf_code}">
-		 		            		<i class="fa-solid fa-bookmark"></i>
-		 		            		<div class="calendar_info workflow s_workflow_${i}">
-	 		            				${year}년 ${month+1}월 ${i}일 보낸 요청 <br>
-	 		            				<a data-wf_code="${workflow.wf_code}" id="workflow_info">
-		 		            				<div class="calendar_info_workflow">
-			 		            				<div style="flex:0.3; text-align:center;">유형 : ${workflow.wf_type} </div>
-			 		            				<div style="flex:0.1;"> / </div>
-			 		            				<div style="flex:0.6;">제목 : ${workflow.wf_title} </div>
-	 		            					</div>
-	 		            				</a>
-		 		            		</div>
-	 		            		</div>
-	 		                `	);
-	 	            		}
-	 	            		if(workflow != null 
-	 	            				&& workflow.wf_sender != data.session_emp_id
-	 	            				&& getMonthAndDay(target_day) == getMonthAndDay(param.date)){
-	 		            		$(`#d_${flag_position + 1}`).append(`
-	 		            		<div class="flag r_workflow workflow_${i}" data-wf_code="${workflow.wf_code}">
-		 		            		<i class="fa-solid fa-bookmark"></i>
-		 		            		<div class="calendar_info workflow r_workflow_${i}">
-	 		            				${year}년 ${month+1}월 ${i}일 받은 요청 <br>
-	 		            				<a data-wf_code="${workflow.wf_code}" id="workflow_info">
-		 		            				<div class="calendar_info_workflow">
-			 		            				<div style="flex:0.3; text-align:center;">유형 : ${workflow.wf_type} </div>
-			 		            				<div style="flex:0.1;"> / </div>
-			 		            				<div style="flex:0.6;">제목 : ${workflow.wf_title} </div>
-		 		            				</div>
-	 		            				</a>
-		 		            		</div>
-	 		            		</div>
-	 		                `	);
-	 	            		}
-	            		 }
+	            }
+            	let target_day = null;
+	            for(const workflow of data.workflow){
+	            	
+	            	if(workflow.wf_sender == data.session_emp_id){
+	            		target_day = workflow.wf_create_date;
+	            	}
+            		if(workflow.wf_receiver_1st == data.session_emp_id){
+            			target_day = workflow.wf_create_date;
+            		}
+            		if (workflow.wf_receiver_2nd == data.session_emp_id){
+            			target_day = workflow.wf_result_date_1st;
+            		}
+            		if (workflow.wf_receiver_3rd == data.session_emp_id){
+            			target_day = workflow.wf_result_date_2nd;
+            		}
+	            
+	            	if(getDay(target_day) == i){
+
+            			if(workflow.wf_sender == data.session_emp_id){
+            				
+            				$(`#d_${flag_position + 1} .flag.s_workflow`).css("display", "flex");
+            				
+ 		            		$(`#d_${flag_position + 1} .calendar_info.s_workflow`).append(`
+ 		            				<a data-wf_code="${workflow.wf_code}" id="workflow_info">
+	 		            				<div class="calendar_detail_workflow">
+		 		            				<div style="flex:0.3; text-align:center;">유형 : ${workflow.wf_type} </div>
+		 		            				<div style="flex:0.1;"> / </div>
+		 		            				<div style="flex:0.6;">제목 : ${workflow.wf_title} </div>
+ 		            					</div>
+ 		            				</a>`
+ 		                	);
+ 	            		}
+ 	            		if(workflow.wf_sender != data.session_emp_id){
+ 	            			$(`#d_${flag_position + 1} .flag.r_workflow`).css("display", "flex");
+            				
+ 		            		$(`#d_${flag_position + 1} .calendar_info.r_workflow`).append(`
+ 		            				<a data-wf_code="${workflow.wf_code}" id="workflow_info">
+	 		            				<div class="calendar_detail_workflow">
+		 		            				<div style="flex:0.3; text-align:center;">유형 : ${workflow.wf_type} </div>
+		 		            				<div style="flex:0.1;"> / </div>
+		 		            				<div style="flex:0.6;">제목 : ${workflow.wf_title} </div>
+	 		            				</div>
+ 		            				</a>
+	 		            		`
+ 		                	);
+ 	            		}
 	            	}
 	            }
 			}
@@ -212,9 +195,9 @@ function updateCalendar(year, month) {
 }
 
 
-function showInfoCalendar(flag_show_classes) {
-	$(`.${flag_show_classes.split(' ').join('.')}`).css('display', 'block');
+function showInfoCalendar(flag_show_classes,show_target_sell_id) {
+	$(`#${show_target_sell_id} .${flag_show_classes.split(' ').join('.')}`).css('display', 'flex');
 }
-function hideInfoCalendar(flag_hide_classes) {
-	$(`.${flag_hide_classes.split(' ').join('.')}`).css('display', 'none');
+function hideInfoCalendar(flag_hide_classes,hide_target_sell_id) {
+	$(`#${hide_target_sell_id} .${flag_hide_classes.split(' ').join('.')}`).css('display', 'none');
 }

@@ -19,7 +19,7 @@ $(document).ready(function () {
 	success: function(data) {
 			/* success start*/
 			console.log('loginAlarm :',data);
-			$('#welcome').text("welcome, dear "+ data.emp_name);
+			$('#welcome').text("어서오세요, "+ data.emp_name+" 님!");
 			$('#smallAlarm').text(data.smallAlarm);
 			
 		    if(data.receiverWorkflowList == null && data.sentWorkflowList == null){
@@ -34,16 +34,24 @@ $(document).ready(function () {
 	                	`);
 		    }else{
 		    	if(data.receivedWorkflowList.length > 0){  /* received workflow start */
-		    		$('#received_workflows').append(`<p>RECEIVED WORKFLOWS</p>`); 
+		    		$('#received_workflows').append(`<p>받은 요청</p>`); 
 		    		
 		    		let receivedWorkflowCount = 0;
 			        for (const workflowVO of data.receivedWorkflowList) {
+			        	let login_wf_progress = null;
+			        	if (workflowVO.wf_progress == '1') {
+			        		login_wf_progress = '1차 승인 대기';
+						} else if (wf_progress == '2') {
+							login_wf_progress = '2차 승인 대기';
+						} else if (wf_progress == '3') {
+							login_wf_progress = '3차 승인 대기';
+						};
 			        	 $('#received_workflows').append(`
 				            		<div style="display: flex; width:100%; height:100px; border-bottom:1px solid rgba(0,0,0,0.1);">
-			                    		<a data-emp_id="${workflowVO.wf_sender}"  class="member_info">
+			                    		<a data-emp_id="${workflowVO.wf_sender}" class="member_info" >
 				                    		<div style="display: flex; flex:0.4; align-items: center; justify-content: center; border-right: 1px solid rgba(0,0,0,0.1); margin:15px 0px 15px 0px; ">
 				                    			<div style="display: flex; flex-direction:column; flex:0.4; align-items: center; justify-content: center;">
-				                    				<div style="flex:0.2; font-weight: bold width:100%;" >sender</div>
+				                    				<div style="flex:0.2; font-weight: bold width:100%;" >발신자</div>
 									        		<div style="flex:0.8; width:100%;">
 										        		<img src="${workflowVO.sender_profile}"
 										        		style=" width: 40px; height: 40px; border-radius: 50%;">
@@ -57,7 +65,7 @@ $(document).ready(function () {
 				                    					${workflowVO.sender_bnum}
 				                    				</div>
 				                    				<div style="display: flex; width:100%; flex:0.2; align-items: center; justify-content: center;">
-				                    					${workflowVO.sender_dnum}
+				                    					${workflowVO.sender_dname}
 				                    				</div>
 				                    				<div style="display: flex; width:100%; flex:0.2; align-items: center; justify-content: center;" >
 				                    					${workflowVO.sender_position}
@@ -65,19 +73,19 @@ $(document).ready(function () {
 				                    			</div>
 				                    		</div>
 			                    		</a>
-			                    		<a data-wf_code="${workflowVO.wf_code}" id="workflow_info">
+			                    		<a data-wf_code="${workflowVO.wf_code}" id="workflow_info" style="display: flex; align-items: center; justify-content: center;">
 				                    		<div style="display: flex; flex:0.6; flex-direction:column;">
 					                    		<div style="display: flex; flex:0.5; width:100%;">
 					                    			<div style="flex:1; display: flex; flex-direction:column; align-items: center; justify-content: center;">
-					                    				<div style="flex:0.5; font-weight: bold">type</div>
+					                    				<div style="flex:0.5; font-weight: bold">유형</div>
 				                    					<div style="flex:0.5;">${workflowVO.wf_type}</div>
 					                    			</div>
 					                    			<div style="flex:1; display: flex; flex-direction:column; align-items: center; justify-content: center;">
-					                    				<div style="flex:0.5; font-weight: bold">progress</div>
-				                    					<div style="flex:0.5;">${workflowVO.wf_progress}</div>
+					                    				<div style="flex:0.5; font-weight: bold">상태</div>
+				                    					<div style="flex:0.5;">${login_wf_progress}</div>
 					                    			</div>
 					                    			<div style="flex:1; display: flex; flex-direction:column; align-items: center; justify-content: center;">
-					                    				<div style="flex:0.5; font-weight: bold">date</div>
+					                    				<div style="flex:0.5; font-weight: bold">수신일</div>
 				                    					<div style="flex:0.5;">${getDate(workflowVO.wf_progress === '1' ? workflowVO.wf_create_date : workflowVO.wf_last_result_date)}</div>
 					                    			</div>
 					                    		</div>
@@ -111,25 +119,33 @@ $(document).ready(function () {
 		        } /* received workflow end */
 		        if(data.sentWorkflowList.length > 0){   /* sent workflow end */
 		        	
-			    	$('#sent_workflows').append(`<p>COMPLETED WORKFLOWS</p>`); 
+			    	$('#sent_workflows').append(`<p>새로운 응답이 있는 요청</p>`); 
 			    	
 			    	let sentWorkflowCount = 0;
 			        for (const workflowVO of data.sentWorkflowList) {
+			        	let login_wf_progress = null;
+			        	if (workflowVO.wf_progress == '1') {
+			        		login_wf_progress = '1차 승인 대기';
+						} else if (wf_progress == '2') {
+							login_wf_progress = '2차 승인 대기';
+						} else if (wf_progress == '3') {
+							login_wf_progress = '3차 승인 대기';
+						};
 			        	$('#sent_workflows').append(`
 			            		<div style="display: flex; width:100%; height:100px; border-bottom:1px solid rgba(0,0,0,0.1);">
-		                    		<a data-emp_id="${workflowVO.wf_code}" id="workflow_info">
+		                    		<a data-emp_id="${workflowVO.wf_code}" id="workflow_info" style="display: flex; align-items: center; justify-content: center;">
 			                    		<div style="display: flex; flex-direction:column; flex:0.5; align-items: center; justify-content: center; border-right: 1px solid rgba(0,0,0,0.1); margin:15px 0px 15px 0px; ">
 		                    				<div style="display: flex; flex:0.5; width:100%;">
 				                    			<div style="flex:1; display: flex; flex-direction:column; align-items: center; justify-content: center;">
-				                    				<div style="flex:0.5 width:100%; ; font-weight: bold">type</div>
+				                    				<div style="flex:0.5 width:100%; ; font-weight: bold">유형</div>
 			                    					<div style="flex:0.5 width:100%; ;">${workflowVO.wf_type}</div>
 				                    			</div>
 				                    			<div style="flex:1; display: flex; flex-direction:column; align-items: center; justify-content: center;">
-				                    				<div style="flex:0.5 width:100%; ; font-weight: bold">progress</div>
-			                    					<div style="flex:0.5 width:100%; ;">${workflowVO.wf_progress}</div>
+				                    				<div style="flex:0.5 width:100%; ; font-weight: bold">상태</div>
+			                    					<div style="flex:0.5 width:100%; ;">${login_wf_progress}</div>
 				                    			</div>
 				                    			<div style="flex:1; display: flex; flex-direction:column; align-items: center; justify-content: center;">
-				                    				<div style="flex:0.5 width:100%; ; font-weight: bold">date</div>
+				                    				<div style="flex:0.5 width:100%; ; font-weight: bold">완료일</div>
 			                    					<div style="flex:0.5 width:100%; ;">${getDate(workflowVO.wf_progress === '1' ? workflowVO.wf_create_date : workflowVO.wf_last_result_date)}</div>
 				                    			</div>
 				                    		</div>
@@ -141,7 +157,7 @@ $(document).ready(function () {
 			                    		</div>
 		                    		</a>
 		                    		<div style="display: flex; flex:0.5;">
-		                    			<a data-emp_id="${workflowVO.wf_receiver_1st}" class="member_info">
+		                    			<a data-emp_id="${workflowVO.wf_receiver_1st}" class="member_info" style="display: flex; align-items: center; justify-content: center;">
 			                    			<div style="flex:1; display: flex; flex-direction:column; align-items: center; justify-content: center;">
 			                    				<div style="flex:0.4 width:100%; ; font-weight: bold">1st_result</div>
 		                    					<div style="flex:0.3 width:100%; ;">${workflowVO.wf_result_1st}</div>

@@ -145,8 +145,8 @@ function personalInfo_getMessages(room_id,receiver_emp_id) {
 													<div id="r_msg_sender_name" style=" padding:0 5px;">
 													${msg.msg_sender.emp_name}
 													</div>
-													<div id="r_msg_sender_dnum" style="display:flex; align-items:flex-end; font-size:10px;">
-													${msg.msg_sender.emp_dnum}
+													<div id="r_msg_sender_dname" style="display:flex; align-items:flex-end; font-size:10px;">
+													${msg.msg_sender.emp_dname}
 													</div>
 													<div id="r_msg_sender_position" style="display:flex; align-items:flex-end; font-size:10px; padding:0 5px;">
 													${msg.msg_sender.emp_position}
