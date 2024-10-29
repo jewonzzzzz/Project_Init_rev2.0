@@ -1,6 +1,7 @@
 package com.Init.controller;
 
 import java.sql.Date;
+import java.time.YearMonth;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -115,13 +116,22 @@ public class MainController {
 	
 	@RequestMapping(value = "/calendar",method = RequestMethod.GET)
 	@ResponseBody
-    public Map<String, Object> getCalendarEvents(HttpSession session, String month) {
+    public Map<String, Object> getCalendarEvents(HttpSession session, String year, String month) {
 		String emp_id = (String)session.getAttribute("emp_id");
 		Map<String, Object> event = new HashMap<String, Object>();
 		LocalDate today = LocalDate.now();
 		
-		event.put("presence",mService.showPrecense(emp_id, today.withDayOfMonth(1), today.withDayOfMonth(today.lengthOfMonth())));
-		event.put("workflow",wService.showCalendarWorkflow(emp_id, today.withDayOfMonth(1), today.withDayOfMonth(today.lengthOfMonth())));
+		Integer target_year = Integer.parseInt(year);
+		Integer target_month = Integer.parseInt(month);
+		YearMonth yearMonth = YearMonth.of(target_year, target_month);
+		LocalDate firstDay = yearMonth.atDay(1);                  // 해당 월의 첫 번째 날
+		LocalDate lastDay = yearMonth.atEndOfMonth();
+		
+		event.put("presence",mService.showPrecense(emp_id, firstDay, lastDay));
+		event.put("workflow",wService.showCalendarWorkflow(emp_id, firstDay, lastDay));
+		event.put("session_emp_id",emp_id);
+		logger.debug("year :"+year);
+		logger.debug("month :"+month);
 		logger.debug("presence :"+event.get("presence"));
 		logger.debug("workflow :"+event.get("workflow"));
 		

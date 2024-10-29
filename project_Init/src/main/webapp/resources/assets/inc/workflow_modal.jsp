@@ -19,7 +19,10 @@
 							</div>
 							<!-- card body start -->
 							<div class="card-body">
-								<form id="workflow_response_submit" action="/project/wfresponse" method="POST">
+								<form id="workflow_response_submit" action="/work/wfresponse" method="POST">
+									<input type="hidden" id="resp_wf_code" name="wf_code" value=""/>
+									<input type="hidden" id="resp_wf_type" name="wf_type" value=""/>
+									<input type="hidden" id="resp_wf_target" name="wf_target" value=""/>
 									<div class="row">
 					                    <div class="col-md-6 col-lg-2" style="border-bottom: 1px solid rgba(0,0,0,0.1); display:flex; flex-direction: column; justify-content: center; align-content: center;">
 								                <label class="control-label"> 유형 </label>
@@ -50,7 +53,7 @@
 								                    		<div style="flex:0.7; display: flex; flex-direction:column; margin-left:10px;">
 								                    			<div style="flex:0.3; font-weight: bold; color: black;" id="wf_sender_emp_name">
 								                    			</div>
-								                    			<div style="flex:0.3; color: rgba(0, 0, 0, 0.7);" id="wf_sender_emp_dnum">
+								                    			<div style="flex:0.3; color: rgba(0, 0, 0, 0.7);" id="wf_sender_emp_dname">
 									                    		</div>
 									                    		<div style="flex:0.3; color: rgba(0, 0, 0, 0.7);" id="wf_sender_emp_position">
 									                    		</div>
@@ -73,7 +76,7 @@
 								                    		<div style="flex:0.7; display: flex; flex-direction:column; margin-left:10px;">
 								                    			<div style="flex:0.3; font-weight: bold; color: black;" id="wf_receiver_emp_name">
 								                    			</div>
-								                    			<div style="flex:0.3; color: rgba(0, 0, 0, 0.7);" id="wf_receiver_emp_dnum">
+								                    			<div style="flex:0.3; color: rgba(0, 0, 0, 0.7);" id="wf_receiver_emp_dname">
 									                    		</div>
 									                    		<div style="flex:0.3; color: rgba(0, 0, 0, 0.7);" id="wf_receiver_emp_position">
 									                    		</div>
@@ -127,7 +130,7 @@
 								                    		<div style="flex:0.4; display: flex; flex-direction:column;">
 								                    			<div style="flex:0.4; font-weight: bold; color: black;" id="wf_receiver_1st_emp_name">
 								                    			</div>
-								                    			<div style="flex:0.3;" id="wf_receiver_1st_emp_dnum">
+								                    			<div style="flex:0.3;" id="wf_receiver_1st_emp_dname">
 									                    		</div>
 									                    		<div style="flex:0.3;" id="wf_receiver_1st_emp_position">
 									                    		</div>
@@ -146,7 +149,7 @@
 							                 <div style="flex:0.5;">
 							                     <div class="form-group">
 							                         <label for="comment">Comment</label>
-							                         <textarea class="form-control" id="wf_comment" rows="5" name="wf_comment"></textarea>
+							                         <textarea class="form-control" id="resp_wf_comment" rows="5" name="wf_comment"></textarea>
 						                         </div>
 						                         <div class="form-group" id="select_result">
 													 <label class="form-label">승인 결과</label>
@@ -190,6 +193,7 @@
 												 <div class="form-group" id="submit_button">
 							                         <div class="input-group">
 								                         <button
+								                         id="wfresp_button"
 								                         class="custom_button"
 								                         type="submit"
 								                         style="width:100%;"

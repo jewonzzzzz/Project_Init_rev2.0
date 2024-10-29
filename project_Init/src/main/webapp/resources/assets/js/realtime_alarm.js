@@ -64,17 +64,17 @@ $(document).ready(function () {
 	        	
 	            if (data.receivedWorkflowList.length != 0) {
 	            	for (const workflowVO of data.receivedWorkflowList) {
-	            		WorkflowAlarm(workflowVO,'received_alarm');
+	            		showWorkflowAlarm(workflowVO,'received_alarm');
 	            	}
 	            }
 	            if (data.sentWorkflowList.length != 0) {
 	            	for (const workflowVO of data.receivedWorkflowList) {
-	            		WorkflowAlarm(data,'sent_alarm');
+	            		showWorkflowAlarm(data,'sent_alarm');
 	            	}
 	            }
 	            if (data.realtimeAlarm_messageList.length != 0) {
             		for (const messageVO of data.realtimeAlarm_messageList) {
-	            		MessageAlarm(messageVO);
+            			showMessageAlarm(messageVO);
 	            	}
 	            }
 	        },
@@ -117,7 +117,7 @@ $(document).ready(function () {
 		}, 10000);
 	}
 	
-	function MessageAlarm(messageVO) {
+	function showMessageAlarm(messageVO) {
 		
 		$('#message_alarm_msg_sender_emp_profile').text(messageVO.msg_sender.emp_profile);
 		$('#message_alarm_room_name').text(messageVO.room_name);

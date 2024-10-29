@@ -31,6 +31,7 @@ public class EmployeeVO {
 	private String emp_email;
 	private String emp_addr;
 	private String emp_dnum;
+	private String emp_dname;
 	private String emp_position;
 	private String emp_job;
 	private String emp_status;

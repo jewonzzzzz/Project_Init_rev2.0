@@ -140,7 +140,7 @@ function showEmployees(data) {
 	                				${memberVO.emp_bnum}
 	                			</div>
 	                			<div style="flex:1; color: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center;">
-	                				${memberVO.emp_dnum}
+	                				${memberVO.emp_dname}
 	                    		</div>
 	                    		<div style="flex:1; color: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center;">
 	                    			${memberVO.emp_job}

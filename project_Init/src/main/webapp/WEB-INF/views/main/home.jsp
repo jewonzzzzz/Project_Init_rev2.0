@@ -257,7 +257,7 @@
 										${memberVO.emp_bnum}
 									</div>
 									<div style="flex:1; display:flex; align-items: center; justify-content: flex-start;">
-										${memberVO.emp_dnum} ${memberVO.emp_position} ${memberVO.emp_job}
+										${memberVO.emp_dname} ${memberVO.emp_position} ${memberVO.emp_job}
 									</div>
 									<div style="flex:1; display:flex; align-items: flex-start; justify-content: flex-start; font-size:16px;">
 										${memberVO.emp_name}

@@ -32,7 +32,9 @@ $(document).ready(function () {
 				workflowVO = data.workflowVO;
 		    	
 				/* value to next page start */
-				$('#wf_code_hidden').val(wf_code);
+				$('#resp_wf_code').val(workflowVO.wf_code);
+				$('#resp_wf_type').val(workflowVO.wf_type);
+				$('#resp_wf_target').val(workflowVO.wf_target);
 				$('#a_sender').attr('data-emp_id', workflowVO.wf_sender);
 				$('#a_receiver').attr('data-emp_id', workflowVO.wf_receiver);
 				$('#a_receiver_1st').attr('data-emp_id', workflowVO.wf_receiver_1st);
@@ -64,13 +66,13 @@ $(document).ready(function () {
 				$('#wf_create_date').text(getDate(workflowVO.wf_create_date));
 				$('#wf_content').text(workflowVO.wf_content);
 				$('#wf_sender_emp_name').text(workflowVO.sender_name);
-				$('#wf_sender_emp_dnum').text(workflowVO.sender_dnum);
+				$('#wf_sender_emp_dname').text(workflowVO.sender_dname);
 				$('#wf_sender_emp_position').text(workflowVO.sender_position);
 				$('#wf_receiver_emp_name').text(workflowVO.receiver_name);
-				$('#wf_receiver_emp_dnum').text(workflowVO.receiver_dnum);
+				$('#wf_receiver_emp_dname').text(workflowVO.receiver_dname);
 				$('#wf_receiver_emp_position').text(workflowVO.receiver_position);
 				$('#wf_receiver_1st_emp_name').text(workflowVO.receiver_name_1st);
-				$('#wf_receiver_1st_emp_dnum').text(workflowVO.receiver_dnum_1st);
+				$('#wf_receiver_1st_emp_dname').text(workflowVO.receiver_dname_1st);
 				$('#wf_receiver_1st_emp_position').text(workflowVO.receiver_position_1st);
 				/* set workflow basic info end*/
 				
@@ -92,7 +94,7 @@ $(document).ready(function () {
 		                   				${workflowVO.receiver_name_2nd}
 		                   			</div>
 		                   			<div style="flex:0.3;" >
-		                   				${workflowVO.receiver_dnum_2nd}
+		                   				${workflowVO.receiver_dname_2nd}
 		                    		</div>
 		                    		<div style="flex:0.3;" >
 		                    			${workflowVO.receiver_position_2nd}
@@ -127,7 +129,7 @@ $(document).ready(function () {
 		                   				${workflowVO.receiver_name_3rd}
 		                   			</div>
 		                   			<div style="flex:0.3;">
-		                   				${workflowVO.receiver_dnum_3rd}
+		                   				${workflowVO.receiver_dname_3rd}
 		                    		</div>
 		                    		<div style="flex:0.3;">
 		                    			${workflowVO.receiver_position_3rd}
@@ -204,7 +206,7 @@ $(document).ready(function () {
 		        const div_reject = document.querySelector('#reject'); 
 		        const div_hold = document.querySelector('#hold'); 
 		        const div_submit = document.querySelector('#submit_button'); 
-		        const textarea_comment = document.querySelector('#wf_comment'); 
+		        const textarea_comment = document.querySelector('#resp_wf_comment'); 
 		        
 	    		if(workflowVO.wf_status == '0'){
 	    			
@@ -264,23 +266,42 @@ $(document).ready(function () {
 		});
 	});
 	
-	$('#submit_button .btn').off('click').on('click', function(e) {
+	$('#wfresp_button').off('click').on('click', function(e) {
         e.preventDefault();
         var result = $('input[name="wf_result"]:checked').val();
-        console.log('check result : ', result);
     	
     	if (!result) {
     	        e.preventDefault();
-    	        alert("해당 요청에 대한 승인여부를 체크해주세요.");
+    	        swal("Error!", "승인 여부를 확인하세요." , "error");
 	    }else{
 	        if (result === "1") {
-	            alert("해당 요청을 승인 처리하였습니다.");
+	        	swal({
+                    title: "Success!",
+                    text: "해당 요청을 승인 처리하였습니다.",
+                    icon: "success",
+                    button: "OK"
+                }).then(function() {
+                	$('#workflow_response_submit').submit();
+                });
 	        } else if (result === "0") {
-	            alert("해당 요청을 반려 처리하였습니다.");
+	        	swal({
+                    title: "Success!",
+                    text: "해당 요청을 반려 처리하였습니다.",
+                    icon: "success",
+                    button: "OK"
+                }).then(function() {
+                	$('#workflow_response_submit').submit();
+                });
 	        } else if (result === "2") {
-	            alert("해당 요청을 보류 처리하였습니다.");
+	        	swal({
+                    title: "Success!",
+                    text: "해당 요청을 보류 처리하였습니다.",
+                    icon: "success",
+                    button: "OK"
+                }).then(function() {
+                	$('#workflow_response_submit').submit();
+                });
 	        }
-	        $('#workflow_response_submit').submit();
 	    }
     });
 	

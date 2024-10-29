@@ -35,7 +35,7 @@ $(document).ready(function () {
 	        success: function (emp) {
 	            
 	            $('#emp_modal_name').text(emp.emp_name);
-				$('#emp_modal_dnum').text(emp.emp_dnum);
+				$('#emp_modal_dname').text(emp.emp_dname);
 				$('#emp_modal_bnum').text(emp.emp_bnum);
 				$('#emp_modal_position').text(emp.emp_position);
 				$('#emp_modal_tel').text(emp.emp_tel);

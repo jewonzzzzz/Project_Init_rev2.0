@@ -14,7 +14,7 @@ import lombok.ToString;
 @Data
 public class WorkflowVO {
 	
-	private String wf_code;  // getUserid();
+	private String wf_code;
 	private String wf_type;
 	private String wf_target;
 	private String wf_title;
@@ -45,6 +45,7 @@ public class WorkflowVO {
 	private String sender_name;
 	private String sender_job;
     private String sender_dnum;
+    private String sender_dname;
     private String sender_bnum;
     private String sender_position;
     private String sender_profile;
@@ -52,6 +53,7 @@ public class WorkflowVO {
 	private String receiver_name;
 	private String receiver_job;
     private String receiver_dnum;
+    private String receiver_dname;
     private String receiver_bnum;
     private String receiver_position;
     private String receiver_profile;
@@ -59,6 +61,7 @@ public class WorkflowVO {
 	private String receiver_name_1st;
 	private String receiver_job_1st;
     private String receiver_dnum_1st;
+    private String receiver_dname_1st;
     private String receiver_bnum_1st;
     private String receiver_position_1st;
     private String receiver_profile_1st;
@@ -66,6 +69,7 @@ public class WorkflowVO {
     private String receiver_name_2nd;
     private String receiver_job_2nd;
     private String receiver_dnum_2nd;
+    private String receiver_dname_2nd;
     private String receiver_bnum_2nd;
     private String receiver_position_2nd;
     private String receiver_profile_2nd;
@@ -73,6 +77,7 @@ public class WorkflowVO {
     private String receiver_name_3rd;
     private String receiver_job_3rd;
     private String receiver_dnum_3rd;
+    private String receiver_dname_3rd;
     private String receiver_bnum_3rd;
     private String receiver_position_3rd;
     private String receiver_profile_3rd;

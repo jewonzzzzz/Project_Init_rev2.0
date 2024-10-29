@@ -11,8 +11,10 @@
 	</select>
 	
 	<select id="getMember" resultType="EmployeeVO">		
-		 select * from employee
-	   where emp_id=#{emp_id} and approval=0
+		 select e.*, d.dname as emp_dname
+		  from employee e
+		  join dept d on e.emp_dnum = d.dnum
+	      where e.emp_id=#{emp_id} and e.approval=0
 	</select>
 	
 	<select id="getSetting" resultType="SettingVO">
@@ -30,9 +32,10 @@
 	</select>
 	
 	<select id="getSearchedMemberList" resultType="EmployeeVO">
-	    select e.*,s.log_on
+	    select e.*,s.log_on,d.dname as emp_dname
 	    from employee e
 	    left join user_setting s on e.emp_id = s.emp_id and e.approval=0
+	    left join dept d on e.emp_dnum = d.dnum
 	    where 
 	    replace(emp_name, ' ', '') like concat('%', #{keyword}, '%')
 	    or replace(emp_tel, ' ', '') like concat('%', #{keyword}, '%')
@@ -46,9 +49,10 @@
 	</select>
 	
 	<select id="getTeamList" resultType="EmployeeVO">
-		select e.*,s.log_on
+		select e.*,s.log_on,d.dname as emp_dname
 	     from employee e
 	     left join user_setting s on e.emp_id = s.emp_id and e.approval=0
+	     left join dept d on e.emp_dnum = d.dnum
 	     where emp_dnum = (
 	         select emp_dnum
 	         from employee
@@ -122,7 +126,7 @@
 	</insert>
 	
 	<select id = "getPresence" resultType="java.util.Map" >
-		select date,presence from work_record where emp_id = #{emp_id} and date between #{startDate} and #{endDate}
+		select date,presence,check_in from work_record where emp_id = #{emp_id} and date between #{startDate} and #{endDate}
 	</select>
 	
 </mapper>  

@@ -234,7 +234,7 @@ function getMembers() {
 								</div>
 								<div style="display:flex; flex:0.3;">
 									<div style="flex:1; height:auto; display:flex; justify-content: flex-start;  align-items: center; font-size:10px;">
-									${memberVO.emp_dnum}  ${memberVO.emp_job}
+									${memberVO.emp_dname}  ${memberVO.emp_job}
 									</div>
 								</div>
 							</div>
@@ -280,7 +280,7 @@ function getMembers() {
 							</div>
 							<div style="display:flex; flex:0.3;">
 								<div style="flex:1; height:auto; display:flex; justify-content: flex-start;  align-items: center; font-size:10px;">
-								${memberVO.emp_dnum}  ${memberVO.emp_job}
+								${memberVO.emp_dname}  ${memberVO.emp_job}
 								</div>
 							</div>
 						</div>
@@ -368,8 +368,8 @@ function getMessages(room_id,receiver_emp_id) {
 											<div id="r_msg_sender_name" style=" padding:0 5px; font-size:12px;">
 											${msg.msg_sender.emp_name}
 											</div>
-											<div id="r_msg_sender_dnum" style="display:flex; align-items:flex-end; font-size:10px;">
-				    						${msg.msg_sender.emp_dnum}
+											<div id="r_msg_sender_dname" style="display:flex; align-items:flex-end; font-size:10px;">
+				    						${msg.msg_sender.emp_dname}
 				    						</div>
 				    						<div id="r_msg_sender_position" style="display:flex; align-items:flex-end; font-size:10px; padding:0 5px;">
 				    						${msg.msg_sender.emp_position}
@@ -561,7 +561,7 @@ function messenger_search(input) {
 								</div>
 								<div style="display:flex; flex:0.3;">
 									<div style="flex:1; height:auto; display:flex; justify-content: flex-start;  align-items: center; font-size:12px;">
-									${memberVO.emp_dnum}  ${memberVO.emp_job}
+									${memberVO.emp_dname}  ${memberVO.emp_job}
 									</div>
 								</div>
 							</div>

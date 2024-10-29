@@ -40,6 +40,7 @@
 					%>
 			    	 <%= currentTime %>
 			    </div>
+			    <input type="hidden" id="asdasd"/>
 		    </div>
 		    <div class="calendar-body">
 		        <!-- 날짜를 여기 표시 -->
