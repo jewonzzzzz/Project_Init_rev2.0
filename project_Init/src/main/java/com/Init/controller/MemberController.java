@@ -46,7 +46,19 @@ public class MemberController implements ServletContextAware {
 	private ServletContext servletContext;
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
-
+		
+//		@GetMapping("/main")
+//		public String mainPage(HttpSession session, Model model) {
+//		    String emp_id = (String) session.getAttribute("emp_id");
+//		    MemberVO member = mService.memberInfo(emp_id);
+//		    
+//		    if (member.getEmp_tel() == null || member.getEmp_email() == null || member.getEmp_addr() == null) {
+//		        model.addAttribute("needInfoUpdate", true);
+//		    }
+//		    
+//		    return "member/main";
+//		}
+		
 		@GetMapping("/login")
 		public String loginMemberGET() {
 			return "member/loginForm";
