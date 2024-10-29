@@ -114,7 +114,7 @@
 	<select id="getReportInfoForEval" resultType="EvalVO">
 		select h.emp_id, emp_name, emp_position, eval_his_id, h.eval_id, year, branch, eval_type, eval_name, 
 		eval_start_date, eval_end_date, eval_his_status, content, score_perform, score_attendance, 
-		score_develop, score_total, eval_grade, eval_comment, emp_bnum, dname   
+		score_develop, score_total, eval_grade, eval_comment, emp_bnum, dname, evaluator    
 		from eval_his_list h, eval_list l, employee e, dept d 
 		where h.eval_id = l.eval_id and h.emp_id = e.emp_id and e.emp_dnum = d.dnum 
 		and eval_his_id = #{eval_his_id} and approval = 0
