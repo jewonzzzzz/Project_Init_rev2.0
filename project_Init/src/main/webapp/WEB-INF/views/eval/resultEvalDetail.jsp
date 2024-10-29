@@ -67,7 +67,7 @@
 <%-- ${evaluatorInfo } --%>
 <%-- ${reportInfoForEval } --%>
 	      <div class="page-header">
-              <h3 class="fw-bold mb-3">성과보고</h3>
+              <h3 class="fw-bold mb-3">성과평가</h3>
               <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
                   <a href="/salary/main">
@@ -92,18 +92,21 @@
           <form id="resultEvalForm" action="/eval/saveResultEval" method="post">
             <div class="row">
               <div class="col-md-11">
-                <div class="card">
+                <div class="card" style="margin-bottom: 15px;">
                   <div class="card-header">
-                    <div class="card-title">성과평가[${reportInfoForEval.year }년 ${reportInfoForEval.branch }]</div>
+                    <div class="card-title">성과평가 [${reportInfoForEval.year }년 ${reportInfoForEval.branch }]</div>
                    </div>
                   <div class="card-body">
                     <div class="row"> 
                       <div class="col">
                       
                       <div class="form-group">
-                          <label class="mb-2" style="font-size:16px !important">
-                          <b>평가대상자&nbsp; : &nbsp;${reportInfoForEval.emp_position }&nbsp;${reportInfoForEval.emp_name }
-                          <br>평가자&nbsp; : &nbsp;${evaluatorInfo.emp_position }&nbsp;${evaluatorInfo.emp_name }</b></label>
+                      	<p style="margin-bottom: 0px;"><label class="mb-2" style="font-size:16px !important">
+                      		<b>평가대상자&nbsp; : &nbsp;${reportInfoForEval.emp_bnum }&nbsp;${reportInfoForEval.dname }
+                      		&nbsp;${reportInfoForEval.emp_position }&nbsp;${reportInfoForEval.emp_name }</b>
+                          <br><b>평가자&nbsp; : &nbsp;${evaluatorInfo.emp_bnum }&nbsp;${evaluatorInfo.dname }
+                          &nbsp;${evaluatorInfo.emp_position }&nbsp;${evaluatorInfo.emp_name }</b></label>
+                      	</p>
                       </div>
                       
                         <div class="form-group">
@@ -122,21 +125,24 @@
                           <div class="d-flex" style="justify-content: center;">
                           <c:forEach var="i" begin="1" end="10">
                             <div class="form-check" style="display: flex; flex-direction: column; padding-right: 1px;">
-                              <input class="form-check-input" type="radio" name="score_perform" value="${i }" required>
+                              <input class="form-check-input" type="radio" name="score_perform" value="${i }" required
+                              style="margin-bottom: 3px;">
                               <label class="form-check-label" for="flexRadioDefault1">${i }</label>
                             </div></c:forEach>
                           </div></td>
                           <td style="padding: 0px 24px !important; height: 30px;"><div class="d-flex" style="justify-content: center;">
                           <c:forEach var="i" begin="1" end="10">
                             <div class="form-check" style="display: flex; flex-direction: column; padding-right: 1px;">
-                              <input class="form-check-input" type="radio" name="score_attendance" value="${i }" required>
+                              <input class="form-check-input" type="radio" name="score_attendance" value="${i }" required
+                              style="margin-bottom: 3px;">
                               <label class="form-check-label" for="flexRadioDefault1">${i }</label>
                             </div></c:forEach>
                           </div></td>
                           <td style="padding: 0px 24px !important; height: 30px;"><div class="d-flex" style="justify-content: center;">
                           <c:forEach var="i" begin="1" end="10">
                             <div class="form-check" style="display: flex; flex-direction: column; padding-right: 1px;">
-                              <input class="form-check-input" type="radio" name="score_develop" value="${i }" required>
+                              <input class="form-check-input" type="radio" name="score_develop" value="${i }" required
+                              style="margin-bottom: 3px;">
                               <label class="form-check-label" for="flexRadioDefault1">${i }</label>
                             </div></c:forEach>
                           </div></td>
@@ -167,8 +173,8 @@
                           </div>
                           
                         <div class="form-group" >
-                          <label class="mb-2" style="font-size:16px !important"><b>업무성과 상세보고</b></label>
-                          <textarea name="content" class="form-control" rows="6" readonly
+                          <label class="mb-2" style="font-size:16px !important"><b>성과보고 상세내용</b></label>
+                          <textarea name="content" class="form-control" rows="7" readonly
                           >${reportInfoForEval.content }</textarea>
                           </div>
                           

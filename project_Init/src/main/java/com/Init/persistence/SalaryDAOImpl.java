@@ -652,8 +652,8 @@ public class SalaryDAOImpl implements SalaryDAO{
 			//통상임금 계산
 			int nomalWage = (sal_position + sal_job)/209;
 			System.out.println("nomalWage:"+nomalWage);
-			int sal_allow = (int)((nomalWage*(memberInfo.getOvertime() + memberInfo.getNight_work_time())*0.5) + 
-					(nomalWage*memberInfo.getSpecial_working_time()));
+			int sal_allow = (int)((nomalWage*(memberInfo.getOvertime() + memberInfo.getNight_work_time())*1.5) + 
+					(nomalWage*memberInfo.getSpecial_working_time() * 2));
 			System.out.println("Overtime:" +memberInfo.getOvertime());
 			System.out.println("Nighttime:" +memberInfo.getNight_work_time());
 			

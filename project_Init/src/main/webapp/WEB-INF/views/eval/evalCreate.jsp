@@ -56,7 +56,7 @@
           <div class="page-inner">
 <!------------------------------------------------------------------------------------------------------------------>
 	<div class="page-header">
-              <h3 class="fw-bold mb-3">성과관리</h3>
+              <h3 class="fw-bold mb-3">신규등록</h3>
               <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
                   <a href="/salary/main">
@@ -83,7 +83,7 @@
                 <div class="col-md-12">
                 <div class="card" style="margin-bottom: 5px;">
                   <div class="card-header">
-                    <div class="card-title">성과평가 신규등록</div>
+                    <div class="card-title">신규등록</div>
                   </div>
                   <div class="card-body">
                     <div class="form">

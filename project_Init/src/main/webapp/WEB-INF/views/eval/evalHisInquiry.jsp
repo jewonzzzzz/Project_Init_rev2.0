@@ -56,7 +56,7 @@
 <!------------------------------------------------------------------------------------------------------------------>
 
 			<div class="page-header">
-              <h3 class="fw-bold mb-3">성과이력 조회</h3>
+              <h3 class="fw-bold mb-3">성과이력조회</h3>
               <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
                   <a href="/salary/main">
@@ -83,7 +83,7 @@
               <div class="form">
                 <div class="card">
                   <div class="card-header">
-                    <div class="card-title">성과이력 조회</div>
+                    <div class="card-title">성과이력조회</div>
                   </div>
                   
                   <div class="card-body">
@@ -140,12 +140,11 @@
                         swal("Error!", "실패", "error");
                     }
             	});
-            
-            
          	
             // 테이블 설정
             let dataTable = $("#basic-datatables").DataTable({
             	pageLength: 6,
+            	order: [], // 정렬 해제
             	drawCallback: function() { //가운대 정렬
         			$('#basic-datatables th, #basic-datatables td').css({
         	            'text-align': 'center',

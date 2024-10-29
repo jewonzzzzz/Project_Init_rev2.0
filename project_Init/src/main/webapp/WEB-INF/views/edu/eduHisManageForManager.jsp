@@ -103,7 +103,7 @@
                     </div>
                 <div class="card">
                   <div class="card-header">
-                    <div class="card-title">교육이력관리(관리자)</div>
+                    <div class="card-title">교육이력</div>
                   </div>
                   
                   <div class="card-body">

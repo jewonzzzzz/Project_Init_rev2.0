@@ -82,7 +82,7 @@
                 <div class="card">
                   <div class="card-header">
                     <div style="display: flex; justify-content:space-between;">
-	                    <div class="card-title">성과평가(평가자)</div>
+	                    <div class="card-title">성과평가</div>
                   	</div>
                   </div>
                   <div class="card-body" style="padding-top: 10px;">
