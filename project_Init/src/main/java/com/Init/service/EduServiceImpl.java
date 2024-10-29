@@ -161,6 +161,4 @@ public class EduServiceImpl implements EduService {
 	public List<EduListVO> downloadEduPersonInfo(List<String> empIds) {
 		return edao.downloadEduPersonInfo(empIds);
 	}
-	
-	
 }

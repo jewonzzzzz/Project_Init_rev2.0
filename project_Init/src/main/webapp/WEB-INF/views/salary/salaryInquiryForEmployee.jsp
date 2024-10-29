@@ -91,7 +91,7 @@
                     </div>
                 <div class="card">
                   <div class="card-header">
-                    <div class="card-title">급여내역 조회</div>
+                    <div class="card-title">급여내역</div>
                   </div>
                   
                   <div class="card-body">

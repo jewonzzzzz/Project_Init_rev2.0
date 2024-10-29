@@ -12,6 +12,8 @@ public class EvalVO {
 	private String emp_name;
 	private String emp_position;
 	private String emp_dnum;
+	private String dname;
+	private String emp_bnum;
 	private String eval_type;
 	private String eval_name;
 	private String year;

@@ -56,7 +56,7 @@
 <!------------------------------------------------------------------------------------------------------------------>
 <%-- ${evalReportInfo } --%>
 <div class="page-header">
-              <h3 class="fw-bold mb-3">성과관리</h3>
+              <h3 class="fw-bold mb-3">성과보고(피평가자)</h3>
               <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
                   <a href="/salary/main">

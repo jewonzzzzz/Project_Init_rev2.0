@@ -92,9 +92,11 @@
 		select * from eval_his_list where emp_id = #{emp_id} and eval_his_status not in ('작성완료') 
 	</select>
 	
-	<!-- 성과보고페이지 접근 시 이전 모든 이력 가져오기 -->
+	<!-- 성과평가 페이지 이동 시 평가자 정보 가져오기 -->
 	<select id="getEvaluatorInfo" resultType="EvalVO">
-		select emp_dnum, emp_id, emp_name, emp_position from employee where emp_id = #{emp_id} and approval = 0
+		select emp_dnum, emp_id, emp_name, emp_position, emp_bnum, dname 
+		from employee e, dept d 
+		where e.emp_dnum = d.dnum and emp_id = #{emp_id} and approval = 0
 	</select>
 	
 	<!-- 평가시작된 eval_id와 부서 하위직원 내역 가져오기 -->
@@ -112,9 +114,9 @@
 	<select id="getReportInfoForEval" resultType="EvalVO">
 		select h.emp_id, emp_name, emp_position, eval_his_id, h.eval_id, year, branch, eval_type, eval_name, 
 		eval_start_date, eval_end_date, eval_his_status, content, score_perform, score_attendance, 
-		score_develop, score_total, eval_grade, eval_comment  
-		from eval_his_list h, eval_list l, employee e 
-		where h.eval_id = l.eval_id and h.emp_id = e.emp_id 
+		score_develop, score_total, eval_grade, eval_comment, emp_bnum, dname   
+		from eval_his_list h, eval_list l, employee e, dept d 
+		where h.eval_id = l.eval_id and h.emp_id = e.emp_id and e.emp_dnum = d.dnum 
 		and eval_his_id = #{eval_his_id} and approval = 0
 	</select>
 	

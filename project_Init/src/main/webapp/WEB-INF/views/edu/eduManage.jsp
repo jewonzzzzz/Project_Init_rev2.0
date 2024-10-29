@@ -56,7 +56,7 @@
 <!------------------------------------------------------------------------------------------------------------------>
 <%-- ${eduListInfo } --%>
 <div class="page-header">
-              <h3 class="fw-bold mb-3">교육</h3>
+              <h3 class="fw-bold mb-3">교육관리(관리자)</h3>
               <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
                   <a href="/salary/main">

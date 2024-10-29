@@ -56,7 +56,7 @@
 <!------------------------------------------------------------------------------------------------------------------>
 <%-- ${eduHisInfo } --%>
 <div class="page-header">
-              <h3 class="fw-bold mb-3">교육</h3>
+              <h3 class="fw-bold mb-3">교육이력조회</h3>
               <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
                   <a href="/salary/main">
@@ -81,7 +81,7 @@
               <div class="col-md-11">
                 <div class="card">
                   <div class="card-header">
-                    <div class="card-title">교육이력관리</div>
+                    <div class="card-title">교육이력</div>
                   </div>
                   <div class="card-body" style="padding-top: 10px;">
                     <table id="basic-datatables"

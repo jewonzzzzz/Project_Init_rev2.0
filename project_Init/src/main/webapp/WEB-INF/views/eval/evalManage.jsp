@@ -56,7 +56,7 @@
 <!------------------------------------------------------------------------------------------------------------------>
 <%-- ${evalListInfo } --%>
 <div class="page-header">
-              <h3 class="fw-bold mb-3">성과관리</h3>
+              <h3 class="fw-bold mb-3">성과관리(관리자)</h3>
               <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
                   <a href="/salary/main">
@@ -80,8 +80,8 @@
         <div class="row">
               <div class="col-md-11">
                 <div class="card">
-                  <div class="card-header" style="display: flex; justify-content:space-between;">
-	                    <div class="card-title">성과관리(관리자)</div>
+                  <div class="card-header">
+	                    <div class="card-title">성과평가내역</div>
                   </div>
                   <div class="card-body" style="padding-top: 10px;">
                     <table id="basic-datatables"

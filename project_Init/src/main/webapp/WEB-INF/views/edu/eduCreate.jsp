@@ -81,12 +81,8 @@
             <div class="row">
               <div class="col-md-11">
                 <div class="card">
-                  <div class="card-header" style="display: flex; justify-content:space-between; margin-right: 10px;">
+                  <div class="card-header">
                     <div class="card-title">교육등록</div>
-                    <div>
-		              <button type="submit" id="eduCreatedBtn" class="btn btn-primary">저장하기</button>
-		              <button type="button" class="btn btn-primary" onclick="location.href='/edu/eduManage'">목록으로</button>
-		            </div>
                     </div>
                   <div class="card-body">
                     <div class="row"> 
@@ -161,6 +157,10 @@
                     </div>
                   </div>
                 </div>
+                <div style="display: flex; justify-content:flex-end; gap:5px;">
+	              <button type="submit" id="eduCreatedBtn" class="btn btn-primary">저장하기</button>
+	              <button type="button" class="btn btn-primary" onclick="location.href='/edu/eduManage'">목록으로</button>
+	            </div>
               </div>
             </div>
           </form>     

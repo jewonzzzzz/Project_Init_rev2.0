@@ -220,11 +220,6 @@
                       </a>
                     </li>
                     <li>
-                      <a href="/eval/evalHisInquiry">
-                        <span class="sub-item">성과이력조회</span>
-                      </a>
-                    </li>
-                    <li>
                       <a href="/eval/reportEval">
                         <span class="sub-item">성과보고(피평가자)</span>
                       </a>
@@ -232,6 +227,11 @@
                     <li>
                       <a href="/eval/resultEval">
                         <span class="sub-item">성과평가(평가자)</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/eval/evalHisInquiry">
+                        <span class="sub-item">성과이력조회</span>
                       </a>
                     </li>
                   </ul>
