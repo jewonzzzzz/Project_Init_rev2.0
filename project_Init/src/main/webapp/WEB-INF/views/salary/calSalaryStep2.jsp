@@ -51,6 +51,28 @@
 		  top: 0;
 		  z-index: 10;  /* 헤더가 본문 데이터 위에 오도록 설정 */
 		}
+		
+		/* 로딩 스피너 스타일 */
+		.loader {
+		  border: 8px solid #f3f3f3;
+		  border-radius: 50%;
+		  border-top: 8px solid #3498db;
+		  width: 60px;
+		  height: 60px;
+		  animation: spin 1s linear infinite;
+		  display: none; /* 처음엔 숨김 처리 */
+		    /* 화면 중앙 배치를 위한 스타일 */
+		  position: fixed;
+		  top: 50%;
+		  left: 50%;
+		  transform: translate(-50%, -50%);
+		  z-index: 1000; /* 다른 요소 위에 표시 */
+		}
+		
+		@keyframes spin {
+		  0% { transform: rotate(0deg); }
+		  100% { transform: rotate(360deg); }
+		}
     </style>
 
 
@@ -192,7 +214,6 @@
 		            	</div>
               	</div>
               </div>
-            
                 <div class="col-md-11">
                 <div class="card">
                   <div class="card-header">
@@ -322,7 +343,8 @@
                </div>
              </div>
            </div>
-	
+		<div id="loading" class="loader"></div>
+		
 	<script>
         $(document).ready(function() {
         	
@@ -431,7 +453,7 @@
             		employeeIds.push($(this).data('id'));
                 });
             	$('#employeeIds').val(employeeIds);
-            	
+            	$("#loading").show();
             	$('#dataForm').submit(); 
             });
             
