@@ -293,6 +293,13 @@
 		#{modified_reason}
 		);
 	</insert>
+	<!--승인 반려  -->
+	<update id="updateStatus" parameterType="com.Init.domain.AttendanceVO">
+		UPDATE attendance_ch
+		SET status = #{status}		
+		WHERE attendance_id =
+		#{attendance_id}		
+	</update>
 
 
 </mapper>

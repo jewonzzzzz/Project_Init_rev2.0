@@ -33,4 +33,6 @@ public interface LeaveService {
 	void insertSignInfoForLeave(LeaveVO lvo);
 
 	void insertSignInfoForOtherLeave(LeaveVO lvoa);
+	//승인,반려 상태값 업데이트
+	public void updateLeaveStatus(LeaveVO vo);
 }

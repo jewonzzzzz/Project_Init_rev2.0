@@ -64,7 +64,8 @@ int countAttendance(String emp_id, String date);
 	public AttendanceVO getEmployee(String emp_id);
 
 	public void insertSignInfo(AttendanceVO avo);
-    
+    //근태 승인,반려
+	public void updateStatus(AttendanceVO uvo);
 	
 	
 }
