@@ -59,6 +59,12 @@ public class MemberController implements ServletContextAware {
 //		    return "member/main";
 //		}
 		
+		@GetMapping("/logout")
+		public String logoutMemberGET(HttpSession session) {
+			session.invalidate();
+			return "redirect:/member/login";
+		}
+		
 		@GetMapping("/login")
 		public String loginMemberGET() {
 			return "member/loginForm";
@@ -214,12 +220,6 @@ public class MemberController implements ServletContextAware {
         return String.format("%06d", new Random().nextInt(999999));
     }
     
-	@GetMapping("/logout")
-	public String logoutMemberGET(HttpSession session) {
-		session.invalidate();
-		return "redirect:/member/login";
-	}
-
 	@GetMapping("/info")
 	public String infoMemberGET(HttpSession session, Model model) {
 		String emp_id = (String) session.getAttribute("emp_id");

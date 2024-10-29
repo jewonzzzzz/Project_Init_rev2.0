@@ -99,7 +99,7 @@
               <!-- Menu start -->
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#person"> <!-- href="" 를 여는 a태그 -->
-                  <i class="fas fa-layer-group"></i> <!-- icon -->
+                  <i class="fas fa-address-card"></i> <!-- icon -->
                   <p>인사관리</p>
                   <span class="caret"></span>
                 </a>
