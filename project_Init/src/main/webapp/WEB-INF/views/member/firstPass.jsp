@@ -45,11 +45,11 @@
         <form id="passwordResetForm">
             <input type="password" class="form-control" id="newPassword" 
                    placeholder="새 비밀번호" required>
-            <div class="text-muted small mb-3">
-                * 비밀번호는 숫자, 영문, 특수문자를 포함하여 8자리 이상이어야 합니다.
-            </div>
             <input type="password" class="form-control" id="confirmPassword" 
                    placeholder="비밀번호 확인" required>
+            <div class="text-muted small mb-3">
+                *영문, 숫자, 특수문자 조합 8자리 이상 입력하세요.
+            </div>
             <button type="submit" class="btn btn-primary">변경하기</button>
         </form>
     </div>
