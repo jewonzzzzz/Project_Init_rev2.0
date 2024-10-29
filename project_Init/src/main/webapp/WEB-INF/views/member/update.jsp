@@ -410,7 +410,7 @@ input[readonly] {
 		<c:if test="${needInfoUpdate}">
 		    <script type="text/javascript">
 		        window.onload = function() {
-		            alert("필수 정보를 입력해주세요.");
+		            alert("주소와 연락처 정보를 입력해주세요.");
 		        }
 		    </script>
 		</c:if>
