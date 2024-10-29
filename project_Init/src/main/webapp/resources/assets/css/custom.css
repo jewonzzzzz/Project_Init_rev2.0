@@ -657,7 +657,7 @@ button {
     margin-right:6px;
 }
 .days .flag{
-	display:flex;
+	display:none;
 	width:6px;
 	font-size:12px;
 	padding:0px;
@@ -672,8 +672,8 @@ button {
 	}
 .calendar_info{
 	position: absolute;
-    bottom: calc(90%); 
-    right: 0;
+    bottom: calc(80%); 
+    right: calc(-120%);
     height: auto;
     width: 160px;
     background-color: rgb(250,250,250);
@@ -687,28 +687,33 @@ button {
     text-align: left;
     display: none; 
 }
-.calendar_info.workflow{
-    width: 450px;
+.calendar_info.s_workflow, .calendar_info.r_workflow{
+	display: none;
+	flex-direction:column;
+	justify-content:center;
+	align-items:center; 
+    width: 420px;
+    padding:0px;
 }
-.calendar_info_workflow{
+.calendar_detail_workflow{
     background-color: white;
+    width:400px;
 	border-radius: 3px;
 	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
-    margin:10px;
     display:flex; 
-    padding-top:10px; 
-    padding-bottom:5px;"
+    margin:5px 0px;
+    padding:10px 0px;
 }
-.days .flag.enter{
+.days .flag.presence{
 	color:rgba(119, 221, 119, 0.8);
 }
-.days .flag.workout{
+.days .flag.presence.workout{
 	color:rgba(255, 182, 193, 0.8);
 }
-.days .flag.edu{
+.days .flag.presence.edu{
 	color:rgba(255,255,100, 0.8);
 }
-.days .flag.leave{
+.days .flag.presence.leave{
 	color:rgba(0, 0, 0, 0.6);
 }
 .days .flag.s_workflow{
