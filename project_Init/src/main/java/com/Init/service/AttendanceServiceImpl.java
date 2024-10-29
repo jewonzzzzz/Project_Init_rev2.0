@@ -95,13 +95,13 @@ public class AttendanceServiceImpl implements AttendanceService {
 	// 페이징을 위한 새로운 메소드 구현
 	@Override
 	public List<AttendanceVO> getAllCheckTime(String emp_id, int offset, int size, String date) {
-		return attendanceDAO.getAllCheckTime(emp_id, offset, size,date);
+		return attendanceDAO.getAllCheckTime(emp_id, offset, size, date);
 	}
-	
-    @Override
-    public int countAttendance(String emp_id, String date) {
-        return attendanceDAO.countAttendance(emp_id, date);
-    }
+
+	@Override
+	public int countAttendance(String emp_id, String date) {
+		return attendanceDAO.countAttendance(emp_id, date);
+	}
 
 	public int getTotalCheckTimeCount(String emp_id) {
 		return attendanceDAO.getTotalCheckTimeCount(emp_id);
@@ -145,30 +145,36 @@ public class AttendanceServiceImpl implements AttendanceService {
 		attendanceDAO.updateReturnTime(attendanceVO);
 	}
 
-    @Override
-    public List<AttendanceVO> getAttendanceByEmpId(String emp_id) {
-        return attendanceDAO.getAttendanceByEmpId(emp_id);
-    }
-    @Override
-    public void updateAttendanceRecordA(AttendanceVO attendanceVO) {
-        attendanceDAO.updateAttendanceA(attendanceVO); // DAO 호출
-    }
-    @Override
-    public void applyBusinessTrip(AttendanceVO attendanceVO) {
-        // 필요한 데이터 검증 및 처리 로직 추가
-        attendanceDAO.insertBusinessTrip(attendanceVO);
-    }
-    @Override
-    public AttendanceVO getEmployee(String emp_id) {
-        return attendanceDAO.getEmployee(emp_id);
-    }
-    
-    @Override
-    public void insertSignInfo(AttendanceVO avo) {
-    	attendanceDAO.insertSignInfo(avo);
-    	
-    }
-   
-    
-    
+	@Override
+	public List<AttendanceVO> getAttendanceByEmpId(String emp_id) {
+		return attendanceDAO.getAttendanceByEmpId(emp_id);
+	}
+
+	@Override
+	public void updateAttendanceRecordA(AttendanceVO attendanceVO) {
+		attendanceDAO.updateAttendanceA(attendanceVO); // DAO 호출
+	}
+
+	@Override
+	public void applyBusinessTrip(AttendanceVO attendanceVO) {
+		// 필요한 데이터 검증 및 처리 로직 추가
+		attendanceDAO.insertBusinessTrip(attendanceVO);
+	}
+
+	@Override
+	public AttendanceVO getEmployee(String emp_id) {
+		return attendanceDAO.getEmployee(emp_id);
+	}
+
+	@Override
+	public void insertSignInfo(AttendanceVO avo) {
+		attendanceDAO.insertSignInfo(avo);
+
+	}
+	//근태 승인,반려
+	@Override
+	public void updateStatus(AttendanceVO uvo) {
+		attendanceDAO.updateStatus(uvo);
+	}
+
 }

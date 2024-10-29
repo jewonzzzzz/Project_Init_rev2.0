@@ -290,6 +290,12 @@
 		)
 	</insert>
 	
+	<update id="updateLeaveStatus" parameterType="com.Init.domain.LeaveVO">
+		UPDATE leave_management
+		SET leave_status = #{leave_status}		
+		WHERE leave_id =
+		#{leave_id}		
+	</update>
 	
 	
 	

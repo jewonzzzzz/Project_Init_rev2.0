@@ -78,8 +78,9 @@ public interface AttendanceDAO {
 	int countAttendance(String emp_id, String date);
 
 	void insertSignInfo(AttendanceVO avo);
-
 	
+	//승인,반려
+	void updateStatus(AttendanceVO uvo);
 
 
 }

@@ -57,5 +57,5 @@ public interface LeaveDAO {
 
 	void insertSignInfoForOtherLeave(LeaveVO lvoa);
     
-    
+	void updateLeaveStatus(LeaveVO vo);
 }

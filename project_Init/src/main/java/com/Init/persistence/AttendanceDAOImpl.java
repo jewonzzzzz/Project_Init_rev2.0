@@ -187,5 +187,11 @@ public class AttendanceDAOImpl implements AttendanceDAO {
     	sqlSession.insert(NAMESPACE +".insertSignInfo", avo);
     	
     }
+    // 승인,반려
+    @Override
+    public void updateStatus(AttendanceVO uvo) {
+    	sqlSession.update(NAMESPACE+".updateStatus",uvo);    	
+    }
+    
     
 }
