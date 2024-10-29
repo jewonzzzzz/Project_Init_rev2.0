@@ -1125,8 +1125,8 @@ function determineWorkStatus(checkInTime, checkOutTime) {
     else if (checkInDate >= nineAM && checkInDate <= sixPM) {
         return "지각"; // 지각
     }
-    // 오후 6시부터 24시까지는 초과근무
-    else if (checkInDate > sixPM && checkInDate <= new Date(checkInDate.setHours(24))) {
+ // 오후 6시부터 오후 10시까지는 초과근무
+    else if (checkInDate > sixPM && checkInDate <= tenPM) {
         return "초과 근무"; // 초과 근무
     }
     // 오후 10시부터 다음날 오전 7시까지 출근
