@@ -3,7 +3,13 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>비밀번호 재설정</title>
+    <title>INIT</title>
+	<link
+	      rel="icon"
+	      href="${pageContext.request.contextPath }/resources/assets/img/project/favicon_black.png"
+	      style="border-radius: 50%;"
+	      type="image/x-icon"
+	    />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         * {

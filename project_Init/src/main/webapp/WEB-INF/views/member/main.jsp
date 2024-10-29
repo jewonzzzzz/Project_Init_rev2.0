@@ -138,35 +138,25 @@
 	    document.getElementById('logoutBtn').addEventListener('click', confirmLogout);
 		});
 	
-		function confirmLogout() {
-		    swal({
-		        title: "로그아웃",
-		        text: "정말 로그아웃 하시겠습니까?",
-		        icon: "warning",
-		        buttons: ["아니오", "예"],
-		        dangerMode: true,
-		    })
-		    .then((willLogout) => {
-		        if (willLogout) {
-		            $.ajax({
-		                url: '${pageContext.request.contextPath}/member/logout',
-		                type: 'GET',
-		                success: function() {
-		                    window.location.href = '${pageContext.request.contextPath}/member/login';
-		                },
-		                error: function() {
-		                    swal("로그아웃 처리 중 오류가 발생했습니다.", {
-		                        icon: "error"
-		                    });
-		                }
-		            });
-		        } else {
-		            swal("로그아웃이 취소되었습니다.", {
-		                icon: "info",
-		            });
-		        }
-		    });
-		}
+    	function confirmLogout() {
+    	    swal({
+    	        title: "로그아웃",
+    	        text: "정말 로그아웃 하시겠습니까?",
+    	        icon: "warning",
+    	        buttons: ["아니오", "예"],
+    	        dangerMode: true,
+    	    })
+    	    .then((willLogout) => {
+    	        if (willLogout) {
+    	            // Ajax 대신 직접 페이지 이동
+    	            window.location.href = '${pageContext.request.contextPath}/member/logout';
+    	        } else {
+    	            swal("로그아웃이 취소되었습니다.", {
+    	                icon: "info",
+    	            });
+    	        }
+    	    });
+    	}
 
     </script>
   </body>

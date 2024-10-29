@@ -6,7 +6,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>비밀번호 변경</title>
+<title>INIT</title>
+<link
+      rel="icon"
+      href="${pageContext.request.contextPath }/resources/assets/img/project/favicon_black.png"
+      style="border-radius: 50%;"
+      type="image/x-icon"
+    />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/assets/css/bootstrap.min.css" />
 <style>
 .password-reset-wrapper {

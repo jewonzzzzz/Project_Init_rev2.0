@@ -11,12 +11,15 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<title>Kaiadmin - Bootstrap 5 Admin Dashboard</title>
+<title>INIT</title>
 <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
 	name="viewport" />
-<link rel="icon"
-	href="${pageContext.request.contextPath }/resources/assets/img/kaiadmin/favicon.ico"
-	type="image/x-icon" />
+<link
+      rel="icon"
+      href="${pageContext.request.contextPath }/resources/assets/img/project/favicon_black.png"
+      style="border-radius: 50%;"
+      type="image/x-icon"
+    />
 
 <!-- Fonts and icons -->
 <script
