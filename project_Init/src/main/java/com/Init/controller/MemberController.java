@@ -152,6 +152,8 @@ public class MemberController implements ServletContextAware {
 		        if (member != null) {
 		            // 세션에 로그인 정보 저장
 		            session.setAttribute("emp_id", member.getEmp_id());
+		            session.setAttribute("emp_position", member.getEmp_position());
+			        session.setAttribute("emp_level", member.getEmp_level());
 		            response.put("success", true);
 		        } else {
 		            response.put("success", false);
