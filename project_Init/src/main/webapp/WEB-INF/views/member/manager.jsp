@@ -448,7 +448,7 @@ footer {
 													<td>${member.dept_name}</td>
 													<td>${member.emp_position}</td>
 													<td>${member.emp_job}</td>
-													<td>${member.emp_salary}</td>
+													<td class="salary-cell">${member.emp_salary}</td>
 													<td>${member.emp_work_type}</td>
 													<td>${member.emp_account_name}</td>
 													<td>${member.emp_account_num}</td>
@@ -1674,6 +1674,50 @@ footer {
 	    $('#filterValue').empty().append('<option value="">선택하세요</option>');
 	    $('#keyword').val('');
 	    loadMembers(1);
+		}
+        
+        // 연봉 표시
+        function formatSalaryToKorean(number) {
+		    if (!number) return '0원';
+		    
+		    number = parseInt(number);
+		    
+		    if (number >= 100000000) { // 1억 이상
+		        return (number / 100000000).toFixed(1) + '억원';
+		    } else if (number >= 10000) { // 1만 이상
+		        return (number / 10000).toFixed(0) + '만원';
+		    } else {
+		        return number.toLocaleString() + '원';
+		    }
+		}
+		
+		// 테이블의 연봉 표시를 변환하는 함수
+		function updateSalaryDisplay() {
+		    $('.salary-cell').each(function() {
+		        var salary = $(this).text();
+		        $(this).text(formatSalaryToKorean(salary));
+		    });
+		}
+		
+		// 페이지 로드 및 테이블 업데이트 시 연봉 표시 변환
+		$(document).ready(function() {
+		    // 기존 ready 함수 내용...
+		    
+		    // 초기 테이블 로드 시 연봉 표시 변환
+		    updateSalaryDisplay();
+		});
+		
+		// updateTable 함수 수정
+		function updateTable(response) {
+		    $('#memberTable tbody').empty();
+		    var members = $(response).find('#memberTable tbody tr');
+		    $('#memberTable tbody').append(members);
+		    
+		    // 연봉 표시 변환 추가
+		    updateSalaryDisplay();
+		    
+		    $('.pagination').html($(response).find('.pagination').html());
+		    bindPaginationEvents();
 		}
 
       
