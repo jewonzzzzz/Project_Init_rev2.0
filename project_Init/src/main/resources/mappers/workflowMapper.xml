@@ -8,24 +8,29 @@
 	<!-- 워크플로우 상세 -->
 	<select id="getWorkflow" parameterType="String" resultType="WorkflowVO">
 	  select 
-	    wf.*, 
+	    wf.*,
 	    emp1.emp_name as sender_name, emp1.emp_dnum as sender_dnum, emp1.emp_profile as sender_profile,
-	    emp1.emp_bnum as sender_bnum, emp1.emp_position as sender_position, emp1.emp_job as sender_job,
+	    emp1.emp_bnum as sender_bnum, emp1.emp_position as sender_position, emp1.emp_job as sender_job, d1.dname as sender_dname,
 	    emp2.emp_name as receiver_name, emp2.emp_dnum as receiver_dnum, emp2.emp_profile as receiver_profile,
-	    emp2.emp_bnum as receiver_bnum, emp2.emp_position as receiver_position, emp2.emp_job as receiver_job,
+	    emp2.emp_bnum as receiver_bnum, emp2.emp_position as receiver_position, emp2.emp_job as receiver_job, d2.dname as receiver_dname,
 	    emp3.emp_name as receiver_name_1st, emp3.emp_dnum as receiver_dnum_1st, emp3.emp_profile as receiver_profile_1st,
-	    emp3.emp_bnum as receiver_bnum_1st, emp3.emp_position as receiver_position_1st, emp3.emp_job as receiver_job_1st,
+	    emp3.emp_bnum as receiver_bnum_1st, emp3.emp_position as receiver_position_1st, emp3.emp_job as receiver_job_1st, d3.dname as receiver_dname_1st,
 		emp4.emp_name as receiver_name_2nd, emp4.emp_dnum as receiver_dnum_2nd, emp4.emp_profile as receiver_profile_2nd,
-		emp4.emp_bnum as receiver_bnum_2nd, emp4.emp_position as receiver_position_2nd, emp4.emp_job as receiver_job_2nd,
+		emp4.emp_bnum as receiver_bnum_2nd, emp4.emp_position as receiver_position_2nd, emp4.emp_job as receiver_job_2nd, d4.dname as receiver_dname_2nd,
 		emp5.emp_name as receiver_name_3rd, emp5.emp_dnum as receiver_dnum_3rd, emp5.emp_profile as receiver_profile_3rd,
-		emp5.emp_bnum as receiver_bnum_3rd, emp5.emp_position as receiver_position_3rd, emp5.emp_job as receiver_job_3rd
+		emp5.emp_bnum as receiver_bnum_3rd, emp5.emp_position as receiver_position_3rd, emp5.emp_job as receiver_job_3rd, d5.dname as receiver_dname_3rd
+		
 	    from workflow wf
-	  
 	    join employee emp1 on wf.wf_sender = emp1.emp_id and emp1.approval = 0
+	    join dept d1 on emp1.emp_dnum = d1.dnum
 	    join employee emp2 on wf.wf_receiver = emp2.emp_id and emp2.approval = 0
+	    join dept d2 on emp2.emp_dnum = d2.dnum
 	    join employee emp3 on wf.wf_receiver_1st = emp3.emp_id and emp3.approval = 0
+	    join dept d3 on emp3.emp_dnum = d3.dnum
 	    left join employee emp4 on wf.wf_receiver_2nd = emp4.emp_id and emp4.approval = 0
+	    left join dept d4 on emp4.emp_dnum = d4.dnum
 	    left join employee emp5 on wf.wf_receiver_3rd = emp5.emp_id and emp5.approval = 0
+	    left join dept d5 on emp5.emp_dnum = d5.dnum
 	    where wf.wf_code = #{wf_code}
 	</select>
 	
@@ -228,22 +233,27 @@
 	  select 
 	    wf.*, 
 	    emp1.emp_name as sender_name, emp1.emp_dnum as sender_dnum, emp1.emp_profile as sender_profile,
-	    emp1.emp_bnum as sender_bnum, emp1.emp_position as sender_position, emp1.emp_job as sender_job,
+	    emp1.emp_bnum as sender_bnum, emp1.emp_position as sender_position, emp1.emp_job as sender_job, d1.dname as sender_dname,
 	    emp2.emp_name as receiver_name, emp2.emp_dnum as receiver_dnum, emp2.emp_profile as receiver_profile,
-	    emp2.emp_bnum as receiver_bnum, emp2.emp_position as receiver_position, emp2.emp_job as receiver_job,
+	    emp2.emp_bnum as receiver_bnum, emp2.emp_position as receiver_position, emp2.emp_job as receiver_job, d2.dname as receiver_dname,
 	    emp3.emp_name as receiver_name_1st, emp3.emp_dnum as receiver_dnum_1st, emp3.emp_profile as receiver_profile_1st,
-	    emp3.emp_bnum as receiver_bnum_1st, emp3.emp_position as receiver_position_1st, emp3.emp_job as receiver_job_1st,
+	    emp3.emp_bnum as receiver_bnum_1st, emp3.emp_position as receiver_position_1st, emp3.emp_job as receiver_job_1st, d3.dname as receiver_dname_1st,
 		emp4.emp_name as receiver_name_2nd, emp4.emp_dnum as receiver_dnum_2nd, emp4.emp_profile as receiver_profile_2nd,
-		emp4.emp_bnum as receiver_bnum_2nd, emp4.emp_position as receiver_position_2nd, emp4.emp_job as receiver_job_2nd,
+		emp4.emp_bnum as receiver_bnum_2nd, emp4.emp_position as receiver_position_2nd, emp4.emp_job as receiver_job_2nd, d4.dname as receiver_dname_2nd,
 		emp5.emp_name as receiver_name_3rd, emp5.emp_dnum as receiver_dnum_3rd, emp5.emp_profile as receiver_profile_3rd,
-		emp5.emp_bnum as receiver_bnum_3rd, emp5.emp_position as receiver_position_3rd, emp5.emp_job as receiver_job_3rd
+		emp5.emp_bnum as receiver_bnum_3rd, emp5.emp_position as receiver_position_3rd, emp5.emp_job as receiver_job_3rd, d5.dname as receiver_dname_3rd
 	    from workflow wf
 	  
 	    join employee emp1 on wf.wf_sender = emp1.emp_id and emp1.approval = 0
+	    join dept d1 on emp1.emp_dnum = d1.dnum
 	    join employee emp2 on wf.wf_receiver = emp2.emp_id and emp2.approval = 0
+	    join dept d2 on emp2.emp_dnum = d2.dnum
 	    join employee emp3 on wf.wf_receiver_1st = emp3.emp_id and emp3.approval = 0
+	    join dept d3 on emp3.emp_dnum = d3.dnum
 	    left join employee emp4 on wf.wf_receiver_2nd = emp4.emp_id and emp4.approval = 0
+	    left join dept d4 on emp4.emp_dnum = d4.dnum
 	    left join employee emp5 on wf.wf_receiver_3rd = emp5.emp_id and emp5.approval = 0
+	    left join dept d5 on emp5.emp_dnum = d5.dnum
 	    where wf_sender=#{emp_id} and wf_sender_alarm_token='1'
 	</select>
 	
@@ -252,22 +262,27 @@
 	  select 
 	    wf.*, 
 	    emp1.emp_name as sender_name, emp1.emp_dnum as sender_dnum, emp1.emp_profile as sender_profile,
-	    emp1.emp_bnum as sender_bnum, emp1.emp_position as sender_position, emp1.emp_job as sender_job,
+	    emp1.emp_bnum as sender_bnum, emp1.emp_position as sender_position, emp1.emp_job as sender_job, d1.dname as sender_dname,
 	    emp2.emp_name as receiver_name, emp2.emp_dnum as receiver_dnum, emp2.emp_profile as receiver_profile,
-	    emp2.emp_bnum as receiver_bnum, emp2.emp_position as receiver_position, emp2.emp_job as receiver_job,
+	    emp2.emp_bnum as receiver_bnum, emp2.emp_position as receiver_position, emp2.emp_job as receiver_job, d2.dname as receiver_dname,
 	    emp3.emp_name as receiver_name_1st, emp3.emp_dnum as receiver_dnum_1st, emp3.emp_profile as receiver_profile_1st,
-	    emp3.emp_bnum as receiver_bnum_1st, emp3.emp_position as receiver_position_1st, emp3.emp_job as receiver_job_1st,
+	    emp3.emp_bnum as receiver_bnum_1st, emp3.emp_position as receiver_position_1st, emp3.emp_job as receiver_job_1st, d3.dname as receiver_dname_1st,
 		emp4.emp_name as receiver_name_2nd, emp4.emp_dnum as receiver_dnum_2nd, emp4.emp_profile as receiver_profile_2nd,
-		emp4.emp_bnum as receiver_bnum_2nd, emp4.emp_position as receiver_position_2nd, emp4.emp_job as receiver_job_2nd,
+		emp4.emp_bnum as receiver_bnum_2nd, emp4.emp_position as receiver_position_2nd, emp4.emp_job as receiver_job_2nd, d4.dname as receiver_dname_2nd,
 		emp5.emp_name as receiver_name_3rd, emp5.emp_dnum as receiver_dnum_3rd, emp5.emp_profile as receiver_profile_3rd,
-		emp5.emp_bnum as receiver_bnum_3rd, emp5.emp_position as receiver_position_3rd, emp5.emp_job as receiver_job_3rd
+		emp5.emp_bnum as receiver_bnum_3rd, emp5.emp_position as receiver_position_3rd, emp5.emp_job as receiver_job_3rd, d5.dname as receiver_dname_3rd
 	    from workflow wf
 	  
 	    join employee emp1 on wf.wf_sender = emp1.emp_id and emp1.approval = 0
+	    join dept d1 on emp1.emp_dnum = d1.dnum
 	    join employee emp2 on wf.wf_receiver = emp2.emp_id and emp2.approval = 0
+	    join dept d2 on emp2.emp_dnum = d2.dnum
 	    join employee emp3 on wf.wf_receiver_1st = emp3.emp_id and emp3.approval = 0
+	    join dept d3 on emp3.emp_dnum = d3.dnum
 	    left join employee emp4 on wf.wf_receiver_2nd = emp4.emp_id and emp4.approval = 0
+	    left join dept d4 on emp4.emp_dnum = d4.dnum
 	    left join employee emp5 on wf.wf_receiver_3rd = emp5.emp_id and emp5.approval = 0
+	    left join dept d5 on emp5.emp_dnum = d5.dnum
 	    where wf_receiver=#{emp_id} and wf_receiver_alarm_token='1' and wf_status='1'
 	</select>
 	
@@ -276,22 +291,27 @@
 	  select 
 	    wf.*, 
 	    emp1.emp_name as sender_name, emp1.emp_dnum as sender_dnum, emp1.emp_profile as sender_profile,
-	    emp1.emp_bnum as sender_bnum, emp1.emp_position as sender_position, emp1.emp_job as sender_job,
+	    emp1.emp_bnum as sender_bnum, emp1.emp_position as sender_position, emp1.emp_job as sender_job, d1.dname as sender_dname,
 	    emp2.emp_name as receiver_name, emp2.emp_dnum as receiver_dnum, emp2.emp_profile as receiver_profile,
-	    emp2.emp_bnum as receiver_bnum, emp2.emp_position as receiver_position, emp2.emp_job as receiver_job,
+	    emp2.emp_bnum as receiver_bnum, emp2.emp_position as receiver_position, emp2.emp_job as receiver_job, d2.dname as receiver_dname,
 	    emp3.emp_name as receiver_name_1st, emp3.emp_dnum as receiver_dnum_1st, emp3.emp_profile as receiver_profile_1st,
-	    emp3.emp_bnum as receiver_bnum_1st, emp3.emp_position as receiver_position_1st, emp3.emp_job as receiver_job_1st,
+	    emp3.emp_bnum as receiver_bnum_1st, emp3.emp_position as receiver_position_1st, emp3.emp_job as receiver_job_1st, d3.dname as receiver_dname_1st,
 		emp4.emp_name as receiver_name_2nd, emp4.emp_dnum as receiver_dnum_2nd, emp4.emp_profile as receiver_profile_2nd,
-		emp4.emp_bnum as receiver_bnum_2nd, emp4.emp_position as receiver_position_2nd, emp4.emp_job as receiver_job_2nd,
+		emp4.emp_bnum as receiver_bnum_2nd, emp4.emp_position as receiver_position_2nd, emp4.emp_job as receiver_job_2nd, d4.dname as receiver_dname_2nd,
 		emp5.emp_name as receiver_name_3rd, emp5.emp_dnum as receiver_dnum_3rd, emp5.emp_profile as receiver_profile_3rd,
-		emp5.emp_bnum as receiver_bnum_3rd, emp5.emp_position as receiver_position_3rd, emp5.emp_job as receiver_job_3rd
+		emp5.emp_bnum as receiver_bnum_3rd, emp5.emp_position as receiver_position_3rd, emp5.emp_job as receiver_job_3rd, d5.dname as receiver_dname_3rd
 	    from workflow wf
 	  
 	    join employee emp1 on wf.wf_sender = emp1.emp_id and emp1.approval = 0
+	    join dept d1 on emp1.emp_dnum = d1.dnum
 	    join employee emp2 on wf.wf_receiver = emp2.emp_id and emp2.approval = 0
+	    join dept d2 on emp2.emp_dnum = d2.dnum
 	    join employee emp3 on wf.wf_receiver_1st = emp3.emp_id and emp3.approval = 0
+	    join dept d3 on emp3.emp_dnum = d3.dnum
 	    left join employee emp4 on wf.wf_receiver_2nd = emp4.emp_id and emp4.approval = 0
+	    left join dept d4 on emp4.emp_dnum = d4.dnum
 	    left join employee emp5 on wf.wf_receiver_3rd = emp5.emp_id and emp5.approval = 0
+	    left join dept d5 on emp5.emp_dnum = d5.dnum
 	    where wf_sender=#{emp_id} and wf_sender_alarm_token='1'
 	</select>
 	
@@ -300,22 +320,27 @@
 	  select 
 	    wf.*, 
 	    emp1.emp_name as sender_name, emp1.emp_dnum as sender_dnum, emp1.emp_profile as sender_profile,
-	    emp1.emp_bnum as sender_bnum, emp1.emp_position as sender_position, emp1.emp_job as sender_job,
+	    emp1.emp_bnum as sender_bnum, emp1.emp_position as sender_position, emp1.emp_job as sender_job, d1.dname as sender_dname,
 	    emp2.emp_name as receiver_name, emp2.emp_dnum as receiver_dnum, emp2.emp_profile as receiver_profile,
-	    emp2.emp_bnum as receiver_bnum, emp2.emp_position as receiver_position, emp2.emp_job as receiver_job,
+	    emp2.emp_bnum as receiver_bnum, emp2.emp_position as receiver_position, emp2.emp_job as receiver_job, d2.dname as receiver_dname,
 	    emp3.emp_name as receiver_name_1st, emp3.emp_dnum as receiver_dnum_1st, emp3.emp_profile as receiver_profile_1st,
-	    emp3.emp_bnum as receiver_bnum_1st, emp3.emp_position as receiver_position_1st, emp3.emp_job as receiver_job_1st,
+	    emp3.emp_bnum as receiver_bnum_1st, emp3.emp_position as receiver_position_1st, emp3.emp_job as receiver_job_1st, d3.dname as receiver_dname_1st,
 		emp4.emp_name as receiver_name_2nd, emp4.emp_dnum as receiver_dnum_2nd, emp4.emp_profile as receiver_profile_2nd,
-		emp4.emp_bnum as receiver_bnum_2nd, emp4.emp_position as receiver_position_2nd, emp4.emp_job as receiver_job_2nd,
+		emp4.emp_bnum as receiver_bnum_2nd, emp4.emp_position as receiver_position_2nd, emp4.emp_job as receiver_job_2nd, d4.dname as receiver_dname_2nd,
 		emp5.emp_name as receiver_name_3rd, emp5.emp_dnum as receiver_dnum_3rd, emp5.emp_profile as receiver_profile_3rd,
-		emp5.emp_bnum as receiver_bnum_3rd, emp5.emp_position as receiver_position_3rd, emp5.emp_job as receiver_job_3rd
+		emp5.emp_bnum as receiver_bnum_3rd, emp5.emp_position as receiver_position_3rd, emp5.emp_job as receiver_job_3rd, d5.dname as receiver_dname_3rd
 	    from workflow wf
 	  
 	    join employee emp1 on wf.wf_sender = emp1.emp_id and emp1.approval = 0
+	    join dept d1 on emp1.emp_dnum = d1.dnum
 	    join employee emp2 on wf.wf_receiver = emp2.emp_id and emp2.approval = 0
+	    join dept d2 on emp2.emp_dnum = d2.dnum
 	    join employee emp3 on wf.wf_receiver_1st = emp3.emp_id and emp3.approval = 0
+	    join dept d3 on emp3.emp_dnum = d3.dnum
 	    left join employee emp4 on wf.wf_receiver_2nd = emp4.emp_id and emp4.approval = 0
+	    left join dept d4 on emp4.emp_dnum = d4.dnum
 	    left join employee emp5 on wf.wf_receiver_3rd = emp5.emp_id and emp5.approval = 0
+	    left join dept d5 on emp5.emp_dnum = d5.dnum
 	    where wf_receiver=#{emp_id} and wf_status='1'
 	</select>
 	
@@ -337,6 +362,12 @@
 	</select>
 	
 	<select id="getCalendarWorkflow" resultType="WorkflowVO">
-	 select * from workflow where wf_sender = #{emp_id} and wf_create_date between #{startDate} and #{endDate}; 
+	 select * from workflow 
+	  where (wf_sender = #{emp_id} or
+        wf_receiver_1st = #{emp_id} or 
+        wf_receiver_2nd = #{emp_id} or 
+        wf_receiver_3rd = #{emp_id})
+        and wf_create_date between #{startDate} and #{endDate};
 	</select>
+	
 </mapper>

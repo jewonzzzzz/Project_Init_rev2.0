@@ -23,7 +23,7 @@
 	                    			<div style="flex:0.4; font-size:18px; font-weight: bold; color: black; padding-bottom:15px;" id="emp_modal_name"></div>
 	                    			<div style="flex:0.6; font-size:15px; color: rgba(0, 0, 0, 0.7);">
 	                    				<p id="emp_modal_bnum" style="margin:0px;"></p>
-	                    				<p id="emp_modal_dnum" style="margin:0px;"></p>
+	                    				<p id="emp_modal_dname" style="margin:0px;"></p>
 	                    				<p id="emp_modal_position" style="margin:0px;"></p>
 	                    				<p id="emp_modal_tel" style="margin:0px;"></p>
 	                    				<p id="emp_modal_email" style="margin:0px;"></p>

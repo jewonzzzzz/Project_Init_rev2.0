@@ -24,8 +24,10 @@ import com.Init.domain.WorkflowVO;
 import com.Init.persistence.EmployeeDAO;
 import com.Init.persistence.WorkflowDAO;
 import com.Init.persistence.WorkflowDAOImpl;
+import com.Init.service.EduService;
 import com.Init.service.EmployeeService;
 import com.Init.service.MessageService;
+import com.Init.service.SalaryService;
 import com.Init.service.WorkflowService;
 
 @Controller
@@ -40,6 +42,12 @@ public class WorkflowController {
 
 	@Inject
 	private MessageService msgService;
+	
+	@Inject
+	private SalaryService sService;
+	
+	@Inject
+	private EduService eService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(WorkflowController.class);
 
@@ -96,6 +104,8 @@ public class WorkflowController {
 		logger.debug(" /work/responseWorkflow -> responseWorkflow()실행 ");
 		logger.debug("전달받은 uvo.wf_code :"+ uvo.getWf_code());
 		logger.debug(" uvo.wf_result : "+uvo.getWf_result());
+		logger.debug(" uvo.wf_type : "+uvo.getWf_type());
+		logger.debug(" uvo.wf_target : "+uvo.getWf_target());
 		logger.debug(" uvo.wf_comment : "+uvo.getWf_comment());
 		
 		WorkflowVO responseVO = wService.showWorkflow(uvo.getWf_code());
@@ -105,6 +115,40 @@ public class WorkflowController {
 		logger.debug(" 업로드 할 responseVO : "+ responseVO.toString());
 		wService.responseWorkflow(responseVO);
 		
+		String wf_target = uvo.getWf_target();
+		String wf_type = uvo.getWf_type();
+		String wf_result = uvo.getWf_result();
+		
+		if(!wf_result.equals("2")) {
+			switch (wf_type) {
+			case "교육" :
+				if(wf_result.equals("1")) {
+					eService.whenEduSignComplete(wf_target);
+				}
+				if(wf_result.equals("0")) {
+					eService.whenEduSignReject(wf_target);
+				}
+				break;
+			case "급여" :
+				if(wf_result.equals("1")) {
+					sService.whenSalarySignComplete(wf_target);
+				}
+				if(wf_result.equals("0")) {
+					sService.whenSalarySignReject(wf_target);
+				}
+			break;
+			}
+		}
+		
 		return "redirect:/work/workoff";
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
