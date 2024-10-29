@@ -66,9 +66,13 @@ public class MemberController implements ServletContextAware {
 		    
 		    // 입력된 비밀번호를 평문 생년월일과 비교
 		    if (vo.getEmp_pw().equals(birthDate)) {
+		        // 세션에 필요한 정보들을 저장
 		        session.setAttribute("emp_id", resultVO.getEmp_id());
+		        session.setAttribute("emp_position", resultVO.getEmp_position());
+		        session.setAttribute("emp_level", resultVO.getEmp_level());
+		        
 		        rttr.addFlashAttribute("needPasswordChange", true);
-		        return "redirect:/member/firstPass?emp_id=" + resultVO.getEmp_id();  // firstPass.jsp로 이동
+		        return "redirect:/member/firstPass?emp_id=" + resultVO.getEmp_id();
 		    }
 		    
 		    // 필수 정보가 하나라도 비어있는지 확인
@@ -76,11 +80,19 @@ public class MemberController implements ServletContextAware {
 		        resultVO.getEmp_email() == null || 
 		        resultVO.getEmp_addr() == null) {
 		        
+		        // 세션에 필요한 정보들을 저장
 		        session.setAttribute("emp_id", resultVO.getEmp_id());
+		        session.setAttribute("emp_position", resultVO.getEmp_position());
+		        session.setAttribute("emp_level", resultVO.getEmp_level());
+		        
 		        return "redirect:/member/update";
 		    }
 		    
+		    // 세션에 필요한 정보들을 저장
 		    session.setAttribute("emp_id", resultVO.getEmp_id());
+		    session.setAttribute("emp_position", resultVO.getEmp_position());
+		    session.setAttribute("emp_level", resultVO.getEmp_level());
+		    
 		    return "redirect:/main/home";
 		}
 
