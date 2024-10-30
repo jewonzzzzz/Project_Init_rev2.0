@@ -435,6 +435,7 @@ function getMessages(room_id,receiver_emp_id) {
 }
 
 function chatRoomList() {
+	console.log('crl');
 	if (message_check_interval) {
         clearInterval(message_check_interval);
     }
