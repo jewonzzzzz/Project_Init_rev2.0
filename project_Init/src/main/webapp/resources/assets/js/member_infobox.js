@@ -138,7 +138,8 @@ function personalInfo_getMessages(room_id,receiver_emp_id) {
 										`<div class="r_msg_box" style="display:flex; width:330px; margin:4px 0px; height:auto;">
 											<a data-emp_id="${msg.msg_sender.emp_id}" class="member_info">
 												<div id="r_msg_sender_img" style="width:50px; height:50px; margin-top:10px;">
-												${msg.msg_sender.emp_profile}
+													<img src="${msg.msg_sender.emp_profile}"
+					    							style="width: 20px; height: 20px; border-radius: 50%;">
 												</div>
 											</a>
 											<div style="width:350px; display:flex; flex-direction:column;">
