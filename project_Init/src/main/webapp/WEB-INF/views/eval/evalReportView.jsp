@@ -92,9 +92,9 @@ ${checkHisInfo } --%>
                       <div class="col">
                       <div class="form-group">
                       	<p style="margin-bottom: 0px;"><label class="mb-2" style="font-size:16px !important">
-                      		<b>성과보고 대상&nbsp; : &nbsp;${evalReportInfo.year }년 &nbsp;${evalReportInfo.branch }
-                          &nbsp;업무성과</b><br><b>성과보고 기간&nbsp; : &nbsp;${evalReportInfo.eval_report_start } ~
-                           &nbsp;${evalReportInfo.eval_report_end }</b></label>
+                      		<b>성과보고 대상&nbsp; :</b> &nbsp;${evalReportInfo.year }년 &nbsp;${evalReportInfo.branch }
+                          &nbsp;업무성과<br><b>성과보고 기간&nbsp; :</b> &nbsp;${evalReportInfo.eval_report_start } ~
+                           &nbsp;${evalReportInfo.eval_report_end }</label>
                       	</p>
                       </div>
                         <div class="form-group">
