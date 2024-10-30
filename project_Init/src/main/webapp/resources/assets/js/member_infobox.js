@@ -44,7 +44,7 @@ $(document).ready(function () {
 				
 				$('#get_employee_info').modal('show');
 				
-				$('#get_employee_info').on('shown.bs.modal', function () {
+				$('#get_employee_info').on('shown.bs.modal', function () { 
 		            $(this).focus();
 		        });
 				
