@@ -10,7 +10,7 @@ $(document).ready(function () {
 		       String(date.getHours()).padStart(2, '0') + ':' +
 		       String(date.getMinutes()).padStart(2, '0');
 	};
-	
+	 
 	var workflowVO;
 	
 	$(document).on('click', '#workflow_info', function (e) {
@@ -88,7 +88,7 @@ $(document).ready(function () {
 		                	<a data-emp_id="${workflowVO.wf_receiver_2nd}" class="member_info">
 		                   	<div style="flex:0.8; display: flex; color: rgba(0, 0, 0, 0.7);">
 		                   		<div style="display: flex; flex:0.2; align-items: center; justify-content: center;">
-		                   			<img src=""
+		                   			<img src="${workflowVO.receiver_profile_2nd}"
 							        	style="width: 40px; height: 40px; border-radius: 50%;">
 		                   		</div>
 		                   		<div style="flex:0.4; display: flex; flex-direction:column;">
@@ -123,7 +123,7 @@ $(document).ready(function () {
 		                	<a data-emp_id="${workflowVO.wf_receiver_3rd}" class="member_info">
 		                   	<div style="flex:0.8; display: flex; color: rgba(0, 0, 0, 0.7);">
 		                   		<div style="display: flex; flex:0.2; align-items: center; justify-content: center;">
-		                   			<img src=""
+		                   			<img src="${workflowVO.receiver_profile_3rd}"
 							        	style="width: 40px; height: 40px; border-radius: 50%;">
 		                   		</div>
 		                   		<div style="flex:0.4; display: flex; flex-direction:column;">
@@ -204,13 +204,13 @@ $(document).ready(function () {
 				/* set result end */
 				
 	            /* set comment start */
-	            function appendComment(receiver_name, receiver_file, comment, result_date, receiver_id) {
+	            function appendComment(receiver_name, receiver_profile, comment, result_date, receiver_id) {
 	                if (comment != null) {
 	                    $('#commentSection').append(`
 	                        <a data-emp_id="${receiver_id}" class="member_info">
 	                            <div style="width: 100%; height: auto; flex-grow: 1; display: flex;">
 	                                <div style="width: 5%; display: flex; align-items: center; justify-content: center; padding-right:40px;">
-	                                    <img src="${receiver_file}" alt="img" style="width: 40px; height: 40px; border-radius: 50%;">
+	                                    <img src="${receiver_profile}" alt="img" style="width: 40px; height: 40px; border-radius: 50%;">
 	                                </div>
 	                                <div style="width: 95%; height: auto; display: flex; flex-direction: column; padding: 5px;">
 	                                    <div style="flex: 0.3; font-weight: bold; color: black;">
@@ -232,9 +232,9 @@ $(document).ready(function () {
 	                    console.log('No comment available');
 	                }
 	            }
-	            appendComment(workflowVO.receiver_name_1st, workflowVO.receiver_file_1st, workflowVO.wf_comment_1st, workflowVO.wf_result_date_1st, workflowVO.wf_receiver_1st);
-		        appendComment(workflowVO.receiver_name_2nd, workflowVO.receiver_file_2nd, workflowVO.wf_comment_2nd, workflowVO.wf_result_date_2nd, workflowVO.wf_receiver_2nd);
-		        appendComment(workflowVO.receiver_name_3nd, workflowVO.receiver_file_3nd, workflowVO.wf_comment_3rd, workflowVO.wf_result_date_3rd, workflowVO.wf_receiver_3rd);
+	            appendComment(workflowVO.receiver_name_1st, workflowVO.receiver_profile_1st, workflowVO.wf_comment_1st, workflowVO.wf_result_date_1st, workflowVO.wf_receiver_1st);
+		        appendComment(workflowVO.receiver_name_2nd, workflowVO.receiver_profile_2nd, workflowVO.wf_comment_2nd, workflowVO.wf_result_date_2nd, workflowVO.wf_receiver_2nd);
+		        appendComment(workflowVO.receiver_name_3rd, workflowVO.receiver_profile_3rd, workflowVO.wf_comment_3rd, workflowVO.wf_result_date_3rd, workflowVO.wf_receiver_3rd);
 		        /* set comment end */
 		        
 		        /* modify form as status start*/
