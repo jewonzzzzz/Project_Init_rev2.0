@@ -21,7 +21,7 @@ public class EvalVO {
 	private String eval_report_start;
 	private String eval_report_end;
 	private String eval_start_date;
-	private String eval_end_date;
+	private Date eval_end_date;
 	private String eval_status;
 	private String evaluator;
 	private String content;

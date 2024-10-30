@@ -72,8 +72,17 @@ public class MemberController implements ServletContextAware {
 		}
 		
 		@GetMapping("/login")
-		public String loginMemberGET() {
-			return "member/loginForm";
+		public String loginMemberGET(HttpSession session) {
+		    // 세션에서 로그인 정보 확인
+		    String emp_id = (String) session.getAttribute("emp_id");
+		    
+		    // 이미 로그인된 상태라면 메인 페이지로 리다이렉트
+		    if (emp_id != null) {
+		        return "redirect:/main/home";
+		    }
+		    
+		    // 로그인되지 않은 상태라면 로그인 페이지 표시
+		    return "member/loginForm";
 		}
 
 		@PostMapping("/login")
