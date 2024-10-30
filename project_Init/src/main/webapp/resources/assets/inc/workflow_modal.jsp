@@ -50,7 +50,7 @@
 									                <div class="form-group" style="height:80px; display: flex;">
 								                    	<div style="display: flex; ">
 								                    		<div style="display: flex; flex:0.3; align-items: center; justify-content: center;">
-								                    			<img src=""
+								                    			<img id="wf_sender_profile" src=""
 													        	style="width: 40px; height: 40px; border-radius: 50%;">
 								                    		</div>
 								                    		<div style="flex:0.7; display: flex; flex-direction:column; margin-left:10px;">
@@ -73,7 +73,7 @@
 								            		<div class="form-group" style="height:80px; display: flex;">
 								                    	<div style="display: flex; ">
 								                    		<div style="display: flex; flex:0.3; align-items: center; justify-content: center;">
-								                    			<img src=""
+								                    			<img id="wf_receiver_profile" src=""
 													        	style="width: 40px; height: 40px; border-radius: 50%;">
 								                    		</div>
 								                    		<div style="flex:0.7; display: flex; flex-direction:column; margin-left:10px;">
@@ -127,7 +127,7 @@
 							                     	<a id="a_receiver_1st" class="member_info" data-emp_id="">
 								                    	<div style="flex:0.8; display: flex; color: rgba(0, 0, 0, 0.7);">
 								                    		<div style="display: flex; flex:0.2; align-items: center; justify-content: center;">
-								                    			<img src=""
+								                    			<img id="wf_receiver_profile_1st" src=""
 													        	style="width: 40px; height: 40px; border-radius: 50%;">
 								                    		</div>
 								                    		<div style="flex:0.4; display: flex; flex-direction:column;">
