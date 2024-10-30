@@ -421,7 +421,7 @@ a{
 /* ------------------------------------ */
 
 
-* :not(i):not(.sidebar *) {
+* :not(i):not(.sidebar *):not(button) {
     font-family: 'Apple', sans-serif !important;
     color:black;
 }

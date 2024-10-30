@@ -113,8 +113,6 @@
                     </table>
                   </div>
                 </div>
-                
-                
                 <div style="display: flex; justify-content: flex-end; gap:5px;">
                    	<a href="/salary/calSalaryStep1"><button class="btn btn-primary">신규생성</button></a>
                    	
