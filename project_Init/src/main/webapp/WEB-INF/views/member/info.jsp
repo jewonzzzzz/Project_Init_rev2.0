@@ -166,20 +166,34 @@
 
 /* 버튼 스타일 */
 .btn-modal, #addLicenseBtn {
-    padding: 8px 20px;
-    margin-left: 92%;
-    margin-top: 1%;
-    border: none;
-    border-radius: 4px;
-    background-color: #0055FF;
+    display: inline-block;
+    padding: 0.65rem 1.2rem;  
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;        
+    background-color: #1572e8;
     color: white;
+    border: none;
+    border-radius: 3px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease-in-out;
 }
 
 .btn-modal:hover, #addLicenseBtn:hover {
-    background-color: #0044cc;
-    box-shadow: 0 2px 6px rgba(0, 85, 255, 0.2);
+    background-color: #1269db;
+    box-shadow: 0 2px 6px rgba(21, 114, 232, 0.4);
+}
+
+.button-container {
+    text-align: right;
+    margin-top: 10px;   
+    margin-bottom: 25px; 
+    padding-right: 0;
+}
+
+.table-button-wrapper {
+    width: 100%;
+    position: relative;
 }
 
 .delete-license {
@@ -432,11 +446,15 @@
 	    }
 
 	    function generateAccountContent(data) {
-	        let content = '<table class="info-table"><tr>' +
-	                      '<th>예금주</th><td>' + data.emp_account_name + '</td>' +
-	                      '<th>계좌번호</th><td>' + data.emp_account_num + '</td>' +
-	                      '<th>은행명</th><td>' + data.emp_bank_name + '</td></tr></table>';
-	        content += '<button type="button" class="btn-modal" id="openAccountModal">계좌 수정</button>';
+	        let content = '<div class="table-button-wrapper">';
+	        content += '<table class="info-table"><tr>' +
+	                   '<th>예금주</th><td>' + data.emp_account_name + '</td>' +
+	                   '<th>계좌번호</th><td>' + data.emp_account_num + '</td>' +
+	                   '<th>은행명</th><td>' + data.emp_bank_name + '</td></tr></table>';
+	        content += '<div class="button-container">' +
+	                   '<button type="button" class="btn-modal" id="openAccountModal">계좌 수정</button>' +
+	                   '</div>';
+	        content += '</div>';
 	        return content;
 	    }
 
@@ -528,19 +546,23 @@
 	    
 	    // 자격증 추가
 		function generateLicenseContent(data) {
-        let content = '<table class="info-table"><tr><th>자격증명</th><th>발급처</th><th>취득일</th><th>작업</th></tr>';
-        if (Array.isArray(data) && data.length > 0) {
-            data.forEach(function(item) {
-                content += '<tr><td>' + item.li_name + '</td><td>' + item.li_issu + '</td><td>' + formatDate(item.li_date) + '</td>';
-                content += '<td><button class="delete-license" data-id="' + item.li_id + '">삭제</button></td></tr>';
-            });
-        } else {
-            content += '<tr><td colspan="4">등록된 자격증이 없습니다.</td></tr>';
-        }
-        content += '</table>';
-        content += '<button id="addLicenseBtn">자격증 추가</button>';
-        return content;
-   		}
+	    let content = '<div class="table-button-wrapper">';
+	    content += '<table class="info-table"><tr><th>자격증명</th><th>발급처</th><th>취득일</th><th>작업</th></tr>';
+	    if (Array.isArray(data) && data.length > 0) {
+	        data.forEach(function(item) {
+	            content += '<tr><td>' + item.li_name + '</td><td>' + item.li_issu + '</td><td>' + formatDate(item.li_date) + '</td>';
+	            content += '<td><button class="delete-license" data-id="' + item.li_id + '">삭제</button></td></tr>';
+	        });
+	    } else {
+	        content += '<tr><td colspan="4">등록된 자격증이 없습니다.</td></tr>';
+	    }
+	    content += '</table>';
+	    content += '<div class="button-container">' +
+	               '<button id="addLicenseBtn">자격증 추가</button>' +
+	               '</div>';
+	    content += '</div>';
+	    return content;
+	}
 
 		$(document).on('click', '#addLicenseBtn', function() {
 	        console.log("Add License button clicked");
