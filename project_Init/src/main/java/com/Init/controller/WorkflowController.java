@@ -111,27 +111,8 @@ public class WorkflowController {
 		String wf_target = uvo.getWf_target();
 		String wf_type = uvo.getWf_type();
 		String wf_result = uvo.getWf_result();
-		String wf_progress = uvo.getWf_progress();
-		String wf_receiver_2nd = uvo.getWf_receiver_2nd();
-		String wf_receiver_3rd = uvo.getWf_receiver_3rd();
 		
-		boolean isEnd = false;
-		
-		if(wf_progress.equals('1')){
-			if(wf_receiver_2nd == null || wf_receiver_2nd == ""){
-				isEnd = true;
-			};
-		};
-		if(wf_progress.equals('2')){
-			if(wf_receiver_3rd == null || wf_receiver_3rd == ""){
-				isEnd = true;
-			};
-		};
-		if(wf_progress.equals('3')){
-				isEnd = true;
-		};
-		
-		if(!wf_result.equals("2")&&isEnd) {
+		if(!wf_result.equals("2")) {
 			switch (wf_type) {
 			case "교육" :
 				if(wf_result.equals("1")) {
