@@ -132,7 +132,7 @@
 								%>
 
 								<button class="btn1 btn-primary" onclick="openLeaveModal()">
-									<span class="btn-label"> <i class="fa fa-bookmark"></i>
+									<span class="btn-label"> <i class="fas fa-calendar-minus"></i>
 									</span> 연차 신청서
 								</button>
 								<!-- 연차 신청 모달 -->
@@ -387,7 +387,7 @@ function submitLeaveForm() {
 								<!-- 버튼 -->
 								<button class="btn1 btn-primary"
 									onclick="openLeaveRequestModal()">
-									<span class="btn-label"><i class="fa fa-bookmark"></i></span>
+									<span class="btn-label"><i class="fas fa-plane-departure"></i></span>
 									휴가 신청서
 								</button>
 
@@ -632,7 +632,7 @@ function closeLeaveRequestModal() {
 								<!-- 휴직 신청서 버튼 -->
 								<button class="btn1 btn-primary"
 									onclick="openLeaveApplicationModal()">
-									<span class="btn-label"><i class="fa fa-bookmark"></i></span>
+									<span class="btn-label"><i class="fas fa-hourglass-start"></i></span>
 									휴직 신청서
 								</button>
 
@@ -845,7 +845,7 @@ function closeLeaveRequestModal() {
 								<!-- 나의 휴가 현황 버튼 -->
 								<button class="btn1 btn-primary"
 									onclick="openLeaveStatusModal()">
-									<span class="btn-label"> <i class="fa fa-bookmark"></i>
+									<span class="btn-label"> <i class="fas fa-check-double"></i>
 									</span> 나의 휴가 현황
 								</button>
 

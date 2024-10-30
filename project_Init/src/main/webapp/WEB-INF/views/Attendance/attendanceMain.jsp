@@ -133,8 +133,8 @@ body {
 								%>
 
 								<button class="btn1 btn-primary" data-toggle="modal"
-									data-target="#overtimeModal">
-									<span class="btn-label"> <i class="fa fa-bookmark"></i>
+									data-target="#overtimeModal" style="color: white;">
+									<span class="btn-label"> <i class="fas fa-book-open"></i>
 									</span> 초과/야간/특근 신청서
 								</button>
 
@@ -346,9 +346,10 @@ function submitOvertimeForm() {
 
 								<!-- 근태 신청 현황 버튼 -->
 								<button type="button" class="btn1 btn-primary"
-									onclick="openAttendanceModal()">
-									<span class="btn-label"> <i class="fa fa-bookmark"></i>
+									onclick="openAttendanceModal()" style="color: white;">
+									<span class="btn-label"> <i class="fas fa-book-reader"></i>
 									</span> 근태 신청 현황
+									
 								</button>
 
 								<!-- 나의 근태 신청 현황 모달 -->
@@ -479,7 +480,7 @@ function displayAttendanceInfo(data) {
 								<!-- 모달 버튼 -->
 								<button class="btn1 btn-primary" data-toggle="modal"
 									data-target="#updateModal">
-									<span class="btn-label"> <i class="fa fa-bookmark"></i>
+									<span class="btn-label"> <i class="fas fa-book"></i>
 									</span> 근태 수정 신청서
 								</button>
 
@@ -685,7 +686,7 @@ function submitAttendanceForm2() {
 
 								<button type="button" class="btn1 btn-primary"
 									data-toggle="modal" data-target="#businessTripModal">
-									<span class="btn-label"> <i class="fa fa-bookmark"></i>
+									<span class="btn-label"> <i class="fas fa-plane-departure"></i>
 									</span> 교육/출장 신청서
 								</button>
 
