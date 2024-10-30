@@ -102,10 +102,10 @@
                       
                       <div class="form-group">
                       	<p style="margin-bottom: 0px;"><label class="mb-2" style="font-size:16px !important">
-                      		<b>평가대상자&nbsp; : &nbsp;${reportInfoForEval.emp_bnum }&nbsp;${reportInfoForEval.dname }
-                      		&nbsp;${reportInfoForEval.emp_position }&nbsp;${reportInfoForEval.emp_name }</b>
-                          <br><b>평가자&nbsp; : &nbsp;${evaluatorInfo.emp_bnum }&nbsp;${evaluatorInfo.dname }
-                          &nbsp;${evaluatorInfo.emp_position }&nbsp;${evaluatorInfo.emp_name }</b></label>
+                      		<b>평가대상자&nbsp; :</b> &nbsp;${reportInfoForEval.emp_bnum }&nbsp;${reportInfoForEval.dname }
+                      		&nbsp;${reportInfoForEval.emp_position }&nbsp;${reportInfoForEval.emp_name }
+                          <br><b>평가자&nbsp; :</b> &nbsp;${evaluatorInfo.emp_bnum }&nbsp;${evaluatorInfo.dname }
+                          &nbsp;${evaluatorInfo.emp_position }&nbsp;${evaluatorInfo.emp_name }</label>
                       	</p>
                       </div>
                       
