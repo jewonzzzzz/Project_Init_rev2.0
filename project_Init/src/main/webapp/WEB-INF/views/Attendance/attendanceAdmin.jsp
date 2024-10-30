@@ -593,8 +593,6 @@ th {
     </div>
 </div>
 <script>
-	
-
 
     let redirectTimeout;
 
@@ -605,7 +603,7 @@ th {
         var actionUrl = form.action + "?emp_id=" + empId; // URL에 emp_id 추가
 		
         
-        // iframe에 QR 코드 URL 로드
+        // iframe에 QR코드 URL로드
         document.getElementById('qrFrame').src = actionUrl;
 
         // 모달 보여주기
