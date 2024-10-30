@@ -1258,7 +1258,7 @@ function getAttendanceStatusDisplay(leave_status) {
  	            		swal("Error!", "결재요청 정보를 입력해주세요", "error");
  	            	 } else if(new Set(selectedValues).size !== selectedValues.length){
 	                    	swal("Error!", "중복된 결재유형이 존재합니다.", "error");
-	                    	console.log("dddddddddddd");
+	                    	
 	                     } else if(selectedValues.includes($('option[name="wf_receiver_3rd"]:selected').val())
 	                    		 && !selectedValues.includes($('option[name="wf_receiver_2nd"]:selected').val())){
 	                    	swal("Error!", "2차 결재자가 존재하지 않습니다.", "error");

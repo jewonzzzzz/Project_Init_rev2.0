@@ -910,9 +910,7 @@ function submitBusinessTrip() {
 									<div class="flex justify-center mb-6">
 										<div
 											class="w-40 h-40 bg-gray-200 rounded-md flex items-center justify-center">
-											<span class="text-gray-500"> <img
-												src="${pageContext.request.contextPath}/resources/assets/img/profile.jpg"
-												alt="프로필 이미지" />
+											<span class="text-gray-500"> <img src="${emp_profile}" alt="프로필 이미지" />
 											</span>
 
 										</div>
