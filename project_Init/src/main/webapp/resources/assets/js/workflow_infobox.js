@@ -10,7 +10,7 @@ $(document).ready(function () {
 		       String(date.getHours()).padStart(2, '0') + ':' +
 		       String(date.getMinutes()).padStart(2, '0');
 	};
-	
+	 
 	var workflowVO;
 	
 	$(document).on('click', '#workflow_info', function (e) {
