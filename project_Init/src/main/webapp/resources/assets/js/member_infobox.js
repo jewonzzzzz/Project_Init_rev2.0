@@ -40,6 +40,7 @@ $(document).ready(function () {
 				$('#emp_modal_position').text(emp.emp_position);
 				$('#emp_modal_tel').text(emp.emp_tel);
 				$('#emp_modal_email').text(emp.emp_email);
+				$('#emp_modal_profile').attr('src', emp.emp_profile);
 				
 				$('#get_employee_info').modal('show');
 				

@@ -70,12 +70,15 @@ $(document).ready(function () {
 				$('#wf_sender_emp_name').text(workflowVO.sender_name);
 				$('#wf_sender_emp_dname').text(workflowVO.sender_dname);
 				$('#wf_sender_emp_position').text(workflowVO.sender_position);
+				$('#wf_sender_profile').attr('src', workflowVO.sender_profile);
 				$('#wf_receiver_emp_name').text(workflowVO.receiver_name);
 				$('#wf_receiver_emp_dname').text(workflowVO.receiver_dname);
 				$('#wf_receiver_emp_position').text(workflowVO.receiver_position);
+				$('#wf_receiver_profile').attr('src', workflowVO.receiver_profile);
 				$('#wf_receiver_1st_emp_name').text(workflowVO.receiver_name_1st);
 				$('#wf_receiver_1st_emp_dname').text(workflowVO.receiver_dname_1st);
 				$('#wf_receiver_1st_emp_position').text(workflowVO.receiver_position_1st);
+				$('#wf_receiver_profile_1st').attr('src', workflowVO.receiver_profile_1st);
 				/* set workflow basic info end*/
 				
 				/* set receivers start */

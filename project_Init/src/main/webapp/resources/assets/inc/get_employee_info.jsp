@@ -16,7 +16,7 @@
 						<div class="form-group" style= "display: flex; flex:0.4; flex-direction:column; padding:0; justify-content: center; ">
 							<div style="display: flex;">
 	                    		<div style="display: flex; flex:0.5; align-items: center; justify-content: center;">
-	                    			<img src=""
+	                    			<img id="emp_modal_profile" src=""
 						        	style="width: 100px; height: 100px; border-radius: 50%;">
 	                    		</div>
 	                    		<div style="flex:0.5; display: flex; flex-direction:column;">
