@@ -225,9 +225,9 @@
 	<!-- 결재요청시 결재정보 워크플로우에 추가하기 -->
 	<select id="insertSalarySignInfoToWorkFlow">
 		insert into workflow(wf_code, wf_type, wf_sender, wf_receiver, wf_receiver_1st, wf_receiver_2nd, 
-		wf_receiver_3rd, wf_target, wf_title, wf_content)  
+		wf_receiver_3rd, wf_target, wf_title, wf_content, wf_progress, wf_status, wf_receiver_alarm_token)   
 		values(#{wf_code}, #{wf_type}, #{wf_sender}, #{wf_receiver_1st}, #{wf_receiver_1st}, #{wf_receiver_2nd}, 
-		#{wf_receiver_3rd}, #{wf_target}, #{wf_title}, #{wf_content}) 
+		#{wf_receiver_3rd}, #{wf_target}, #{wf_title}, #{wf_content}, '1', '1', '1') 
 	</select>
 	
 	<!-- 올해 첫 워크플로우 번호가 있는지 확인하기 -->
