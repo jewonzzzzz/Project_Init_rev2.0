@@ -96,7 +96,15 @@ $(document).ready(function () {
 		$('#realtimeAlarm_sender_name').text(workflowVO.sender_name);
 		$('#realtimeAlarm_sender_position').text(workflowVO.sender_position);
 		$('#realtimeAlarm_wf_type').text(workflowVO.wf_type);
-		$('#realtimeAlarm_wf_progress').text(workflowVO.wf_progress);
+		
+		if (workflowVO.wf_progress == '1') {
+		 	$('#realtimeAlarm_wf_progress').text('1차 승인 대기');
+		} else if (workflowVO.wf_progress == '2') {
+			$('#realtimeAlarm_wf_progress').text('2차 승인 대기');
+		} else if (workflowVO.wf_progress == '3') {
+			$('#realtimeAlarm_wf_progress').text('3차 승인 대기');
+		};
+		
 		$('#realtimeAlarm_wf_title').text(workflowVO.wf_title);
 		$('#realtimeAlarm_wf_result_1st').text(workflowVO.wf_result_1st);
 		$('#realtimeAlarm_wf_result_2nd').text(workflowVO.wf_result_2nd);
