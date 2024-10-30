@@ -35,6 +35,9 @@ $(document).ready(function () {
 				$('#resp_wf_code').val(workflowVO.wf_code);
 				$('#resp_wf_type').val(workflowVO.wf_type);
 				$('#resp_wf_target').val(workflowVO.wf_target);
+				$('#resp_wf_progress').val(workflowVO.wf_progress);
+				$('#resp_wf_receiver_2nd').val(workflowVO.wf_receiver_2nd);
+				$('#resp_wf_receiver_3rd').val(workflowVO.wf_receiver_3rd);
 				$('#a_sender').attr('data-emp_id', workflowVO.wf_sender);
 				$('#a_receiver').attr('data-emp_id', workflowVO.wf_receiver);
 				$('#a_receiver_1st').attr('data-emp_id', workflowVO.wf_receiver_1st);

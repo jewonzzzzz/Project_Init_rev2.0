@@ -23,6 +23,9 @@
 									<input type="hidden" id="resp_wf_code" name="wf_code" value=""/>
 									<input type="hidden" id="resp_wf_type" name="wf_type" value=""/>
 									<input type="hidden" id="resp_wf_target" name="wf_target" value=""/>
+									<input type="hidden" id="resp_wf_progress" name="wf_progress" value=""/>
+									<input type="hidden" id="resp_wf_receiver_2nd" name="wf_receiver_2nd" value=""/>
+									<input type="hidden" id="resp_wf_receiver_3rd" name="wf_receiver_3rd" value=""/>
 									<div class="row">
 					                    <div class="col-md-6 col-lg-2" style="border-bottom: 1px solid rgba(0,0,0,0.1); display:flex; flex-direction: column; justify-content: center; align-content: center;">
 								                <label class="control-label"> 유형 </label>

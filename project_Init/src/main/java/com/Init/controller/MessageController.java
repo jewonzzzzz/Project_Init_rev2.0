@@ -104,9 +104,8 @@ public class MessageController {
 		vo.setPersonal_sender_emp_id(emp_id);
 		vo.setPersonal_sender_emp_name((String)session.getAttribute("emp_name"));
 		vo.setPersonal_sender_emp_position((String)session.getAttribute("emp_position"));
-		int room_id = vo.getRoom_id();
-		
-		if(room_id==0) {
+		Integer room_id = vo.getRoom_id();
+		if(room_id==0 || room_id==null) {
 			room_id = msgService.createChatRoom(vo);
 			vo.setRoom_id(room_id);
 			vo.setEnter_emp_id(vo.getPersonal_receiver_emp_id());
