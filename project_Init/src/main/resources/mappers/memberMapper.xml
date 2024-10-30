@@ -274,12 +274,12 @@
 
     <!-- 인사평가 정보 조회 -->
     <select id="getEval" parameterType="String" resultType="EvalVO">
-        SELECT eval_name, score_total, eval_grade, eval_comment, eval_his_status, employee.emp_name, eval_end_date
-        FROM eval_his_list
-        JOIN eval_list ON eval_his_list.eval_id = eval_list.eval_id
-        JOIN employee ON eval_his_list.evaluator = employee.emp_id
-        WHERE eval_his_list.emp_id = #{emp_id}
-        AND eval_his_list.eval_his_status = '평가종료'
+        SELECT eval_name, score_total, eval_grade, eval_comment, eval_his_status, employee.emp_name, eval_end_date 
+        FROM eval_his_list 
+        JOIN eval_list ON eval_his_list.eval_id = eval_list.eval_id 
+        JOIN employee ON eval_his_list.evaluator = employee.emp_id 
+        WHERE eval_his_list.emp_id = #{emp_id} 
+        AND eval_list.eval_status = '평가종료' 
     </select>
     
     <!-- 프로필 사진 업데이트 -->
