@@ -68,6 +68,8 @@ public class MemberController implements ServletContextAware {
 		@GetMapping("/logout")
 		public String logoutMemberGET(HttpSession session) {
 			session.invalidate();
+			
+			
 			return "redirect:/member/login";
 		}
 		

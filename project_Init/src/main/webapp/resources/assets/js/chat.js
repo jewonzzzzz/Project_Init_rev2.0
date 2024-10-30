@@ -129,7 +129,14 @@ $(document).ready(function () {
 		});
 		
 		$('#message_send_form').submit(function(e) {
+			if (message_check_interval) {
+		        clearInterval(message_check_interval);
+		    }
 	        e.preventDefault();  
+	        console.log('room_id :',$('#hidden_room_id').val());
+	        console.log('personal_receiver_emp_id :',$('#hidden_personal_receiver_emp_id').val());
+	        console.log('personal_receiver_emp_name :',$('#hidden_personal_receiver_emp_name').val());
+	        console.log('msg_content :',$('#msg_content').val());
 	
 	        $.ajax({
 	            url: '/message/sendMessage',
@@ -143,9 +150,12 @@ $(document).ready(function () {
 	            success: function(data) {
 	            	console.log('send message!');
 	            	console.log(data);
-	            	getMessages(data,null);
-	            	$('#msg_content').val('');
 	            	
+	            	message_check_interval = setInterval(function() {
+	    		        getMessages(data, null);
+	    		    }, 1000);
+	            	
+	            	$('#msg_content').val('');
 	            },
 	            error: function(error) {
 	                console.error('Error sending message:', error);

@@ -101,25 +101,37 @@ public class WorkflowController {
 	
 	@RequestMapping(value = "/wfresponse",method = RequestMethod.POST)
 	public String responseWorkflow(WorkflowVO uvo) {
-		logger.debug(" /work/responseWorkflow -> responseWorkflow()실행 ");
-		logger.debug("전달받은 uvo.wf_code :"+ uvo.getWf_code());
-		logger.debug(" uvo.wf_result : "+uvo.getWf_result());
-		logger.debug(" uvo.wf_type : "+uvo.getWf_type());
-		logger.debug(" uvo.wf_target : "+uvo.getWf_target());
-		logger.debug(" uvo.wf_comment : "+uvo.getWf_comment());
 		
 		WorkflowVO responseVO = wService.showWorkflow(uvo.getWf_code());
 		responseVO.setWf_result(uvo.getWf_result());
 		responseVO.setWf_comment(uvo.getWf_comment());
 		
-		logger.debug(" 업로드 할 responseVO : "+ responseVO.toString());
 		wService.responseWorkflow(responseVO);
 		
 		String wf_target = uvo.getWf_target();
 		String wf_type = uvo.getWf_type();
 		String wf_result = uvo.getWf_result();
+		String wf_progress = uvo.getWf_progress();
+		String wf_receiver_2nd = uvo.getWf_receiver_2nd();
+		String wf_receiver_3rd = uvo.getWf_receiver_3rd();
 		
-		if(!wf_result.equals("2")) {
+		boolean isEnd = false;
+		
+		if(wf_progress.equals('1')){
+			if(wf_receiver_2nd == null || wf_receiver_2nd == ""){
+				isEnd = true;
+			};
+		};
+		if(wf_progress.equals('2')){
+			if(wf_receiver_3rd == null || wf_receiver_3rd == ""){
+				isEnd = true;
+			};
+		};
+		if(wf_progress.equals('3')){
+				isEnd = true;
+		};
+		
+		if(!wf_result.equals("2")&&isEnd) {
 			switch (wf_type) {
 			case "교육" :
 				if(wf_result.equals("1")) {

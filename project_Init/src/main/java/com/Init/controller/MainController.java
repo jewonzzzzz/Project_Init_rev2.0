@@ -44,13 +44,11 @@ public class MainController {
 	
 	@RequestMapping(value = "/login",method = RequestMethod.GET)
 	public String loginGet(EmployeeVO vo) {
-		logger.debug("�궗�슜�옄媛� 濡쒓렇�씤�븯���뒿�땲�떎. 濡쒓렇�삩 �젙蹂대�� �뾽�뜲�씠�듃�븯���뒿�땲�떎.");
 		return "/main/loginForm";
 	}
 
 	@RequestMapping(value = "/login",method = RequestMethod.POST)
 	public String loginPOST(EmployeeVO vo,HttpSession session,Model model) {
-		logger.debug("�궗�슜�옄媛� 濡쒓렇�씤�븯���뒿�땲�떎. 濡쒓렇�삩 �젙蹂대�� �뾽�뜲�씠�듃�븯���뒿�땲�떎.");
 		EmployeeVO resultVO = mService.memberLogin(vo);
 		
 		session.removeAttribute("emp_id");
@@ -59,16 +57,16 @@ public class MainController {
 		session.setAttribute("emp_position", resultVO.getEmp_position());
 		session.setAttribute("logined", true);
 		mService.userLogin(resultVO.getEmp_id());
-		logger.debug(resultVO.getEmp_id()+"�궗�슜�옄媛� 濡쒓렇�씤�븯���뒿�땲�떎. 濡쒓렇�삩 �젙蹂대�� �뾽�뜲�씠�듃�븯���뒿�땲�떎.");
 		
 		return "redirect:/main/home";
 	}
 	
 	@RequestMapping(value = "/logout",method = RequestMethod.POST)
-	public void logout(HttpSession session) {
+	public String logout(HttpSession session) {
 		String emp_id = (String)session.getAttribute("emp_id");
 		mService.userLogout(emp_id);
 		session.invalidate();
+		return "redirect:/member/login";
 	}
 		
 	@RequestMapping(value = "/home",method = RequestMethod.GET)
