@@ -61,7 +61,7 @@ public class MainController {
 		return "redirect:/main/home";
 	}
 	
-	@RequestMapping(value = "/logout",method = RequestMethod.POST)
+	@RequestMapping(value = "/logout",method = RequestMethod.GET)
 	public String logout(HttpSession session) {
 		String emp_id = (String)session.getAttribute("emp_id");
 		mService.userLogout(emp_id);
