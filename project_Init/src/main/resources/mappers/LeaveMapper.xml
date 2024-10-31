@@ -45,8 +45,7 @@
 		used_annual_leave = #{used_annual_leave},
 		remaining_annual_leave = #{remaining_annual_leave},
 		leave_status =
-		#{leave_status},
-		approval_date = #{approval_date},
+		#{leave_status},		
 		reason = #{reason},
 		requested_at = #{requested_at},
 		total_leave_days = #{total_leave_days}
@@ -80,8 +79,7 @@
 		lm.adjustment,
 		lm.adjustmentDate,
 		lm.end_leave_date,
-		lm.leave_status,
-		lm.approval_date,
+		lm.leave_status,		
 		lm.reason,
 		lm.requested_at,
 		lm.total_leave_days
