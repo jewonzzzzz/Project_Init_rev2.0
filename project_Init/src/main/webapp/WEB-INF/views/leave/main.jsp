@@ -422,7 +422,8 @@ function submitLeaveForm() {
 												<div class="form-group">
 													<label for="leave_type">휴가 유형</label> <select
 														class="form-control" id="leave_type" name="leave_type"
-														required>
+														required>														
+														<option value=""></option>
 														<option value="출산 휴가">출산 휴가</option>
 														<option value="병가">병가</option>
 														<option value="특별휴가">특별휴가</option>
@@ -652,7 +653,7 @@ function closeLeaveRequestModal() {
 											</div>
 
 											<div class="modal-body">
-												<form id="leaveApplicationForm">
+<!-- 												<form id="leaveApplicationForm"> -->
 													<div class="form-group">
 														<label for="empIdLeave">사원 번호:</label> <input type="text"
 															id="empIdLeave" name="emp_id" class="form-control"
@@ -668,10 +669,11 @@ function closeLeaveRequestModal() {
 													<div class="form-group">
 														<label for="leave_type_leave">휴직 유형</label> <select
 															class="form-control" id="leave_type_leave"
-															name="leave_type" required>
+															name="leave_typeB" required>
+															<option value=""></option>
 															<option value="육아휴직">육아휴직</option>
 															<option value="병가휴직">병가휴직</option>
-															<option value="기타사유">기타사유</option>
+															<option value="기타휴직">기타휴직</option>
 														</select>
 													</div>
 													<div class="form-group">
@@ -704,11 +706,16 @@ function closeLeaveRequestModal() {
 															name="reason" rows="3" required></textarea>
 													</div>
 													<div class="modal-footer">
-														<button type="button" class="btn btn-primary" onclick="submitLeaveApplication()">신청</button>
+														
+														<button type="button" class="btn btn-primary" id="signBtn"
+													data-bs-toggle="modal" data-bs-target="#addRowModal">신청</button>
+														
+														
+														
 														<button type="button" class="btn btn-secondary"
 															onclick="closeLeaveApplicationModal()">닫기</button>
 													</div>
-												</form>
+<!-- 												</form> -->
 											</div>
 										</div>
 									</div>
@@ -1263,6 +1270,10 @@ function getAttendanceStatusDisplay(leave_status) {
 	                    		 && !selectedValues.includes($('option[name="wf_receiver_2nd"]:selected').val())){
 	                    	swal("Error!", "2차 결재자가 존재하지 않습니다.", "error");
 	                     } else {
+	                    	
+
+	                    	 
+	                    	 
   	            	//전달정보 (edu_id, 결재요청자 및 1~3차 결재자의 사번 )
   	             	var signData = {
 	             			emp_id: $('#empId').val(),
@@ -1272,17 +1283,32 @@ function getAttendanceStatusDisplay(leave_status) {
 	             			wf_receiver_3rd: $('select option[name="wf_receiver_3rd"]:selected').closest('tr').find('input').val(),
 	             			wf_title: $('input[name="wf_title"]').val(),
 	             			wf_content: $('textarea[name="wf_content"]').val(),	             			
+	             			
+	             			// 휴가
 	             			leave_type: $('#leave_type').val(),  // 휴가 유형
 	             		    leave_start_date: $('#leave_start_date').val(),  // 휴가 시작일
 	             		    end_leave_date: $('#end_leave_date').val(),  // 휴가 종료일
 	             		    total_leave_days: $('#total_leave_days').val(),  // 총 휴가 일수
-	             		    leave_status: $('#leave_status').val(),  // 결재 상태	             		
-	             		    reason: $('#reason').val(),  // 신청 사유
+	             		    leave_status: $('#leave_status').val(),  // 결재 상태
+	             		   	reason: $('#reason').val(),  // 신청 사유		             		    
+	             		   	
+	             		   	//휴직
+	             		   	leave_start_dateA: $('#leave_start_date_leave').val(),	             		   
+	             			end_leave_dateA: $('#end_leave_date_leave').val(),
+	             			leave_typeA: $('#leave_type_leave').val(),
+	             			total_leave_daysA: $('#total_leave_days_leave').val(),
+	             			reasonA: $('#reason_leave').val(),
+	             			
+	             			
+	             			
+	             			
+	
+	             		    
 
   	            	};
 	             			
 	                     
-	     
+	     			
   	             	$.ajax({
   	            		url:'/leave/insertSignInfoForLeave',
   	            		type: 'POST',
@@ -1404,7 +1430,7 @@ function getAttendanceStatusDisplay(leave_status) {
         type: "line",
         height: "70",
         width: "100%",
-        lineWidth: "2",
+        lineWidth: "2",A
         lineColor: "#ffa534",
         fillColor: "rgba(255, 165, 52, .14)",
       });

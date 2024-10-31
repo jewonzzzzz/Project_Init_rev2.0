@@ -246,25 +246,38 @@ public class LeaveController {
 		//결재정보를 워크플로우 디비에 저장
 		sService.insertSalarySignInfoToWorkFlow(vo);
 		
-		
-		//휴가테이블에 작성될 정보(insert, status : -1)
-		LeaveVO lvo = new LeaveVO();
-			
-		lvo.setEmp_id(emp_id);  // 사번 설정
-		lvo.setLeave_type(signData.get("leave_type"));  // 휴가 유형 설정
-		lvo.setLeave_start_date(Date.valueOf(signData.get("leave_start_date")));  // 휴가 시작일 설정
-		lvo.setEnd_leave_date(Date.valueOf(signData.get("end_leave_date")));  // 휴가 종료일 설정
-		lvo.setTotal_leave_days(Integer.parseInt(signData.get("total_leave_days")));  // 총 휴가 일수
-		lvo.setReason(signData.get("reason"));  // 신청 사유 설정
-		lvo.setLeave_status(-1);  // 상태 설정
+		// 휴가 및 휴직 정보 처리
+		String leaveType = signData.get("leave_type");
+		String leaveTypeA = signData.get("leave_typeA");
 
 		
-			leaveService.insertSignInfoForLeave(lvo);
+		    LeaveVO leaveVO = new LeaveVO();
+		    leaveVO.setEmp_id(emp_id);  // 사번 설정
+		    leaveVO.setLeave_status(-1); // 기본 상태 설정
+
+
+		 // 휴가 정보가 있는 경우 처리
+		 if (leaveType != null && leaveType.contains("휴가")) {
+		     leaveVO.setLeave_type(leaveType);
+		     leaveVO.setLeave_start_date(Date.valueOf(signData.get("leave_start_date")));
+		     leaveVO.setEnd_leave_date(Date.valueOf(signData.get("end_leave_date")));
+		     leaveVO.setTotal_leave_days(Integer.parseInt(signData.get("total_leave_days")));
+		     leaveVO.setReason(signData.get("reason"));
+		     leaveService.insertSignInfoForLeave(leaveVO);
+		 } 
+		 // 휴직 정보가 있는 경우 처리
+		 else if (leaveTypeA != null && leaveTypeA.contains("휴직")) {
+		     leaveVO.setLeave_type(leaveTypeA);
+		     leaveVO.setLeave_start_date(Date.valueOf(signData.get("leave_start_dateA")));
+		     leaveVO.setEnd_leave_date(Date.valueOf(signData.get("end_leave_dateA")));
+		     leaveVO.setTotal_leave_days(Integer.parseInt(signData.get("total_leave_daysA")));
+		     leaveVO.setReason(signData.get("reasonA"));
+		     leaveService.insertSignInfoForLeave(leaveVO);
+		 }
 		
-		
+	
 	}
 	
-
 	
 	
 
