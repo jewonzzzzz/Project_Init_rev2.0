@@ -36,8 +36,6 @@
 		SET leave_type = #{leave_type},
 		leave_start_date = #{leave_start_date},
 		end_leave_date = #{end_leave_date},		
-		annual_leave =
-		#{annual_leave},
 		annual_leave_start_date = #{annual_leave_start_date},
 		end_annual_leave = #{end_annual_leave},
 		total_annual_leave =
@@ -68,7 +66,6 @@
 		lm.emp_id,
 		lm.leave_type,
 		lm.leave_start_date,
-		lm.annual_leave,
 		lm.annual_leave_start_date,
 		lm.end_annual_leave,
 		lm.total_annual_leave,
@@ -284,7 +281,6 @@
 		#{leave_status},
 		#{reason},
 		now()
-
 		)
 	</insert>
 	
