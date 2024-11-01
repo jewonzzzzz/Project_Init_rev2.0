@@ -109,8 +109,10 @@ public class LeaveServiceImpl implements LeaveService {
 	}
 	
 	@Override
-	public void insertSignInfoForOtherLeave(LeaveVO lvoa) {
-		 leaveDAO.insertSignInfoForOtherLeave(lvoa);
+	public void insertSignInfoForOtherLeave(LeaveVO leaveVO) {
+		logger.debug("연차 서비스 전 : "+leaveVO);
+		 leaveDAO.insertSignInfoForOtherLeave(leaveVO);
+			logger.debug("연차 서비스 후 : "+leaveVO);
 		
 	}
 	//휴가 승인,반려 메서드
@@ -119,4 +121,5 @@ public class LeaveServiceImpl implements LeaveService {
 		leaveDAO.updateLeaveStatus(uvo);
 		
 	}
+	
 }

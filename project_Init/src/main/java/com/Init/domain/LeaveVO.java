@@ -21,14 +21,17 @@ public class LeaveVO {
 
     // 휴가 유형 
     private String leave_type; // leaveType
+    
+    // 총 휴가 일수 관련 필드
+    private int total_leave_days; 
+
 
     // 휴가 시작일
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
     private Date leave_start_date; 
 
     
-    // 연차 관련 필드
-    private int annual_leave; // annualLeave
+   
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" ,timezone = "Asia/Seoul")
     private Date annual_leave_start_date; // annualLeaveStartDate
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" ,timezone = "Asia/Seoul")
@@ -52,10 +55,6 @@ public class LeaveVO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
     private Date end_leave_date; 
 
-    // 승인 날짜
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
-    private Date approval_date; 
-
     // 신청 사유
     private String reason; 
 
@@ -63,12 +62,7 @@ public class LeaveVO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd",timezone = "Asia/Seoul")
     private Date requested_at; 
 
-    
-    
-    
-    // 총 휴가 일수 관련 필드
-    private int total_leave_days; 
-
+   
     
     
    

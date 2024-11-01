@@ -256,7 +256,7 @@
 		workform_status,
 		modified_reason, status)
 		VALUES (#{emp_id},
-		#{created_at},#{businessDate}, #{business_endDate},
+		now(), #{businessDate}, #{business_endDate},
 		#{educationDate},
 		#{education_endDate}, #{workform_status},
 		#{modified_reason},

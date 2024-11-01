@@ -48,14 +48,13 @@ public interface LeaveDAO {
     public List<LeaveVO> getStartDate(String emp_id);
     
     public LeaveVO getLatestLeaveInfo(String emp_id);
-    
-   
+       
 
 	void updateAnnualLeaveA(int leave_id);
 
 	void insertSignInfoForLeave(LeaveVO lvo);
 
-	void insertSignInfoForOtherLeave(LeaveVO lvoa);
+	void insertSignInfoForOtherLeave(LeaveVO leaveVO);
     
 	void updateLeaveStatus(LeaveVO vo);
 }
